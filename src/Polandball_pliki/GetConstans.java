@@ -30,24 +30,6 @@ public final class GetConstans {
 	public static int Boardwidth;
 	
 	/**
-		* Pozycja X Polandballa
-	**/
-	
-	public static int Polandballpositionx;
-	
-	/**
-		* Pozycja Y Polandballa
-	**/
-	
-	public static int Polandballpositiony;
-	
-	/**
-		* Ilo�� potwor�w
-	**/
-	
-	public static int Amountofmonsters;
-	
-	/**
 		* szybko�� potwor�w
 	**/
 	
@@ -85,9 +67,6 @@ public final class GetConstans {
 			
 			Boardheigh=Integer.parseInt(doc.getElementsByTagName("Boardheigh").item(0).getTextContent());
 			Boardwidth=Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
-			Polandballpositionx=Integer.parseInt(doc.getElementsByTagName("Polandballpositionx").item(0).getTextContent());
-			Polandballpositiony=Integer.parseInt(doc.getElementsByTagName("Polandballpositiony").item(0).getTextContent());
-			Amountofmonsters=Integer.parseInt(doc.getElementsByTagName("Amountofmonsters").item(0).getTextContent());
 			Monsterspeed=Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			row=doc.getElementsByTagName("row").item(0).getTextContent();
