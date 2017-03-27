@@ -1,4 +1,4 @@
-package GetConstans;
+package Polandball_pliki;
 
 import org.w3c.dom.Document;
 
