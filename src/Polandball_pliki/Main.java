@@ -1,5 +1,7 @@
 package Polandball_pliki;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 import static Polandball_pliki.GetConstans.*;
@@ -9,13 +11,15 @@ import static Polandball_pliki.GetConstans.*;
  */
 public class Main {
 
-    //
 
     static private GetConstans getConstans_=new GetConstans();;// jesli nie dam static to nie moge uzywac w funkcji static
 
     public static void main(String[]args)throws IOException {
         getConstans_=new GetConstans();
 
-        LevelFrame levelFrame_= new LevelFrame(Boardheight,Boardwidth);
+
+        EventQueue.invokeLater(() -> {
+            LevelFrame levelFrame_= new LevelFrame();
+        });
     }
 }
