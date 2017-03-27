@@ -7,21 +7,25 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+
+
 /**
 	* Parametry pierwszego poziomu
 **/
 
+
 public final class GetConstans {
+
 	/**
 		* Scie�ka do pliku konfiguracyjnego
 	**/
-	public static final String Config = "config.xml";
+	public static final String Config = "src\\Polandball_pliki\\config.xml"; //poprawiłem ścieszke
 	
 	/**
 		* Wysoko�� planszy
 	**/
 	
-	public static int Boardheigh;
+	public static int Boardheight;
 	
 	/**
 		* Szeroko�� planszy
@@ -46,18 +50,13 @@ public final class GetConstans {
 	**/
 	
 	public static String row;
-	
-	static{
-		parseConfig();
-	}
-	
-	private GetConstans(){};
+
 	
 	/**
 		* Wczytywanie p�l z pliku konfiguracyjnego
 	**/
 	
-	public static void parseConfig(){
+	public GetConstans(){ // to co wcześniej było w funkcji parser config wrzuciłem do konstruktora bo powodowało błędy syntaktyczne
 		try{
 			File file = new File(Config);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -65,11 +64,11 @@ public final class GetConstans {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
 			
-			Boardheigh=Integer.parseInt(doc.getElementsByTagName("Boardheigh").item(0).getTextContent());
+			Boardheight=Integer.parseInt(doc.getElementsByTagName("Boardheight").item(0).getTextContent());
 			Boardwidth=Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
 			Monsterspeed=Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
-			row=doc.getElementsByTagName("row").item(0).getTextContent();
+			//row=doc.getElementsByTagName("row").item(0).getTextContent();
 
 
 
@@ -83,9 +82,6 @@ public final class GetConstans {
 			}
 	}
 
-	/**
-	 * tak
-	 */
 	
 	
 }

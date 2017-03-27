@@ -1,18 +1,17 @@
 package Polandball_pliki;
-import javax.swing.*;
 
-import static Polandball_pliki.GetConstans.*;
+
+import javax.swing.*;
+import java.awt.*;
+
 /**
- * Created by Matball on 2017-03-27.			Boardheigh=Integer.parseInt(doc.getElementsByTagName("Boardheigh").item(0).getTextContent());
- Boardwidth=Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
+ * Created by Matball on 2017-03-27.
  */
 public class LevelFrame extends JFrame {
 
-    public LevelFrame(Boardheigh,Boardwidth){
-
-        this.setSize(Boardheigh,Boardwidth);
-        this.setDefaultCloseOperation(LevelFrame.EXIT_ON_CLOSE);
-
+    public LevelFrame(int Boardheight,int Boardwidth){
+        this.setSize(Boardheight,Boardwidth);               //ustawia rozmiar z pliku konfiguracyjnego
+        getContentPane().setBackground(Color.BLACK);        //zapewnia tło
+        this.setVisible(true);                              //czyni widocznym
     }
-
 }
