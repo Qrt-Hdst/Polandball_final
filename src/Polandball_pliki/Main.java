@@ -12,14 +12,14 @@ import static Polandball_pliki.GetConstans.*;
 public class Main {
 
 
-    static private GetConstans getConstans_=new GetConstans();;// jesli nie dam static to nie moge uzywac w funkcji static
+    static private GetConstans getConstans_=new GetConstans();// jesli nie dam static to nie moge uzywac w funkcji static
 
     public static void main(String[]args)throws IOException {
         getConstans_=new GetConstans();
 
-
         EventQueue.invokeLater(() -> {
             LevelFrame levelFrame_= new LevelFrame();
+            levelFrame_.setVisible(true);
         });
     }
 }

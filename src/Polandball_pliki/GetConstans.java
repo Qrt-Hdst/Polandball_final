@@ -50,6 +50,16 @@ public final class GetConstans {
 	**/
 	
 	public static String row;
+	/**
+	 * Pola z ścieszkami do grafiki
+	 */
+	public static String PolandBall;
+	public static String TurkeyBall;
+	public static String NaziBall;
+	public static String SovietBall;
+	public static String Skrzynka;
+	public static String Beton;
+	public static String Nothing;
 
 	
 	/**
@@ -63,15 +73,19 @@ public final class GetConstans {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
-			
+
 			Boardheight=Integer.parseInt(doc.getElementsByTagName("Boardheight").item(0).getTextContent());
 			Boardwidth=Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
 			Monsterspeed=Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			//row=doc.getElementsByTagName("row").item(0).getTextContent();
-
-
-
+			PolandBall=doc.getElementsByTagName("PolandBall").item(0).getTextContent();
+			TurkeyBall=doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
+			SovietBall=doc.getElementsByTagName("SovietBall").item(0).getTextContent();
+			NaziBall=doc.getElementsByTagName("NaziBall").item(0).getTextContent();
+			Skrzynka=doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
+			Beton=doc.getElementsByTagName("Beton").item(0).getTextContent();
+			Nothing=doc.getElementsByTagName("Nothing").item(0).getTextContent();
 
 		}
 		catch(FileNotFoundException e){
