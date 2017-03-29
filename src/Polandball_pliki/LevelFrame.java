@@ -47,10 +47,10 @@ public class LevelFrame extends JFrame {
 
 
     public LevelFrame() {
-        initUI();
+        initLevelFrame();
     }
 
-    private void initUI(){
+    private void initLevelFrame(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Boardwidth,Boardheight);
         this.setLayout(null);
