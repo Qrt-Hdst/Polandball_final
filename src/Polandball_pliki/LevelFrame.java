@@ -55,8 +55,7 @@ public class LevelFrame extends JFrame {
         this.setSize(Boardwidth,Boardheight);
         this.setLayout(null);
 
-
-        Panel panelinfoone = new Panel();//panel gorny, w ktorym beda informacje dotyczace gry
+        MyPanel panelinfoone = new MyPanel();//panel gorny, w ktorym beda informacje dotyczace gry
         panelinfooneheight = (int)(0.2*Boardheight);
         panelinfoone.setSize(Boardwidth,panelinfooneheight);
         panelinfoone.setLocation(0,0);
@@ -64,7 +63,7 @@ public class LevelFrame extends JFrame {
         add(panelinfoone);
         panelinfoone.setVisible(true);
 
-        Panel panelboard = new Panel();//panel, który będzie naszą plansza do dodawania elementów poziomu
+        MyPanel panelboard = new MyPanel();//panel, który będzie naszą plansza do dodawania elementów poziomu
         panelboardheight =(int)(0.8*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelboard.setSize(panelboardwidth,panelboardheight);
@@ -73,7 +72,7 @@ public class LevelFrame extends JFrame {
         add(panelboard);
         panelboard.setVisible(true);
 
-        Panel panelinfotwo = new Panel();//panel boczny, w ktorym beda pozostale informacje
+        MyPanel panelinfotwo = new MyPanel();//panel boczny, w ktorym beda pozostale informacje
         panelinfotwoheight =(int)(0.8*Boardheight);
         panelinfotwowidth = (int)(0.2*Boardwidth);
         panelinfotwo.setSize(panelinfotwowidth,panelinfotwoheight);

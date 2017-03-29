@@ -8,12 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class Panel extends JPanel{
+public class MyPanel extends JPanel{
 
-    public Panel(){Panelproperities();}
+    public Panel(){Panelproperties();}
 
-    private void Panelproperities() {
-
+    private void Panelproperties() {
 
     }
 
