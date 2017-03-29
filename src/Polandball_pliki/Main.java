@@ -20,6 +20,7 @@ public class Main {
         EventQueue.invokeLater(() -> {
             LevelFrame levelFrame_= new LevelFrame();
             levelFrame_.setVisible(true);
+
         });
     }
 }

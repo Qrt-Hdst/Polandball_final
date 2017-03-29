@@ -10,10 +10,41 @@ import static Polandball_pliki.GetConstans.*;
 /**
  * Created by Matball on 2017-03-27.
  */
+
+
 public class LevelFrame extends JFrame {
 
-    private JLabel[] arrayLabel_;
-    private String[] arrayString_;
+    /**
+     * pomocnicza zmienna, okreslajaca wysokosc panelboard
+     */
+
+    public static int panelboardheight;
+
+    /**
+     * pomocnicza zmienna, okeslajaca szerokosc panelboard
+     */
+
+    public static int panelboardwidth;
+
+    /**
+     * pomocnicza zmienna, okreslajaca wysokosc gornego panelu
+     */
+
+    public static int panelinfooneheight;
+
+    /**
+     * pomocnicza zmienna, okreslajaca wysokosc bocznego panelu
+     */
+
+    public static int panelinfotwoheight;
+
+    /**
+     * pomocnicza zmienna, okreslajaca szerokosc gornego panelu
+     */
+
+    public static int panelinfotwowidth;
+
+
 
     public LevelFrame() {
         initUI();
@@ -21,73 +52,42 @@ public class LevelFrame extends JFrame {
 
     private void initUI(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(Boardheight,Boardwidth);
+        this.setSize(Boardwidth,Boardheight);
+        this.setLayout(null);
 
-        /**
-         * Ogólnie te dwie linie to taka troche magia która pozwala mi wyłączyć
-         * domyślne Layouty  i ustawiać nasze kochane pola tak jak chce
-         */
-        JPanel panel = (JPanel) this.getContentPane();
-        panel.setLayout(null);
-        /**
-         * męczyłem się żeby początkowo to było dynamicznie alokowa ale... w sumie lliczbe elementow
-         * bedziemy wczytywac z config wiec mysle ze jak bedzie statyczne to też bedzie gut
-         */
-        arrayString_ =new String[10];
-        arrayLabel_ = new JLabel[10];
-        /**
-         * Ogólnie cel jest taki by to co mamy w pliku rozbić na takie pola
-         * wtedy juz wczytanie bedzie prawie gotowe
-         */
-        arrayString_[0]="N_";
-        arrayString_[1]="N_";
-        arrayString_[2]="B_";
-        arrayString_[3]="S_";
-        try{
-        for(int i=0;i<4;i++){
-                if (arrayString_[i].equals("N_")) {
-                    arrayLabel_[i]=new JLabel(new ImageIcon(PolandBall));
-                }
-                else if (arrayString_[i].equals("B_")){
-                    arrayLabel_[i]=new JLabel(new ImageIcon(NaziBall));
-                }
-                else if (arrayString_[i].equals("S_")){
-                    arrayLabel_[i]=new JLabel(new ImageIcon(TurkeyBall));
-                }
-            }
-        }
-        catch(NullPointerException e)
-        {
-            System.out.print("NullPointerException caught");
-        }
-        /**
-         * dodaje do naszego JFrame - w przyszlosci trzeba zrobic funkcje ktora to robi w petli
-         */
-        this.add(arrayLabel_[0]);
-        this.add(arrayLabel_[1]);
-        this.add(arrayLabel_[2]);
-        this.add(arrayLabel_[3]);
-        /**
-         * zapisuje rozmiar naszych grafik
-         */
-        Dimension size = arrayLabel_[0].getPreferredSize();
-        /**ustawiam element na ramce
-         */
-        arrayLabel_[0].setBounds(0, 0, size.width, size.height);
-        arrayLabel_[1].setBounds(400, 0, size.width, size.height);
-        arrayLabel_[2].setBounds(0, 400, size.width, size.height);
-        arrayLabel_[3].setBounds(400, 400, size.width, size.height);
-        setVisible(true);
+
+        Panel panelinfoone = new Panel();//panel gorny, w ktorym beda informacje dotyczace gry
+        panelinfooneheight = (int)(0.2*Boardheight);
+        panelinfoone.setSize(Boardwidth,panelinfooneheight);
+        panelinfoone.setLocation(0,0);
+        panelinfoone.setBackground(Color.WHITE);
+        add(panelinfoone);
+        panelinfoone.setVisible(true);
+
+        Panel panelboard = new Panel();//panel, który będzie naszą plansza do dodawania elementów poziomu
+        panelboardheight =(int)(0.8*Boardheight);
+        panelboardwidth =(int)(0.8*Boardwidth);
+        panelboard.setSize(panelboardwidth,panelboardheight);
+        panelboard.setLocation(0,panelinfooneheight);
+        panelboard.setBackground(Color.BLACK);
+        add(panelboard);
+        panelboard.setVisible(true);
+
+        Panel panelinfotwo = new Panel();//panel boczny, w ktorym beda pozostale informacje
+        panelinfotwoheight =(int)(0.8*Boardheight);
+        panelinfotwowidth = (int)(0.2*Boardwidth);
+        panelinfotwo.setSize(panelinfotwowidth,panelinfotwoheight);
+        panelinfotwo.setLocation(panelboardwidth,panelinfooneheight);
+        panelinfotwo.setBackground(Color.BLUE);
+        add(panelinfotwo);
+        panelinfotwo.setVisible(true);
+
+
+
+
     }
 
 
 
-    public static void main(String[] args) {        //tej funkcji jeszcze nie do konca ogarniam - ogolnie podejrzewam że to macza w jakiś
-                                                    //w wątku tzn. -odmalowuje nam co chwila levelFrame wraz z ramkami
 
-        EventQueue.invokeLater(() -> {
-            LevelFrame levelFrame = new LevelFrame();
-            levelFrame.setVisible(true);
-        });
-    }
 }

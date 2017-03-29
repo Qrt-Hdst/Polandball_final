@@ -17,36 +17,46 @@ import java.io.FileNotFoundException;
 public final class GetConstans {
 
 	/**
-		* Scie�ka do pliku konfiguracyjnego
+		* Sciezka do pliku konfiguracyjnego
 	**/
 	public static final String Config = "src\\Polandball_pliki\\config.xml"; //poprawiłem ścieszke
 	
 	/**
-		* Wysoko�� planszy
+		* Wysokosc ramki
 	**/
 	
 	public static int Boardheight;
 	
 	/**
-		* Szeroko�� planszy
+		* Szerokosc ramki
 	**/
 	
 	public static int Boardwidth;
 	
 	/**
-		* szybko�� potwor�w
+		* szybkosc potworow
 	**/
 	
 	public static int Monsterspeed;
 	
 	/**
-		* Ilo�� �y� na pocz�tku rozgrywki
+		* Ilosc zyc na poczatku rozgrywki
 	**/
 	
 	public static int Amountoflifes;
-	
 	/**
-		* Rozk�ad element�w planszy
+		* Ilosc kolumn
+	 **/
+
+	public static int Amountofcolumns;
+
+	/**
+		*Ilosc wierszy
+	 **/
+	public static int Amountoflines;
+
+	/**
+		* Rozklad elementow planszy
 	**/
 	
 	public static String row;
@@ -63,7 +73,7 @@ public final class GetConstans {
 
 	
 	/**
-		* Wczytywanie p�l z pliku konfiguracyjnego
+		* Wczytywanie pol z pliku konfiguracyjnego
 	**/
 	
 	public GetConstans(){ // to co wcześniej było w funkcji parser config wrzuciłem do konstruktora bo powodowało błędy syntaktyczne
@@ -78,6 +88,8 @@ public final class GetConstans {
 			Boardwidth=Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
 			Monsterspeed=Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
+			Amountofcolumns=Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
+			Amountoflines=Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
 			//row=doc.getElementsByTagName("row").item(0).getTextContent();
 			PolandBall=doc.getElementsByTagName("PolandBall").item(0).getTextContent();
 			TurkeyBall=doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();

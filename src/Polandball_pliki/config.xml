@@ -4,7 +4,8 @@
 <Boardwidth>1000</Boardwidth>
 <Monsterspeed>7</Monsterspeed>
 <Amountoflifes>3</Amountoflifes>
-
+<Amountofcolumns>15</Amountofcolumns>
+ <Amountoflines>15</Amountoflines>
 <PolandBall>src\\GameGraphics\\PolandBall.png</PolandBall>
 <NaziBall>src\\GameGraphics\\NaziBall.png</NaziBall>
 <TurkeyBall>src\\GameGraphics\\TurkeyBall.png</TurkeyBall>
