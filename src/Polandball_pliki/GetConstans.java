@@ -94,14 +94,32 @@ public final class GetConstans {
 
 	public static String row;
 	/**
-	 * Pola z ścieszkami do grafiki
+	 * Scieszka do grafiki Polandball
 	 */
 	public static String PolandBall;
+	/**
+	 * Scieszka do grafiki TurkeyBall
+	 */
 	public static String TurkeyBall;
+	/**
+	 * Scieszka do grafiki NaziBall
+	 */
 	public static String NaziBall;
+	/**
+	 * Scieszka do grafiki SovietBall
+	 */
 	public static String SovietBall;
+	/**
+	 * Scieszka do pola Skrzynka
+	 */
 	public static String Skrzynka;
+	/**
+	 * Scieszka do pola Beton
+	 */
 	public static String Beton;
+	/**
+	 * Scieszka do pola Nothing
+	 */
 	public static String Nothing;
 
 
