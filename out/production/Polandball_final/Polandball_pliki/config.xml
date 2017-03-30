@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <class>
-<Boardheight>1000</Boardheight>
-<Boardwidth>1000</Boardwidth>
+<Boardheight>700</Boardheight>
+<Boardwidth>1200</Boardwidth>
 <Monsterspeed>7</Monsterspeed>
 <Amountoflifes>3</Amountoflifes>
 <Amountofcolumns>15</Amountofcolumns>

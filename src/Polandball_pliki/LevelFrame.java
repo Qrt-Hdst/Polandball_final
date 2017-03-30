@@ -55,7 +55,19 @@ public class LevelFrame extends JFrame {
         this.setSize(Boardwidth,Boardheight);
         this.setLayout(null);
 
-        MyPanel panelinfoone = new MyPanel();//panel gorny, w ktorym beda informacje dotyczace gry
+
+        PanelBoard panelboard = new PanelBoard();//panel, który będzie naszą plansza do dodawania elementów poziomu
+        add(panelboard);
+        panelboard.setVisible(true);
+
+        PanelInfoOne panelinfoone = new PanelInfoOne();//panel gorny, w ktorym beda informacje dotyczace gry
+        add(panelinfoone);
+        panelinfoone.setVisible(true);
+
+        PanelInfoTwo panelinfotwo = new PanelInfoTwo();//panel boczny, w ktorym beda pozostale informacje
+
+
+        //panel, który będzie naszą plansza do dodawania elementów poziomu
         panelinfooneheight = (int)(0.2*Boardheight);
         panelinfoone.setSize(Boardwidth,panelinfooneheight);
         panelinfoone.setLocation(0,0);
@@ -63,7 +75,8 @@ public class LevelFrame extends JFrame {
         add(panelinfoone);
         panelinfoone.setVisible(true);
 
-        MyPanel panelboard = new MyPanel();//panel, który będzie naszą plansza do dodawania elementów poziomu
+
+        //panel gorny, w ktorym beda informacje dotyczace gry
         panelboardheight =(int)(0.8*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelboard.setSize(panelboardwidth,panelboardheight);
@@ -72,17 +85,15 @@ public class LevelFrame extends JFrame {
         add(panelboard);
         panelboard.setVisible(true);
 
-        MyPanel panelinfotwo = new MyPanel();//panel boczny, w ktorym beda pozostale informacje
+        //panel boczny, w ktorym beda pozostale informacje
         panelinfotwoheight =(int)(0.8*Boardheight);
         panelinfotwowidth = (int)(0.2*Boardwidth);
         panelinfotwo.setSize(panelinfotwowidth,panelinfotwoheight);
         panelinfotwo.setLocation(panelboardwidth,panelinfooneheight);
         panelinfotwo.setBackground(Color.BLUE);
+
         add(panelinfotwo);
         panelinfotwo.setVisible(true);
-
-
-
 
     }
 

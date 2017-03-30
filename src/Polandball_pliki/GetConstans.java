@@ -10,55 +10,88 @@ import java.io.FileNotFoundException;
 
 
 /**
-	* Parametry pierwszego poziomu
-**/
+ * Parametry pierwszego poziomu
+ **/
 
 
 public final class GetConstans {
 
 	/**
-		* Sciezka do pliku konfiguracyjnego
-	**/
+	 * Sciezka do pliku konfiguracyjnego
+	 **/
 	public static final String Config = "src\\Polandball_pliki\\config.xml"; //poprawiłem ścieszke
-	
+
 	/**
-		* Wysokosc ramki
-	**/
-	
+	 * Wysokosc ramki
+	 **/
+
 	public static int Boardheight;
-	
+
 	/**
-		* Szerokosc ramki
-	**/
-	
+	 * Szerokosc ramki
+	 **/
+
 	public static int Boardwidth;
-	
+
 	/**
-		* szybkosc potworow
-	**/
-	
+	 * szybkosc potworow
+	 **/
+
 	public static int Monsterspeed;
-	
+
 	/**
-		* Ilosc zyc na poczatku rozgrywki
-	**/
-	
+	 * Ilosc zyc na poczatku rozgrywki
+	 **/
+
 	public static int Amountoflifes;
 	/**
-		* Ilosc kolumn
+	 * Ilosc kolumn
 	 **/
 
 	public static int Amountofcolumns;
 
 	/**
-		*Ilosc wierszy
+	 *Ilosc wierszy
 	 **/
 	public static int Amountoflines;
 
+
 	/**
-		* Rozklad elementow planszy
-	**/
-	
+	 * pomocnicza zmienna, okreslajaca wysokosc panelboard
+	 */
+
+	public static int panelboardheight;
+
+	/**
+	 * pomocnicza zmienna, okeslajaca szerokosc panelboard
+	 */
+
+	public static int panelboardwidth;
+
+
+	/**
+	 * Rozklad elementow planszy
+	 **/
+
+	/**
+	 * pomocnicza zmienna, okreslajaca wysokosc gornego panelu
+	 */
+
+	public static int panelinfooneheight;
+
+	/**
+	 * pomocnicza zmienna, okreslajaca wysokosc bocznego panelu
+	 */
+
+	public static int panelinfotwoheight;
+
+	/**
+	 * pomocnicza zmienna, okreslajaca szerokosc gornego panelu
+	 */
+
+	public static int panelinfotwowidth;
+
+
 	public static String row;
 	/**
 	 * Pola z ścieszkami do grafiki
@@ -71,18 +104,18 @@ public final class GetConstans {
 	public static String Beton;
 	public static String Nothing;
 
-	
+
 	/**
-		* Wczytywanie pol z pliku konfiguracyjnego
-	**/
-	
+	 * Wczytywanie pol z pliku konfiguracyjnego
+	 **/
+
 	public GetConstans(){ // to co wcześniej było w funkcji parser config wrzuciłem do konstruktora bo powodowało błędy syntaktyczne
 		try{
 			File file = new File(Config);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
-            doc.getDocumentElement().normalize();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(file);
+			doc.getDocumentElement().normalize();
 
 			Boardheight=Integer.parseInt(doc.getElementsByTagName("Boardheight").item(0).getTextContent());
 			Boardwidth=Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
@@ -90,7 +123,7 @@ public final class GetConstans {
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			Amountofcolumns=Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines=Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
-			//row=doc.getElementsByTagName("row").item(0).getTextContent();
+			row=doc.getElementsByTagName("row").item(0).getTextContent();
 			PolandBall=doc.getElementsByTagName("PolandBall").item(0).getTextContent();
 			TurkeyBall=doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
 			SovietBall=doc.getElementsByTagName("SovietBall").item(0).getTextContent();
@@ -99,15 +132,22 @@ public final class GetConstans {
 			Beton=doc.getElementsByTagName("Beton").item(0).getTextContent();
 			Nothing=doc.getElementsByTagName("Nothing").item(0).getTextContent();
 
+			//pomocnicze zmienne, potrzebne to ustalenia proporocji paneli - proporcje sa niezmienne, mozna zmieniac wymiary calej ramki
+			panelboardheight =(int)(0.8*Boardheight);
+			panelboardwidth =(int)(0.8*Boardwidth);
+			panelinfooneheight = (int)(0.2*Boardheight);
+			panelinfotwoheight =(int)(0.8*Boardheight);
+			panelinfotwowidth = (int)(0.2*Boardwidth);
+
 		}
 		catch(FileNotFoundException e){
-            e.printStackTrace();
-			}
-        catch(Exception e){
-            e.printStackTrace();
-			}
+			e.printStackTrace();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
-	
-	
+
+
 }
