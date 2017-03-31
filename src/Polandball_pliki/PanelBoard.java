@@ -24,7 +24,7 @@ public class PanelBoard extends JPanel{
         try{
 
             String field[] = null; //do tej tablicy wpsizemy znaki z pliku konfiguracyjnego
-            field = row.split(" "); //wpisywanie znakow
+            field = row[10].split(" "); //wpisywanie znakow
             //bedziemy "wklejac" obiekty graficzne po kolei, najpierw pierwszy wiersz  potem drugi itd
             int StartDrawingX = 0;//punkt X, od ktorego zaczniemy rysowanie obiektu
             int StartDrawingY = panelinfooneheight;//punkt Y, od ktorego zaczniemy rysowanie obiektu
@@ -34,7 +34,7 @@ public class PanelBoard extends JPanel{
 
             int default_width_image_from_file=400;//domyslna szerokosc pliku w GameGraphics - potem dodam do stałych
             int default_height_image_from_file=400;//domyslna wysokosc pliku w GameGraphics - potem dodam do stałych
-            int scaleGraphic=5;//stala przez ktora bedziemy dzielic rozmiary obraza
+            int scaleGraphic=9;//stala przez ktora bedziemy dzielic rozmiary obraza
             //NARAZIE DLA JEDNEGO WIERSZA
             for(int i=0;i<Amountoflines;i++){//do poprawy, sprawdzanie po kolei kazdego znaku
                 if (field[i].equals("N_")) {

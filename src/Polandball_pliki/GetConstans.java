@@ -91,8 +91,12 @@ public final class GetConstans {
 
 	public static int panelinfotwowidth;
 
+	/**
+	 * String przechowujcy informacje o wszystkich polach danego poziomu.
+	 * W kolejnych elementach tablicy zawarte sa kolejne linie planszy
+	 */
 
-	public static String row;
+	public static String row[];
 	/**
 	 * Scieszka do grafiki Polandball
 	 */
@@ -141,7 +145,12 @@ public final class GetConstans {
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			Amountofcolumns=Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines=Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
-			row=doc.getElementsByTagName("row").item(0).getTextContent();
+
+			row=new String[Amountoflines];
+			for(int i=0;i<Amountoflines;i++){
+			row[i]=doc.getElementsByTagName("row").item(i).getTextContent();
+			}
+
 			PolandBall=doc.getElementsByTagName("PolandBall").item(0).getTextContent();
 			TurkeyBall=doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
 			SovietBall=doc.getElementsByTagName("SovietBall").item(0).getTextContent();
