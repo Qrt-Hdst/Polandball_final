@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.NoSuchElementException;
 
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.LevelFrame.panelboardwidth;
+//import static Polandball_pliki.LevelFrame.panelboardwidth;
 
 public class PanelBoard extends JPanel{
 
