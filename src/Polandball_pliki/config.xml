@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <class>
-<Boardheight>700</Boardheight>
-<Boardwidth>1200</Boardwidth>
-<Monsterspeed>7</Monsterspeed>
-<Amountoflifes>3</Amountoflifes>
-<Amountofcolumns>15</Amountofcolumns>
+ <Boardheight>700</Boardheight>
+ <Boardwidth>1200</Boardwidth>
+ <Monsterspeed>7</Monsterspeed>
+ <Amountoflifes>3</Amountoflifes>
+ <Amountofcolumns>15</Amountofcolumns>
  <Amountoflines>15</Amountoflines>
-<PolandBall>src\\GameGraphics\\PolandBall.png</PolandBall>
-<NaziBall>src\\GameGraphics\\NaziBall.png</NaziBall>
-<TurkeyBall>src\\GameGraphics\\TurkeyBall.png</TurkeyBall>
-<SovietBall>src\\GameGraphics\\SovietBall.png</SovietBall>
-<Skrzynka>src\\GameGraphics\\Skrzynka.png</Skrzynka>
-<Beton>src\\GameGraphics\\Beton.png</Beton>
-<Nothing>src\\GameGraphics\\Nothing.png</Nothing>
+ <PolandBall>src//GameGraphics//PolandBall.png</PolandBall>
+ <NaziBall>src//GameGraphics//NaziBall.png</NaziBall>
+ <TurkeyBall>src//GameGraphics//TurkeyBall.png</TurkeyBall>
+ <SovietBall>src//GameGraphics//SovietBall.png</SovietBall>
+ <Skrzynka>src//GameGraphics//Skrzynka.png</Skrzynka>
+ <Beton>src//GameGraphics//Beton.png</Beton>
+ <Nothing>src//GameGraphics//Nothing.png</Nothing>
 
  <row>NG N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
  <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
@@ -29,6 +29,6 @@
  <row>S_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
  <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
  <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- 
+
 
 </class>

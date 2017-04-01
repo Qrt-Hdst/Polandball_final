@@ -4,15 +4,20 @@ package Polandball_pliki;
  * Pole gry, plansza
  */
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static Polandball_pliki.GetConstans.*;
 //import static Polandball_pliki.LevelFrame.panelboardwidth;
 
 public class PanelBoard extends JPanel{
-
+    private BufferedImage bufferedImage;
     public PanelBoard(){PanelBoard();}
 
     private void PanelBoard() {
@@ -22,77 +27,65 @@ public class PanelBoard extends JPanel{
         this.setBackground(Color.BLACK);
 
         try{
-
-            String field[] = null; //do tej tablicy wpsizemy znaki z pliku konfiguracyjnego
-            field = row[10].split(" "); //wpisywanie znakow
-            //bedziemy "wklejac" obiekty graficzne po kolei, najpierw pierwszy wiersz  potem drugi itd
-            int StartDrawingX = 0;//punkt X, od ktorego zaczniemy rysowanie obiektu
-            int StartDrawingY = panelinfooneheight;//punkt Y, od ktorego zaczniemy rysowanie obiektu
-            int SizeWidthIcon = panelboardwidth/Amountofcolumns;//szerokosc obiektu graficznego, zalezna od szerokosci panelu i ilosci kolumn
-            int SizeHightIcon = panelboardheight/Amountoflines;//wysokosc obiektu graficznego, zalezna od wysokosci panelu i ilosci wierszy
-
-
-            int default_width_image_from_file=400;//domyslna szerokosc pliku w GameGraphics - potem dodam do stałych
-            int default_height_image_from_file=400;//domyslna wysokosc pliku w GameGraphics - potem dodam do stałych
-            int scaleGraphic=9;//stala przez ktora bedziemy dzielic rozmiary obraza
-            //NARAZIE DLA JEDNEGO WIERSZA
-            for(int i=0;i<Amountoflines;i++){//do poprawy, sprawdzanie po kolei kazdego znaku
-                if (field[i].equals("N_")) {
-                    JLabel label1 = new JLabel(new ImageIcon(scaleImage(Nothing,default_height_image_from_file/scaleGraphic,default_width_image_from_file/scaleGraphic)));
-                    label1.setLocation(StartDrawingX, StartDrawingY);
-                    this.add(label1);
-                    StartDrawingX = StartDrawingX+SizeWidthIcon;
-                }
-                else if (field[i].equals("B_")){
-                    JLabel label2 = new JLabel(new ImageIcon(scaleImage(Beton,default_height_image_from_file/scaleGraphic,default_width_image_from_file/scaleGraphic)));
-                    label2.setLocation(StartDrawingX, StartDrawingY);
-                    this.add(label2);
-                    StartDrawingX = StartDrawingX+SizeWidthIcon;
-                }
-
-                else if (field[i].equals("S_")){
-                    JLabel label2 = new JLabel(new ImageIcon(scaleImage(Skrzynka,default_height_image_from_file/scaleGraphic,default_width_image_from_file/scaleGraphic)));
-                    label2.setLocation(StartDrawingX, StartDrawingY);
-                    this.add(label2);
-                    StartDrawingX = StartDrawingX+SizeWidthIcon;
-                }
-                else if (field[i].equals("NG")){
-                    JLabel label3 = new JLabel(new ImageIcon(scaleImage(PolandBall,default_height_image_from_file/scaleGraphic,default_width_image_from_file/scaleGraphic)));
-                    label3.setLocation(StartDrawingX, StartDrawingY);
-                    this.add(label3);
-                    StartDrawingX = StartDrawingX+SizeWidthIcon;
-                }
-                else if (field[i].equals("NW")){
-                    JLabel label3 = new JLabel(new ImageIcon(scaleImage(TurkeyBall,default_height_image_from_file/scaleGraphic,default_width_image_from_file/scaleGraphic)));
-                    label3.setLocation(StartDrawingX, StartDrawingY);
-                    this.add(label3);
-                    StartDrawingX = StartDrawingX+SizeWidthIcon;
+            /**tablica dwuwymiarowa w Javie, zalecana przez internety*/
+            ArrayList<ArrayList<String>> field = new ArrayList<ArrayList<String>>();
+            for (int i=0;i<Amountoflines;i++) {
+                /**dodaje wiersz do tablicy field*/
+                field.add(new ArrayList<String>());
+                /**tablica stringa w ktorej rozbijam wiersz na komórki*/
+                String bufor_string[]=row[i].split(" ");
+                /**wrzucam elementy bufor_stringa, do pól naszej tablicy*/
+                for(int j=0;j<Amountofcolumns;j++) {
+                    field.get(i).add(bufor_string[j]);
                 }
             }
 
-        }
-        catch(NullPointerException e)
-        {
-            System.out.print("NullPointerException caught");
-        }
 
+
+            File PolandBallFile = new File(PolandBall);
+            File SovietBallFile = new File(SovietBall);
+            File NaziBallFile = new File(NaziBall);
+            File TurkeyBallFile = new File(TurkeyBall);
+            File BetonFile = new File(Beton);
+            File NothingFile = new File(Nothing);
+            File SkrzynkaFile = new File(Skrzynka);
+
+            /** na razie kazda kolejna grafika przeslania poprzednia
+             * , chyba bedzie trzeba zrobic 2d array BufferImage i tam te wszystkie pola powstawiac
+             * i pozniej w metodzie paint je rysować */
+
+            for(int i=0;i<Amountoflines;i++){
+                for(int j=0;j<Amountofcolumns;j++) {
+                    if (field.get(i).get(j).equals("N_")) {
+                        /**ImageIO zwraca BufferImage*/
+                        bufferedImage= ImageIO.read(NothingFile);
+                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                    } else if (field.get(i).get(j).equals("B_")) {
+                        bufferedImage=ImageIO.read(BetonFile);
+                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                    } else if (field.get(i).get(j).equals("S_")) {
+                        bufferedImage=ImageIO.read(NaziBallFile);
+                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                    } else if (field.get(i).get(j).equals("NG")) {
+                        bufferedImage=ImageIO.read(PolandBallFile);
+                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                    } else if (field.get(i).get(j).equals("NW")) {
+                        bufferedImage=ImageIO.read(TurkeyBallFile);
+                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                    }
+                }
+            }
+
+        } catch(IOException e ){
+            e.printStackTrace();
+            System.out.println("gutentag,error");
+        }
+        //repaint();
     }
 
-    /**
-     * funkcja "skalujaca" naszą grafike
-     * @param path_to_graphic scieszka do pliku
-     * @param w  szerokosc jaka chcemy by mial obrazek bedacy efektem skalowani
-     * @param h  szerokosc jaka chcemy by mial obrazek bedacy efektem skalowani
-     * @return
-     */
-
-    private Image scaleImage(String path_to_graphic,int w,int h) {
-        ImageIcon original_ImageIcon=new ImageIcon(path_to_graphic);//Tworze zdjęcie naszej Grafiki do obiekt nieabstrakcyjnej klasy ImageIcon
-        Image originalImage_=original_ImageIcon.getImage();//wyciagam z niej do abstrakcyjenj obiektu klasy Image zdjęcie
-        Image scaled = originalImage_.getScaledInstance(w,h,Image.SCALE_SMOOTH);//skaluje do podanych parametrów skali
-
-        return scaled;//skaluje
-
+    public void paint(Graphics g){
+        /**3 i 4 parametr odpowiada za skale */
+        g.drawImage(bufferedImage,100 , 100, 100, 100, null);
     }
 
 
