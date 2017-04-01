@@ -6,7 +6,8 @@ package Polandball_pliki;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +18,17 @@ import static Polandball_pliki.GetConstans.*;
 //import static Polandball_pliki.LevelFrame.panelboardwidth;
 
 public class PanelBoard extends JPanel{
-    private BufferedImage bufferedImage;
+
+    private BufferedImage bufferedImage[][];
     public PanelBoard(){PanelBoard();}
 
     private void PanelBoard() {
 
-        this.setSize(panelboardwidth,panelboardheight);
-        this.setLocation(0,panelinfooneheight);
+        this.setSize(panelboardwidth, panelboardheight);
+        this.setLocation(0, panelinfooneheight);
         this.setBackground(Color.BLACK);
+
+
 
         try{
             /**tablica dwuwymiarowa w Javie, zalecana przez internety*/
@@ -50,42 +54,59 @@ public class PanelBoard extends JPanel{
             File NothingFile = new File(Nothing);
             File SkrzynkaFile = new File(Skrzynka);
 
+
             /** na razie kazda kolejna grafika przeslania poprzednia
              * , chyba bedzie trzeba zrobic 2d array BufferImage i tam te wszystkie pola powstawiac
              * i pozniej w metodzie paint je rysować */
 
+
+
+            bufferedImage = new BufferedImage[Amountoflines][Amountofcolumns];
             for(int i=0;i<Amountoflines;i++){
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
-                        /**ImageIO zwraca BufferImage*/
-                        bufferedImage= ImageIO.read(NothingFile);
-                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+
+                        bufferedImage[i][j]=ImageIO.read(NothingFile);
+
                     } else if (field.get(i).get(j).equals("B_")) {
-                        bufferedImage=ImageIO.read(BetonFile);
-                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                        bufferedImage[i][j]=ImageIO.read(BetonFile);
+
                     } else if (field.get(i).get(j).equals("S_")) {
-                        bufferedImage=ImageIO.read(NaziBallFile);
-                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                        bufferedImage[i][j]=ImageIO.read(NaziBallFile);
+
                     } else if (field.get(i).get(j).equals("NG")) {
-                        bufferedImage=ImageIO.read(PolandBallFile);
-                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                        bufferedImage[i][j]=ImageIO.read(PolandBallFile);
+
                     } else if (field.get(i).get(j).equals("NW")) {
-                        bufferedImage=ImageIO.read(TurkeyBallFile);
-                        //StartDrawingX = StartDrawingX + SizeWidthIcon;
+                        bufferedImage[i][j]=ImageIO.read(TurkeyBallFile);
+
                     }
                 }
+
             }
 
         } catch(IOException e ){
             e.printStackTrace();
             System.out.println("gutentag,error");
         }
-        //repaint();
+
     }
 
     public void paint(Graphics g){
         /**3 i 4 parametr odpowiada za skale */
-        g.drawImage(bufferedImage,100 , 100, 100, 100, null);
+        int StartDrawingX = 0;//punkt X, od ktorego zaczniemy rysowanie obiektu
+        int StartDrawingY = 0;//punkt Y, od ktorego zaczniemy rysowanie obiektu
+        int SizeWidthIcon = panelboardwidth/Amountofcolumns;//szerokosc obiektu graficznego, zalezna od szerokosci panelu i ilosci kolumn
+        int SizeHeightIcon = panelboardheight/Amountoflines;//wysokosc obiektu graficznego, zalezna od wysokosci panelu i ilosci wierszy
+        for(int i=0;i<Amountoflines;i++){
+            for(int j=0;j<Amountofcolumns;j++){
+                g.drawImage(bufferedImage[i][j],StartDrawingX, StartDrawingY, SizeWidthIcon, SizeHeightIcon, null);
+                StartDrawingX=StartDrawingX+SizeWidthIcon;
+            }
+            StartDrawingX=0;
+            StartDrawingY=StartDrawingY+SizeHeightIcon;
+        }
+
     }
 
 
