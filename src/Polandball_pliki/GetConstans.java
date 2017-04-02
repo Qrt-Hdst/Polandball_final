@@ -200,10 +200,10 @@ public final class GetConstans {
 			Key=doc.getElementsByTagName("Key").item(0).getTextContent();
 
 			//pomocnicze zmienne, potrzebne to ustalenia proporocji paneli - proporcje sa niezmienne, mozna zmieniac wymiary calej ramki
-			panelboardheight =(int)(0.8*Boardheight);
+			panelboardheight =(int)(0.75*Boardheight);
 			panelboardwidth =(int)(0.8*Boardwidth);
 			panelinfooneheight = (int)(0.2*Boardheight);
-			panelinfotwoheight =(int)(0.8*Boardheight);
+			panelinfotwoheight =(int)(0.75*Boardheight);
 			panelinfotwowidth = (int)(0.2*Boardwidth);
 
 		}
