@@ -34,7 +34,7 @@ public final class GetConstans {
 	public static int Boardwidth;
 
 	/**
-	 * szybkosc potworow
+	 * Szybkosc potworow
 	 **/
 
 	public static int Monsterspeed;
@@ -44,6 +44,7 @@ public final class GetConstans {
 	 **/
 
 	public static int Amountoflifes;
+
 	/**
 	 * Ilosc kolumn
 	 **/
@@ -53,17 +54,47 @@ public final class GetConstans {
 	/**
 	 *Ilosc wierszy
 	 **/
+
 	public static int Amountoflines;
 
+	/**
+ 	* Ilosc zwykłych bomb
+ 	*/
+
+	public static int Amountofordinarybombs;
 
 	/**
-	 * pomocnicza zmienna, okreslajaca wysokosc panelboard
+	* ilosc bomb zdalnych
+	 */
+
+	public static int Amountofremotebombs;
+
+	/**
+	 * ilosc skrzydel husarskich
+	 */
+
+	public static int Amountofhusarswings;
+
+	/**
+	 * ilosc lasrów
+	 */
+
+	public static int Amountoflasers;
+
+	/**
+	 * ilosc bomb zdalnych
+	 */
+
+	public static int Amountofkeys;
+
+	/**
+	 * Pomocnicza zmienna, okreslajaca wysokosc panelboard
 	 */
 
 	public static int panelboardheight;
 
 	/**
-	 * pomocnicza zmienna, okeslajaca szerokosc panelboard
+	 * Pomocnicza zmienna, okeslajaca szerokosc panelboard
 	 */
 
 	public static int panelboardwidth;
@@ -74,19 +105,19 @@ public final class GetConstans {
 	 **/
 
 	/**
-	 * pomocnicza zmienna, okreslajaca wysokosc gornego panelu
+	 * Pomocnicza zmienna, okreslajaca wysokosc gornego panelu
 	 */
 
 	public static int panelinfooneheight;
 
 	/**
-	 * pomocnicza zmienna, okreslajaca wysokosc bocznego panelu
+	 * Pomocnicza zmienna, okreslajaca wysokosc bocznego panelu
 	 */
 
 	public static int panelinfotwoheight;
 
 	/**
-	 * pomocnicza zmienna, okreslajaca szerokosc gornego panelu
+	 * Pomocnicza zmienna, okreslajaca szerokosc gornego panelu
 	 */
 
 	public static int panelinfotwowidth;
@@ -98,35 +129,35 @@ public final class GetConstans {
 
 	public static String row[];
 	/**
-	 * Scieszka do grafiki Polandball
+	 * Sciezka do grafiki Polandball
 	 */
 	public static String PolandBall;
 	/**
-	 * Scieszka do grafiki TurkeyBall
+	 * Sciezka do grafiki TurkeyBall
 	 */
 	public static String TurkeyBall;
 	/**
-	 * Scieszka do grafiki NaziBall
+	 * Sciezka do grafiki NaziBall
 	 */
 	public static String NaziBall;
 	/**
-	 * Scieszka do grafiki SovietBall
+	 * Sciezka do grafiki SovietBall
 	 */
 	public static String SovietBall;
 	/**
-	 * Scieszka do pola Skrzynka
+	 * Sciezka do pola Skrzynka
 	 */
 	public static String Skrzynka;
 	/**
-	 * Scieszka do pola Beton
+	 * Sciezka do pola Beton
 	 */
 	public static String Beton;
 	/**
-	 * Scieszka do grafiki Key
+	 * Sciezka do grafiki Key
 	 */
 	public static String Key;
 	/**
-	 * Scieszka do grafiki Door
+	 * Sciezka do grafiki Door
 	 */
 	public static String Door;
 
@@ -134,7 +165,7 @@ public final class GetConstans {
 	 * Wczytywanie pol z pliku konfiguracyjnego
 	 **/
 
-	public GetConstans(){ // to co wcześniej było w funkcji parser config wrzuciłem do konstruktora bo powodowało błędy syntaktyczne
+	public GetConstans(){ 
 		try{
 			File file = new File(Config);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -148,6 +179,11 @@ public final class GetConstans {
 			Amountoflifes=Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			Amountofcolumns=Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines=Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
+			Amountofordinarybombs=Integer.parseInt(doc.getElementsByTagName("Amountofordinarybombs").item(0).getTextContent());
+			Amountofremotebombs=Integer.parseInt(doc.getElementsByTagName("Amountofremotebombs").item(0).getTextContent());
+			Amountofhusarswings=Integer.parseInt(doc.getElementsByTagName("Amountofhusarswings").item(0).getTextContent());
+			Amountoflasers=Integer.parseInt(doc.getElementsByTagName("Amountoflasers").item(0).getTextContent());
+			Amountofkeys=Integer.parseInt(doc.getElementsByTagName("Amountofkeys").item(0).getTextContent());
 
 			row=new String[Amountoflines];
 			for(int i=0;i<Amountoflines;i++){
