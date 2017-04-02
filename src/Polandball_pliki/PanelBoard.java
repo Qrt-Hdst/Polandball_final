@@ -12,62 +12,83 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import static Polandball_pliki.GetConstans.*;
-//import static Polandball_pliki.LevelFrame.panelboardwidth;
 
 public class PanelBoard extends JPanel{
 
+    /**
+     * bufor, do którego ładowana jest grafika poziomu
+     */
+
     private BufferedImage bufferedImage[][];
+
+    /**
+     * punkt X, od ktorego zaczniemy rysowanie obiektu
+     */
+
+    private int StartDrawingX;
+
+    /**
+     * punkt Y, od ktorego zaczniemy rysowanie obiektu
+     */
+    private int StartDrawingY;
+
+    /**
+     * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
+     */
+    private int SizeWidthIcon;
+
+    /**
+     * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
+     */
+
+    private int SizeHeightIcon;
+
     public PanelBoard(){PanelBoard();}
 
     private void PanelBoard() {
 
+        /**
+         * parametry ogólne planszy
+         */
         this.setSize(panelboardwidth, panelboardheight);
         this.setLocation(0, panelinfooneheight);
         this.setBackground(Color.BLACK);
 
 
-
         try{
-            /**tablica dwuwymiarowa w Javie, zalecana przez internety*/
-            ArrayList<ArrayList<String>> field = new ArrayList<ArrayList<String>>();
-            for (int i=0;i<Amountoflines;i++) {
-                /**dodaje wiersz do tablicy field*/
-                field.add(new ArrayList<String>());
-                /**tablica stringa w ktorej rozbijam wiersz na komórki*/
-                String bufor_string[]=row[i].split(" ");
-                /**wrzucam elementy bufor_stringa, do pól naszej tablicy*/
-                for(int j=0;j<Amountofcolumns;j++) {
-                    field.get(i).add(bufor_string[j]);
-                }
-            }
-
-
-
+            /**
+             * wczytywanie grafik na podstawie ściezek z pliku konfiguracyjnego
+             */
             File PolandBallFile = new File(PolandBall);
             File SovietBallFile = new File(SovietBall);
             File NaziBallFile = new File(NaziBall);
             File TurkeyBallFile = new File(TurkeyBall);
             File BetonFile = new File(Beton);
-            File NothingFile = new File(Nothing);
             File SkrzynkaFile = new File(Skrzynka);
             File DoorFile = new File(Door);
             File KeyFile = new File(Key);
+            /**
+             * dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
+             */
+            ArrayList<ArrayList<String>> field = new ArrayList<>();
+            for (int i=0;i<Amountoflines;i++) {
+                field.add(new ArrayList<>());
+                String bufor_string[]=row[i].split(" ");
+                for(int j=0;j<Amountofcolumns;j++) {
+                    field.get(i).add(bufor_string[j]);
+                }
+            }
 
-
-            /** na razie kazda kolejna grafika przeslania poprzednia
-             * , chyba bedzie trzeba zrobic 2d array BufferImage i tam te wszystkie pola powstawiac
-             * i pozniej w metodzie paint je rysować */
-
-
+            /**
+             * dodanie grafik do bufora - tablicy dwuwymiarowej, reprezentujcej układ planszy
+             */
 
             bufferedImage = new BufferedImage[Amountoflines][Amountofcolumns];
             for(int i=0;i<Amountoflines;i++){
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
-                     //   bufferedImage[i][j]=ImageIO.read(NothingFile);
                     } else if (field.get(i).get(j).equals("B_")) {
                         bufferedImage[i][j]=ImageIO.read(BetonFile);
                     } else if (field.get(i).get(j).equals("S_")) {
@@ -87,20 +108,24 @@ public class PanelBoard extends JPanel{
 
         } catch(IOException e ){
             e.printStackTrace();
-            System.out.println("gutentag,error");
+            System.out.println("Blad wczytywania planszy");
         }
 
     }
 
+    /**
+     * funkcja rysująca mape poziomu
+     * @param g
+     */
     public void paint(Graphics g){
-        /**3 i 4 parametr odpowiada za skale */
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
 
-        int StartDrawingX = 0;//punkt X, od ktorego zaczniemy rysowanie obiektu
-        int StartDrawingY = 0;//punkt Y, od ktorego zaczniemy rysowanie obiektu
-        int SizeWidthIcon = panelboardwidth/Amountofcolumns;//szerokosc obiektu graficznego, zalezna od szerokosci panelu i ilosci kolumn
-        int SizeHeightIcon = panelboardheight/Amountoflines;//wysokosc obiektu graficznego, zalezna od wysokosci panelu i ilosci wierszy
+        StartDrawingX = 0;
+        StartDrawingY = 0;
+        SizeWidthIcon = panelboardwidth/Amountofcolumns;
+        SizeHeightIcon = panelboardheight/Amountoflines;
+
         for(int i=0;i<Amountoflines;i++){
             for(int j=0;j<Amountofcolumns;j++){
                 g.drawImage(bufferedImage[i][j],StartDrawingX, StartDrawingY, SizeWidthIcon, SizeHeightIcon, null);

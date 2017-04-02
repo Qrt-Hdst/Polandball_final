@@ -122,10 +122,6 @@ public final class GetConstans {
 	 */
 	public static String Beton;
 	/**
-	 * Scieszka do pola Nothing
-	 */
-	public static String Nothing;
-	/**
 	 * Scieszka do grafiki Key
 	 */
 	public static String Key;
@@ -164,7 +160,6 @@ public final class GetConstans {
 			NaziBall=doc.getElementsByTagName("NaziBall").item(0).getTextContent();
 			Skrzynka=doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
 			Beton=doc.getElementsByTagName("Beton").item(0).getTextContent();
-			Nothing=doc.getElementsByTagName("Nothing").item(0).getTextContent();
 			Door=doc.getElementsByTagName("Door").item(0).getTextContent();
 			Key=doc.getElementsByTagName("Key").item(0).getTextContent();
 
