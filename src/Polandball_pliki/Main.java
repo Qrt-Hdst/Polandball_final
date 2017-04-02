@@ -1,16 +1,13 @@
 package Polandball_pliki;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
-import static Polandball_pliki.GetConstans.*;
 
 /**
  * Created by Matball on 2017-03-27.
  */
-public class Main {
 
+public class Main {
 
     static private GetConstans getConstans_=new GetConstans();// jesli nie dam static to nie moge uzywac w funkcji static
 

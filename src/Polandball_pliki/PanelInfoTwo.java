@@ -17,5 +17,57 @@ public class PanelInfoTwo extends JPanel{
         this.setSize(panelinfotwowidth,panelinfotwoheight);
         this.setLocation(panelboardwidth,panelinfooneheight);
         this.setBackground(Color.BLUE);
+        this.setLayout(new GridLayout(9,1));
+
+        /**
+         * labele panela bocznego, zawierajace informacje o posiadanym ekwipunku
+         */
+
+        JLabel Amountofbomb = new JLabel("Ilość bomb:",JLabel.CENTER);
+        Amountofbomb.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Amountofbomb);
+
+        String iloscbombzwyklych =Integer.toString(Amountofordinarybombs);
+
+        JLabel Amountofordinarybomb = new JLabel(iloscbombzwyklych,JLabel.CENTER);
+        Amountofordinarybomb.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Amountofordinarybomb);
+
+        String iloscbombzdalnych =Integer.toString(Amountofremotebombs);
+
+        JLabel Amountofremotebomb = new JLabel(iloscbombzdalnych,JLabel.CENTER);
+        Amountofremotebomb.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Amountofremotebomb);
+
+        JLabel Husarswings = new JLabel("Skrzydła husarskie",JLabel.CENTER);
+        Husarswings.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Husarswings);
+
+        String iloscskrzydelhusarskich =Integer.toString(Amountofhusarswings);
+
+        JLabel Amountofhusarswings = new JLabel(iloscskrzydelhusarskich,JLabel.CENTER);
+        Amountofhusarswings.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Amountofhusarswings);
+
+        JLabel Laser = new JLabel("Laser",JLabel.CENTER);
+        Laser.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Laser);
+
+        String ilosclaserow =Integer.toString(Amountoflasers);
+
+        JLabel Amountoflasers = new JLabel(ilosclaserow,JLabel.CENTER);
+        Amountoflasers.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Amountoflasers);
+
+        JLabel Key = new JLabel("Key",JLabel.CENTER);
+        Key.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Key);
+
+        String ilosckluczy =Integer.toString(Amountofkeys);
+
+        JLabel Amountofkeys = new JLabel(ilosckluczy,JLabel.CENTER);
+        Amountofkeys.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Amountofkeys);
+
     }
 }

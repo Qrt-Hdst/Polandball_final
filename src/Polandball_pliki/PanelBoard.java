@@ -23,28 +23,6 @@ public class PanelBoard extends JPanel{
 
     private BufferedImage bufferedImage[][];
 
-    /**
-     * punkt X, od ktorego zaczniemy rysowanie obiektu
-     */
-
-    private int StartDrawingX;
-
-    /**
-     * punkt Y, od ktorego zaczniemy rysowanie obiektu
-     */
-    private int StartDrawingY;
-
-    /**
-     * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
-     */
-    private int SizeWidthIcon;
-
-    /**
-     * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
-     */
-
-    private int SizeHeightIcon;
-
     public PanelBoard(){PanelBoard();}
 
     private void PanelBoard() {
@@ -63,8 +41,8 @@ public class PanelBoard extends JPanel{
              */
             File PolandBallFile = new File(PolandBall);
             File SovietBallFile = new File(SovietBall);
-            File NaziBallFile = new File(NaziBall);
-            File TurkeyBallFile = new File(TurkeyBall);
+            //File NaziBallFile = new File(NaziBall);
+            //File TurkeyBallFile = new File(TurkeyBall);
             File BetonFile = new File(Beton);
             File SkrzynkaFile = new File(Skrzynka);
             File DoorFile = new File(Door);
@@ -121,10 +99,28 @@ public class PanelBoard extends JPanel{
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
 
-        StartDrawingX = 0;
-        StartDrawingY = 0;
-        SizeWidthIcon = panelboardwidth/Amountofcolumns;
-        SizeHeightIcon = panelboardheight/Amountoflines;
+        /**
+         * punkt X, od ktorego zaczniemy rysowanie obiektu
+         */
+
+        int StartDrawingX = 0;
+
+        /**
+         * punkt Y, od ktorego zaczniemy rysowanie obiektu
+         */
+        int StartDrawingY = 0;
+
+        /**
+         * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
+         */
+        int SizeWidthIcon = panelboardwidth/Amountofcolumns;
+
+        /**
+         * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
+         */
+
+        int SizeHeightIcon = panelboardheight/Amountoflines;
+
 
         for(int i=0;i<Amountoflines;i++){
             for(int j=0;j<Amountofcolumns;j++){

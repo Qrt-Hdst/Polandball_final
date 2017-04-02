@@ -2,20 +2,14 @@ package Polandball_pliki;
 
 
 import javax.swing.*;
-import java.awt.*;
 
 import static Polandball_pliki.GetConstans.*;
-
 
 /**
  * Created by Matball on 2017-03-27.
  */
 
-
 public class LevelFrame extends JFrame {
-
-
-
 
     public LevelFrame() {
         initLevelFrame();
@@ -25,7 +19,6 @@ public class LevelFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Boardwidth,Boardheight);
         this.setLayout(null);
-
 
         PanelBoard panelboard = new PanelBoard();//panel, który będzie naszą plansza do dodawania elementów poziomu
         add(panelboard);
@@ -41,8 +34,5 @@ public class LevelFrame extends JFrame {
 
 
     }
-
-
-
 
 }
