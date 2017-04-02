@@ -13,22 +13,24 @@
  <Skrzynka>src//GameGraphics//Skrzynka.png</Skrzynka>
  <Beton>src//GameGraphics//Beton.png</Beton>
  <Nothing>src//GameGraphics//Nothing.png</Nothing>
+ <Door>src//GameGraphics//Door.png</Door>
+ <Key>src//GameGraphics//Key.png</Key>
 
  <row>NG N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
  <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
- <row>S_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
+ <row>B_ B_ B_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
  <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
  <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>N_ N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
+ <row>NW N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
  <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
  <row>S_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
  <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
  <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
  <row>N_ N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
- <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
+ <row>NW N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ B_ S_</row>
  <row>S_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
+ <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ S_</row>
+ <row>NK S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ ND</row>
 
 
 </class>

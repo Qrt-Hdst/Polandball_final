@@ -53,6 +53,8 @@ public class PanelBoard extends JPanel{
             File BetonFile = new File(Beton);
             File NothingFile = new File(Nothing);
             File SkrzynkaFile = new File(Skrzynka);
+            File DoorFile = new File(Door);
+            File KeyFile = new File(Key);
 
 
             /** na razie kazda kolejna grafika przeslania poprzednia
@@ -65,21 +67,19 @@ public class PanelBoard extends JPanel{
             for(int i=0;i<Amountoflines;i++){
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
-
-                        bufferedImage[i][j]=ImageIO.read(NothingFile);
-
+                     //   bufferedImage[i][j]=ImageIO.read(NothingFile);
                     } else if (field.get(i).get(j).equals("B_")) {
                         bufferedImage[i][j]=ImageIO.read(BetonFile);
-
                     } else if (field.get(i).get(j).equals("S_")) {
-                        bufferedImage[i][j]=ImageIO.read(NaziBallFile);
-
+                        bufferedImage[i][j]=ImageIO.read(SkrzynkaFile);
                     } else if (field.get(i).get(j).equals("NG")) {
                         bufferedImage[i][j]=ImageIO.read(PolandBallFile);
-
                     } else if (field.get(i).get(j).equals("NW")) {
-                        bufferedImage[i][j]=ImageIO.read(TurkeyBallFile);
-
+                        bufferedImage[i][j]=ImageIO.read(SovietBallFile);
+                    } else if (field.get(i).get(j).equals("ND")) {
+                        bufferedImage[i][j]=ImageIO.read(DoorFile);
+                    } else if (field.get(i).get(j).equals("NK")) {
+                        bufferedImage[i][j]=ImageIO.read(KeyFile);
                     }
                 }
 
@@ -94,6 +94,9 @@ public class PanelBoard extends JPanel{
 
     public void paint(Graphics g){
         /**3 i 4 parametr odpowiada za skale */
+        g.setColor(Color.black);
+        g.fillRect(0,0,panelboardwidth,panelboardheight);
+
         int StartDrawingX = 0;//punkt X, od ktorego zaczniemy rysowanie obiektu
         int StartDrawingY = 0;//punkt Y, od ktorego zaczniemy rysowanie obiektu
         int SizeWidthIcon = panelboardwidth/Amountofcolumns;//szerokosc obiektu graficznego, zalezna od szerokosci panelu i ilosci kolumn

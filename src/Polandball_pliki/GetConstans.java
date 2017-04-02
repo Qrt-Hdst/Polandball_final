@@ -125,7 +125,14 @@ public final class GetConstans {
 	 * Scieszka do pola Nothing
 	 */
 	public static String Nothing;
-
+	/**
+	 * Scieszka do grafiki Key
+	 */
+	public static String Key;
+	/**
+	 * Scieszka do grafiki Door
+	 */
+	public static String Door;
 
 	/**
 	 * Wczytywanie pol z pliku konfiguracyjnego
@@ -158,6 +165,8 @@ public final class GetConstans {
 			Skrzynka=doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
 			Beton=doc.getElementsByTagName("Beton").item(0).getTextContent();
 			Nothing=doc.getElementsByTagName("Nothing").item(0).getTextContent();
+			Door=doc.getElementsByTagName("Door").item(0).getTextContent();
+			Key=doc.getElementsByTagName("Key").item(0).getTextContent();
 
 			//pomocnicze zmienne, potrzebne to ustalenia proporocji paneli - proporcje sa niezmienne, mozna zmieniac wymiary calej ramki
 			panelboardheight =(int)(0.8*Boardheight);
