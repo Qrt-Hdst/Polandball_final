@@ -22,6 +22,18 @@ public final class GetConstans {
 	public static final String Config = "src\\Polandball_pliki\\config.xml"; //poprawiłem ścieszke
 
 	/**
+	 * Wysokość okna głównego - menu
+	 */
+
+	public static int MainFrameheight;
+
+	/**
+	 * Szerokość okna głównego - menu
+	 */
+
+	public static int MainFramewidth;
+
+	/**
 	 * Wysokosc ramki
 	 **/
 
@@ -189,6 +201,8 @@ public final class GetConstans {
 			doc.getDocumentElement().normalize();
 			Boardheight = Integer.parseInt(doc.getElementsByTagName("Boardheight").item(0).getTextContent());
 			Boardwidth = Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
+			MainFrameheight=Integer.parseInt(doc.getElementsByTagName("MainFrameheight").item(0).getTextContent());
+			MainFramewidth=Integer.parseInt(doc.getElementsByTagName("MainFramewidth").item(0).getTextContent());
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();
