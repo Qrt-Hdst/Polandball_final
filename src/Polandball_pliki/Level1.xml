@@ -3,7 +3,8 @@
 <LEVEL1>
  <Amountofcolumns>15</Amountofcolumns>
  <Amountoflines>15</Amountoflines>
- <Monsterspeed>7</Monsterspeed>
+ <Monsterspeed>3</Monsterspeed>
+ <PlayeerSpeed>3</PlayeerSpeed>
  <Amountoflifes>10</Amountoflifes>
  <Amountofordinarybombs>8</Amountofordinarybombs>
  <Amountofremotebombs>5</Amountofremotebombs>
