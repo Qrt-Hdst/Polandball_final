@@ -143,35 +143,35 @@ public final class GetConstans {
 	/**
 	 * Sciezka do grafiki Polandball
 	 */
-	public static String PolandBall;
+	public static String PolandBallString;
 	/**
 	 * Sciezka do grafiki TurkeyBall
 	 */
-	public static String TurkeyBall;
+	public static String TurkeyBallString;
 	/**
 	 * Sciezka do grafiki NaziBall
 	 */
-	public static String NaziBall;
+	public static String NaziBallString;
 	/**
 	 * Sciezka do grafiki SovietBall
 	 */
-	public static String SovietBall;
+	public static String SovietBallString;
 	/**
 	 * Sciezka do pola Skrzynka
 	 */
-	public static String Skrzynka;
+	public static String SkrzynkaString;
 	/**
 	 * Sciezka do pola Beton
 	 */
-	public static String Beton;
+	public static String BetonString;
 	/**
 	 * Sciezka do grafiki Key
 	 */
-	public static String Key;
+	public static String KeyString;
 	/**
 	 * Sciezka do grafiki Door
 	 */
-	public static String Door;
+	public static String DoorString;
 
 	/**
 	 * Wczytywanie danych startowych z plikow
@@ -259,14 +259,14 @@ public final class GetConstans {
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
 
-			PolandBall = doc.getElementsByTagName("PolandBall").item(0).getTextContent();
-			TurkeyBall = doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
-			SovietBall = doc.getElementsByTagName("SovietBall").item(0).getTextContent();
-			NaziBall = doc.getElementsByTagName("NaziBall").item(0).getTextContent();
-			Skrzynka = doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
-			Beton = doc.getElementsByTagName("Beton").item(0).getTextContent();
-			Door = doc.getElementsByTagName("Door").item(0).getTextContent();
-			Key = doc.getElementsByTagName("Key").item(0).getTextContent();
+			PolandBallString = doc.getElementsByTagName("PolandBall").item(0).getTextContent();
+			TurkeyBallString = doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
+			SovietBallString = doc.getElementsByTagName("SovietBall").item(0).getTextContent();
+			NaziBallString = doc.getElementsByTagName("NaziBall").item(0).getTextContent();
+			SkrzynkaString = doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
+			BetonString = doc.getElementsByTagName("Beton").item(0).getTextContent();
+			DoorString = doc.getElementsByTagName("Door").item(0).getTextContent();
+			KeyString = doc.getElementsByTagName("Key").item(0).getTextContent();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

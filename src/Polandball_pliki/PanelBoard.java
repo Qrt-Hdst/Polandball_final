@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.GetConstans.SovietBallString;
 
 public class PanelBoard extends JPanel{
 
@@ -43,14 +44,14 @@ public class PanelBoard extends JPanel{
 
         try{
             //wczytywanie grafik na podstawie ścieżek z pliku konfiguracyjnego
-            File PolandBallFile = new File(PolandBall);
-            File SovietBallFile = new File(SovietBall);
+            File PolandBallFile = new File(PolandBallString);
+            File SovietBallFile = new File(SovietBallString);
             //File NaziBallFile = new File(NaziBall);
             //File TurkeyBallFile = new File(TurkeyBall);
-            File BetonFile = new File(Beton);
-            File SkrzynkaFile = new File(Skrzynka);
-            File DoorFile = new File(Door);
-            File KeyFile = new File(Key);
+            File BetonFile = new File(BetonString);
+            File SkrzynkaFile = new File(SkrzynkaString);
+            File DoorFile = new File(DoorString);
+            File KeyFile = new File(KeyString);
 
             //dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
             ArrayList<ArrayList<String>> field = new ArrayList<>();
