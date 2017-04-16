@@ -4,19 +4,30 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * Created by Matball on 2017-03-27.
+ * główna funkcja main
  */
 
-public class Main {
+public class Main  {
 
-    static private GetConstans getConstans_=new GetConstans();// jesli nie dam static to nie moge uzywac w funkcji static
 
+    /**
+     * prywatny obiekt klasy GetConstans, wykorzystanie sparsowanych plików
+     */
+    // jesli nie dam static to nie moge uzywac w funkcji static
+    static private GetConstans getConstans_=new GetConstans();
+
+    /**
+     * funkcja główna programu, stworzenie okna menu głównego
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[]args)throws IOException {
         getConstans_=new GetConstans();
 
         EventQueue.invokeLater(() -> {
-            LevelFrame levelFrame_= new LevelFrame();
-            levelFrame_.setVisible(true);
+            MainFrame mainframe = new MainFrame();
+            mainframe.setVisible(true);
+
         });
     }
 }

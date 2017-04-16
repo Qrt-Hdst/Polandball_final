@@ -23,22 +23,26 @@ public class PanelBoard extends JPanel{
 
     private BufferedImage bufferedImage[][];
 
+    /**
+     * konstruktor panelu głównego, zawierający funkcję PanelBoard
+     */
+
     public PanelBoard(){PanelBoard();}
+
+    /**
+     * funkcja zawirająca parametry planszy, wczytywanie grafik do bufora
+     */
 
     private void PanelBoard() {
 
-        /**
-         * parametry ogólne planszy
-         */
+        //ogólne parametry planszy
         this.setSize(panelboardwidth, panelboardheight);
         this.setLocation(0, panelinfooneheight);
         this.setBackground(Color.BLACK);
 
 
         try{
-            /**
-             * wczytywanie grafik na podstawie ściezek z pliku konfiguracyjnego
-             */
+            //wczytywanie grafik na podstawie ścieżek z pliku konfiguracyjnego
             File PolandBallFile = new File(PolandBall);
             File SovietBallFile = new File(SovietBall);
             //File NaziBallFile = new File(NaziBall);
@@ -47,9 +51,8 @@ public class PanelBoard extends JPanel{
             File SkrzynkaFile = new File(Skrzynka);
             File DoorFile = new File(Door);
             File KeyFile = new File(Key);
-            /**
-             * dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
-             */
+
+            //dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
             ArrayList<ArrayList<String>> field = new ArrayList<>();
             for (int i=0;i<Amountoflines;i++) {
                 field.add(new ArrayList<>());
@@ -59,9 +62,7 @@ public class PanelBoard extends JPanel{
                 }
             }
 
-            /**
-             * dodanie grafik do bufora - tablicy dwuwymiarowej, reprezentujcej układ planszy
-             */
+            //dodanie grafik do bufora - tablicy dwuwymiarowej, reprezentujcej układ planszy
 
             bufferedImage = new BufferedImage[Amountoflines][Amountofcolumns];
             for(int i=0;i<Amountoflines;i++){
@@ -92,35 +93,37 @@ public class PanelBoard extends JPanel{
     }
 
     /**
+     * punkt X, od ktorego zaczniemy rysowanie obiektu
+     */
+
+    public int StartDrawingX = 0;
+
+    /**
+     * punkt Y, od ktorego zaczniemy rysowanie obiektu
+     */
+
+    public int StartDrawingY = 0;
+
+    /**
+     * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
+     */
+
+    public int SizeWidthIcon = panelboardwidth/Amountofcolumns;
+
+    /**
+     * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
+     */
+
+    public int SizeHeightIcon = panelboardheight/Amountoflines;
+
+    /**
      * funkcja rysująca mape poziomu
      * @param g
      */
+
     public void paint(Graphics g){
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
-
-        /**
-         * punkt X, od ktorego zaczniemy rysowanie obiektu
-         */
-
-        int StartDrawingX = 0;
-
-        /**
-         * punkt Y, od ktorego zaczniemy rysowanie obiektu
-         */
-        int StartDrawingY = 0;
-
-        /**
-         * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
-         */
-        int SizeWidthIcon = panelboardwidth/Amountofcolumns;
-
-        /**
-         * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
-         */
-
-        int SizeHeightIcon = panelboardheight/Amountoflines;
-
 
         for(int i=0;i<Amountoflines;i++){
             for(int j=0;j<Amountofcolumns;j++){
