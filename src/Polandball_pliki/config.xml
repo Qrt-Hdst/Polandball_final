@@ -2,41 +2,4 @@
 <class>
  <Boardheight>700</Boardheight>
  <Boardwidth>1200</Boardwidth>
- <PolandBall>src//GameGraphics//PolandBall.png</PolandBall>
- <NaziBall>src//GameGraphics//NaziBall.png</NaziBall>
- <TurkeyBall>src//GameGraphics//TurkeyBall.png</TurkeyBall>
- <SovietBall>src//GameGraphics//SovietBall.png</SovietBall>
- <Skrzynka>src//GameGraphics//Skrzynka.png</Skrzynka>
- <Beton>src//GameGraphics//Beton.png</Beton>
- <Door>src//GameGraphics//Door.png</Door>
- <Key>src//GameGraphics//Key.png</Key>
-
-<LEVEL1>
- <Amountofcolumns>15</Amountofcolumns>
- <Amountoflines>15</Amountoflines>
- <Monsterspeed>7</Monsterspeed>
- <Amountoflifes>10</Amountoflifes>
- <Amountofordinarybombs>8</Amountofordinarybombs>
- <Amountofremotebombs>5</Amountofremotebombs>
- <Amountofhusarswings>0</Amountofhusarswings>
- <Amountoflasers>0</Amountoflasers>
- <Amountofkeys>0</Amountofkeys>
-
- <row>NG N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
- <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
- <row>B_ B_ B_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>NW N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
- <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
- <row>S_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>N_ N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
- <row>NW N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ B_ S_</row>
- <row>S_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
- <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ S_</row>
- <row>NK S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ ND</row>
-
-</LEVEL1>
 </class>
