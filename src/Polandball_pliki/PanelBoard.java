@@ -8,15 +8,40 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import Polandball_pliki.GameObjects.*;
 
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.GetConstans.SovietBallString;
 
-public class PanelBoard extends JPanel{
+
+public class PanelBoard extends JPanel implements ActionListener,KeyListener{
+    /**
+     * Liczba przeciwnikow na planszy
+     */
+    private int number_of_enemy=0;
+
+    /**
+     * Tablica obiektow przeciwnikow
+     */
+    private ArrayList<Enemy> enemy=new ArrayList<>();
+
+    /**
+     * Nasz Gracz
+     */
+    private Polandball player;
+
+    /**
+     * tablica znakow, na ktorej jest zapisana plansza
+     */
+
+    private ArrayList<ArrayList<String>> field = new ArrayList<>();
 
     /**
      * bufor, do którego ładowana jest grafika poziomu
@@ -31,11 +56,20 @@ public class PanelBoard extends JPanel{
     public PanelBoard(){PanelBoard();}
 
     /**
+     * zmienna odliczajaca czas, wymagana przy interfejsie ActionListener i KeyListener
+     */
+    Timer tm=new Timer(5,this);
+    /**
      * funkcja zawirająca parametry planszy, wczytywanie grafik do bufora
      */
 
+
     private void PanelBoard() {
 
+        tm.start();
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
         //ogólne parametry planszy
         this.setSize(panelboardwidth, panelboardheight);
         this.setLocation(0, panelinfooneheight);
@@ -54,7 +88,7 @@ public class PanelBoard extends JPanel{
             File KeyFile = new File(KeyString);
 
             //dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
-            ArrayList<ArrayList<String>> field = new ArrayList<>();
+
             for (int i=0;i<Amountoflines;i++) {
                 field.add(new ArrayList<>());
                 String bufor_string[]=row[i].split(" ");
@@ -74,16 +108,18 @@ public class PanelBoard extends JPanel{
                     } else if (field.get(i).get(j).equals("S_")) {
                         bufferedImage[i][j]=ImageIO.read(SkrzynkaFile);
                     } else if (field.get(i).get(j).equals("NG")) {
-                        bufferedImage[i][j]=ImageIO.read(PolandBallFile);
+                        player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
+                        //bufferedImage[i][j]=ImageIO.read(PolandBallFile);
                     } else if (field.get(i).get(j).equals("NW")) {
-                        bufferedImage[i][j]=ImageIO.read(SovietBallFile);
+                        enemy.add(new Sovietball(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        number_of_enemy++;
+                       // bufferedImage[i][j]=ImageIO.read(SovietBallFile);
                     } else if (field.get(i).get(j).equals("ND")) {
                         bufferedImage[i][j]=ImageIO.read(DoorFile);
                     } else if (field.get(i).get(j).equals("NK")) {
                         bufferedImage[i][j]=ImageIO.read(KeyFile);
                     }
                 }
-
             }
 
         } catch(IOException e ){
@@ -91,6 +127,56 @@ public class PanelBoard extends JPanel{
             System.out.println("Blad wczytywania planszy");
         }
 
+    }
+
+    /**
+     * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do
+     * @param e parametr przchowujacy informacje na temat zmian w programie
+     */
+    public void actionPerformed(ActionEvent e){
+        player.changeX(player.getX()+player.get_velX());
+        player.changeY(player.getY()+player.get_velY());
+        repaint();//jesli sie zakomentuje tą linie to polandball nie bedzie sie poruszal, ale za to bedzie widziec elementy terenu
+    }
+
+    /**
+     * metoda reagujaca na nacisniecie klawisza
+     * @param e wydarzenie przechowujace informacje na temat wcisnietego klawisza
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int c = e.getKeyCode();
+
+        if (c == KeyEvent.VK_LEFT) {
+            player.change_velX(SpeedPlayer * (-1));
+            player.change_velY(0);
+        } else if (c == KeyEvent.VK_RIGHT) {
+            player.change_velX(SpeedPlayer * (1));
+            player.change_velY(0);
+        } else if (c == KeyEvent.VK_DOWN){
+            player.change_velY(SpeedPlayer * (1));
+            player.change_velX(0);
+        }else if (c == KeyEvent.VK_UP){
+            player.change_velY(SpeedPlayer * (-1));
+            player.change_velX(0);
+        }
+    }
+
+    /**
+     * funkcja wymuszona przez intefejs, nieuzywana
+     * @param e
+     */
+    @Override
+    public void keyTyped(KeyEvent e){}
+
+    /**
+     * Metoda opisujaca co sie dzieje gdy nie jest wciskany zaden klawisz
+     * @param e zmienna przechowujaca informacje o dzialaniach w danej chwili na klawiszach
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+        player.change_velY(0);
+        player.change_velX(0);
     }
 
     /**
@@ -117,15 +203,29 @@ public class PanelBoard extends JPanel{
 
     public int SizeHeightIcon = panelboardheight/Amountoflines;
 
+    /*@Override
+    public void update(Graphics g){
+        paint(g);
+    }*/
+
     /**
      * funkcja rysująca mape poziomu
-     * @param g
+     * @param g grafika na której "malujemy" elementy
      */
 
     public void paint(Graphics g){
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
+        drawBackground(g);
+        drawPlayerAndEnemy(g);
+        //repaint();
+    }
 
+    /**
+     * funkcja rysujaca na grafice elementy terenu
+     * @param g grafika na ktora jest namalowane elementy graficzne
+     */
+    public void drawBackground(Graphics g){
         for(int i=0;i<Amountoflines;i++){
             for(int j=0;j<Amountofcolumns;j++){
                 g.drawImage(bufferedImage[i][j],StartDrawingX, StartDrawingY, SizeWidthIcon, SizeHeightIcon, null);
@@ -137,5 +237,14 @@ public class PanelBoard extends JPanel{
 
     }
 
-
+    /**
+     * funkcja rysujaca gracza jak i jego wrogow
+     * @param g grafika na która jest namalowywana grafika
+     */
+    public void drawPlayerAndEnemy(Graphics g){
+        g.drawImage(player.getBuffImage(),player.getX(),player.getY(),SizeWidthIcon,SizeHeightIcon,null);
+        for(int i=0;i<number_of_enemy;i++){
+            g.drawImage(enemy.get(i).getBuffImage(),enemy.get(i).getX(),enemy.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
+    }
 }

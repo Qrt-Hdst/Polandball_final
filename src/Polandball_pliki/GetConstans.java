@@ -33,6 +33,12 @@ public final class GetConstans {
 
 	public static int MainFramewidth;
 
+
+	/**
+	 * Szybkosc gracza
+	 */
+	public static int SpeedPlayer;
+
 	/**
 	 * Wysokosc ramki
 	 **/
@@ -203,6 +209,7 @@ public final class GetConstans {
 			Boardwidth = Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
 			MainFrameheight=Integer.parseInt(doc.getElementsByTagName("MainFrameheight").item(0).getTextContent());
 			MainFramewidth=Integer.parseInt(doc.getElementsByTagName("MainFramewidth").item(0).getTextContent());
+			SpeedPlayer = Integer.parseInt(doc.getElementsByTagName("SpeedPlayer").item(0).getTextContent());
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();
@@ -228,6 +235,7 @@ public final class GetConstans {
 			doc.getDocumentElement().normalize();
 
 			Monsterspeed = Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
+
 			Amountoflifes = Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			Amountofcolumns = Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines = Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());

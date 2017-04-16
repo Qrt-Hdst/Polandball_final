@@ -1,22 +1,38 @@
 package Polandball_pliki.GameObjects;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.KeyString;
-import static Polandball_pliki.GetConstans.PolandBallString;
+import static Polandball_pliki.GetConstans.*;
 
 /**
  * Created by Matball on 2017-04-16.
  */
+
+/**
+ * Klasa gracza
+ */
 public class Polandball extends GameObject {
     public Polandball(int x,int y){
+        super();
         x_=x;
         y_=y;
+        velX_=0;
+        velY_=0;
+        buffImage_=createBufferedImage();
+    }
+
+    /**
+     * metoda tworzca bufferedImage
+     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
+     */
+    BufferedImage createBufferedImage(){
         try {
             File file = new File(PolandBallString);
-            buffImage_ = ImageIO.read(file);
+            BufferedImage bufferedImage= ImageIO.read(file);
+            return bufferedImage;
         }
         catch(IOException e ){
             e.printStackTrace();
@@ -24,5 +40,7 @@ public class Polandball extends GameObject {
         }catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
+
 }
