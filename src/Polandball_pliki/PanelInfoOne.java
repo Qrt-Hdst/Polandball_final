@@ -10,18 +10,27 @@ import static Polandball_pliki.GetConstans.*;
 
 public class PanelInfoOne extends JPanel{
 
+    /**
+     * konstruktor panelu pierwszego, zawierający funkcję PanelInfoOne
+     */
+
     public PanelInfoOne(){ PanelInfoOne();}
+
+    /**
+     *  funkcja zawierająca parametry panelu, komponenty z informacjami o statystykach gracza
+     */
 
     private void PanelInfoOne(){
 
         this.setSize(Boardwidth,panelinfooneheight);
         this.setLocation(0,0);
         this.setBackground(Color.GRAY);
-        this.setLayout(new GridLayout(2,5));
+        this.setLayout(new GridLayout(2,5));//ustawienie siatki, aby pustawiac labele
 
-        /**
-         * labele panela górnego, zawierające informaje o rozgrywce
-         */
+        /****************************************************/
+         //labele panela górnego, zawierające informaje o rozgrywce
+        /****************************************************/
+
         JLabel LifeLabel1 = new JLabel("Ilość żyć:",JLabel.CENTER);
         LifeLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
         add(LifeLabel1);
@@ -42,7 +51,8 @@ public class PanelInfoOne extends JPanel{
         NameLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
         add(NameLabel1);
 
-        String ilosczyc =Integer.toString(Amountoflifes);//ilosc zyc zawarta w pliku konfiguracyjnym
+        //ilosc zyc zawarta w pliku konfiguracyjnym
+        String ilosczyc =Integer.toString(Amountoflifes);
 
         JLabel LifeLabel2 = new JLabel(ilosczyc,JLabel.CENTER);
         LifeLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
@@ -60,7 +70,12 @@ public class PanelInfoOne extends JPanel{
         LevelLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(LevelLabel2);
 
-        JLabel NameLabel2 = new JLabel("polandball",JLabel.CENTER);
+        //stworzenie obiektu klasy klasy SetNameFrame w celu wczytania nazwy podanej w textfieldzi tej klasy
+        String name;
+        SetNameFrame nick = new SetNameFrame();
+        name=nick.GetName();
+
+        JLabel NameLabel2 = new JLabel(name,JLabel.CENTER);
         NameLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(NameLabel2);
 
