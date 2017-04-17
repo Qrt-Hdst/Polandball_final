@@ -178,6 +178,11 @@ public final class GetConstans {
 	 * Sciezka do grafiki Door
 	 */
 	public static String DoorString;
+	/**
+	 * Sciezka do grafiki tła menu wejsciowego
+	 */
+	public static String BackgroundString;
+
 
 	/**
 	 * Wczytywanie danych startowych z plikow
@@ -275,6 +280,7 @@ public final class GetConstans {
 			BetonString = doc.getElementsByTagName("Beton").item(0).getTextContent();
 			DoorString = doc.getElementsByTagName("Door").item(0).getTextContent();
 			KeyString = doc.getElementsByTagName("Key").item(0).getTextContent();
+			BackgroundString = doc.getElementsByTagName("Background").item(0).getTextContent();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

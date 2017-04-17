@@ -1,23 +1,19 @@
 package Polandball_pliki.GameObjects;
 
 /**
- * Created by Matball on 2017-04-16.
+ * Created by Matball on 2017-04-17.
  */
-public class Enemy extends LivingObject {
-    public Enemy(int x,int y){
+public class Item extends StationaryObject {
+    public Item(int x,int y){
         super();
         x_=x;
         y_=y;
-        velX_=0;
-        velY_=0;
         buffImage_=null;
     }
-    public Enemy(){
+    public Item(){
         super();
         x_=0;
         y_=0;
-        velX_=0;
-        velY_=0;
         buffImage_=null;
     }
 }
