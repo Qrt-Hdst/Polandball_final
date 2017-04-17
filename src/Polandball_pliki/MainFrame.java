@@ -5,6 +5,9 @@ import static Polandball_pliki.GetConstans.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -45,10 +48,10 @@ public class MainFrame extends JFrame implements ActionListener {
     private void initMainFrame() {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBackground(Color.WHITE);//---------->dodac grafie<----------
+        //this.setBackground(Color.WHITE);//---------->dodac grafie<----------
         this.setSize(MainFramewidth,MainFrameheight);
         this.setLayout(null);
-
+        setContentPane(new JLabel(new ImageIcon(BackgroundString)));
         /*
         JLabel Information = new JLabel("Informacje",JLabel.CENTER);
         Information.setBounds(0,0,30,10);

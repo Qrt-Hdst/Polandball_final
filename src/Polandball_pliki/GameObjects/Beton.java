@@ -5,27 +5,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.GetConstans.BetonString;
+import static Polandball_pliki.GetConstans.PolandBallString;
 
 /**
- * Created by Matball on 2017-04-16.
+ * Created by Matball on 2017-04-17.
  */
-
-/**
- * Klasa gracza
- */
-public class Polandball extends LivingObject {
+public class Beton extends StationaryObject {
     /**
      * konstruktor obiektu gracza
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
-    public Polandball(int x,int y){
+    public Beton(int x,int y){
         super();
         x_=x;
         y_=y;
-        velX_=0;
-        velY_=0;
         buffImage_=createBufferedImage();
     }
 
@@ -35,7 +30,7 @@ public class Polandball extends LivingObject {
      */
     BufferedImage createBufferedImage(){
         try {
-            File file = new File(PolandBallString);
+            File file = new File(BetonString);
             BufferedImage bufferedImage= ImageIO.read(file);
             return bufferedImage;
         }
@@ -47,5 +42,4 @@ public class Polandball extends LivingObject {
         }
         return null;
     }
-
 }

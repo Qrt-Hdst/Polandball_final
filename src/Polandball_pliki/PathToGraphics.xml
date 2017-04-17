@@ -8,4 +8,5 @@
  <Beton>src//GameGraphics//Beton.png</Beton>
  <Door>src//GameGraphics//Door.png</Door>
  <Key>src//GameGraphics//Key.png</Key>
+ <Background>src//GameGraphics//Commonwealth-Tangle.png</Background>
 </class>

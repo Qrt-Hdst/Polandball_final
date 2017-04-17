@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import Polandball_pliki.GameObjects.*;
+import com.sun.glass.ui.Size;
 
 import static Polandball_pliki.GetConstans.*;
 
@@ -36,18 +37,28 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * Nasz Gracz
      */
     private Polandball player;
+    /**
+     *  Lista obiektow stacjonarnych
+     */
+    private ArrayList<StationaryObject> stationaryObjects=new ArrayList<>();
+    /**
+     *Liczba obiektow stacjonarnych
+     */
+    private int number_of_stationary_object=0;
+
+    /**
+     *  Lista itemow (elementow do zebrania/uruchomienia interakcji przez gracza)
+     */
+    private ArrayList<Item> items=new ArrayList<>();
+    /**
+     *Liczba itemow na planszy
+     */
+    private int number_of_item=0;
 
     /**
      * tablica znakow, na ktorej jest zapisana plansza
      */
-
     private ArrayList<ArrayList<String>> field = new ArrayList<>();
-
-    /**
-     * bufor, do którego ładowana jest grafika poziomu
-     */
-
-    private BufferedImage bufferedImage[][];
 
     /**
      * konstruktor panelu głównego, zawierający funkcję PanelBoard
@@ -76,16 +87,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         this.setBackground(Color.BLACK);
 
 
-        try{
-            //wczytywanie grafik na podstawie ścieżek z pliku konfiguracyjnego
-            File PolandBallFile = new File(PolandBallString);
-            File SovietBallFile = new File(SovietBallString);
-            //File NaziBallFile = new File(NaziBall);
-            //File TurkeyBallFile = new File(TurkeyBall);
-            File BetonFile = new File(BetonString);
-            File SkrzynkaFile = new File(SkrzynkaString);
-            File DoorFile = new File(DoorString);
-            File KeyFile = new File(KeyString);
 
             //dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
 
@@ -97,35 +98,35 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 }
             }
 
-            //dodanie grafik do bufora - tablicy dwuwymiarowej, reprezentujcej układ planszy
 
-            bufferedImage = new BufferedImage[Amountoflines][Amountofcolumns];
             for(int i=0;i<Amountoflines;i++){
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
                     } else if (field.get(i).get(j).equals("B_")) {
-                        bufferedImage[i][j]=ImageIO.read(BetonFile);
+                        stationaryObjects.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("S_")) {
-                        bufferedImage[i][j]=ImageIO.read(SkrzynkaFile);
+                        stationaryObjects.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NG")) {
                         player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
-                        //bufferedImage[i][j]=ImageIO.read(PolandBallFile);
                     } else if (field.get(i).get(j).equals("NW")) {
                         enemy.add(new Sovietball(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         number_of_enemy++;
-                       // bufferedImage[i][j]=ImageIO.read(SovietBallFile);
                     } else if (field.get(i).get(j).equals("ND")) {
-                        bufferedImage[i][j]=ImageIO.read(DoorFile);
+                        items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        number_of_item++;
+                        stationaryObjects.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                        number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NK")) {
-                        bufferedImage[i][j]=ImageIO.read(KeyFile);
+                        items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        number_of_item++;
+                        stationaryObjects.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                        number_of_stationary_object++;
                     }
                 }
             }
 
-        } catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania planszy");
-        }
 
     }
 
@@ -216,27 +217,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void paint(Graphics g){
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
-        drawBackground(g);
+        drawItem(g);
         drawPlayerAndEnemy(g);
+        drawStationaryObject(g);
+        //drawBackground(g);
+
         //repaint();
     }
-
-    /**
-     * funkcja rysujaca na grafice elementy terenu
-     * @param g grafika na ktora jest namalowane elementy graficzne
-     */
-    public void drawBackground(Graphics g){
-        for(int i=0;i<Amountoflines;i++){
-            for(int j=0;j<Amountofcolumns;j++){
-                g.drawImage(bufferedImage[i][j],StartDrawingX, StartDrawingY, SizeWidthIcon, SizeHeightIcon, null);
-                StartDrawingX=StartDrawingX+SizeWidthIcon;
-            }
-            StartDrawingX=0;
-            StartDrawingY=StartDrawingY+SizeHeightIcon;
+    public void drawItem(Graphics g){
+        for(int i=0;i<number_of_item;i++){
+            g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
-
     }
-
     /**
      * funkcja rysujaca gracza jak i jego wrogow
      * @param g grafika na która jest namalowywana grafika
@@ -247,4 +239,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             g.drawImage(enemy.get(i).getBuffImage(),enemy.get(i).getX(),enemy.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
+    public void drawStationaryObject(Graphics g){
+        for(int i=0;i<number_of_stationary_object;i++) {
+            g.drawImage(stationaryObjects.get(i).getBuffImage(),stationaryObjects.get(i).getX(),stationaryObjects.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
+    }
+
+
 }
