@@ -10,9 +10,13 @@ import static Polandball_pliki.GetConstans.DoorString;
 /**
  * Created by Matball on 2017-04-17.
  */
+
+/**
+ * Klasa obiektu typu drzwi - elementu umozliwajacego przejsc na kolejny etap
+ */
 public class Door extends Item {
     /**
-     * konstruktor obiektu gracza
+     * konstruktor obiektu drzwi
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -24,7 +28,7 @@ public class Door extends Item {
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){

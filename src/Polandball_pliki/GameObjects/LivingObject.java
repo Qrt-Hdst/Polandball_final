@@ -3,11 +3,15 @@ package Polandball_pliki.GameObjects;
 /**
  * Created by Matball on 2017-04-17.
  */
+
+/**
+ * Klasa przodek dla wszystkich poruszającyhc/żyjących obiektow
+ */
 public class LivingObject extends GameObject {
     int velX_;
     int velY_;
     /**
-     * konstruktor obiektu
+     * konstruktor obiektu będącego poruszającym się/żyjącym obiektem
      * @param x obecne polozenie obiektu na osi x
      * @param y obecne polozenie obiektu na osi y
      */

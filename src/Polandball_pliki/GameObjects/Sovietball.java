@@ -17,17 +17,22 @@ import static Polandball_pliki.GetConstans.SovietBallString;
  * Klasa przeciwnika typu SovietBall
  */
 public class Sovietball extends Enemy {
+    /**
+     * konstruktor obiektu Sovietball
+     * @param x obecne polozenie obiektu na osi x
+     * @param y obecne polozenie obiektu na osi y
+     */
     public Sovietball(int x,int y){
         super();
         x_=x;
         y_=y;
         velX_=Monsterspeed;
-        velY_=Monsterspeed;
+        velY_=0;//Monsterspeed;
         buffImage_=createBufferedImage();
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){

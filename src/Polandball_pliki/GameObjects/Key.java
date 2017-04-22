@@ -13,7 +13,7 @@ import static Polandball_pliki.GetConstans.KeyString;
 public class Key extends Item {
 
     /**
-     * konstruktor obiektu gracza
+     * konstruktor obiektu klucz
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -25,7 +25,7 @@ public class Key extends Item {
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){

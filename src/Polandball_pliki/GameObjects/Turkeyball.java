@@ -16,6 +16,11 @@ import static Polandball_pliki.GetConstans.TurkeyBallString;
  * Klasa przeciwnika typu TurkeyBall
  */
 public class Turkeyball extends Enemy {
+    /**
+     * konstruktor obiektu turkeyballa
+     * @param x obecne polozenie obiektu na osi x
+     * @param y obecne polozenie obiektu na osi y
+     */
     public Turkeyball(int x,int y){
         super();
         x_=x;

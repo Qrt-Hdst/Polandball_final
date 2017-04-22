@@ -12,7 +12,7 @@ import static Polandball_pliki.GetConstans.*;
  */
 
 /**
- * Klasa gracza
+ * Klasa gracza typu Polandball
  */
 public class Polandball extends LivingObject {
     /**
@@ -30,7 +30,7 @@ public class Polandball extends LivingObject {
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){

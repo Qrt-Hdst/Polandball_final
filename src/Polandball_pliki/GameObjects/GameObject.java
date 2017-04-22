@@ -7,12 +7,21 @@ import java.awt.image.BufferedImage;
  */
 
 /**
- * Klasa-rodzic ruchomych obiektow
+ * Klasa-rodzic wszystkich obiektow na planszy
  */
 public class GameObject  {
+    /**
+     * pozycja górnej krawedzi obiektu na x
+     */
     int x_;
+    /**
+     * pozycja dolnej krawedzi obiektu na y
+     */
     int y_;
 
+    /**
+     * grafika w ktorej przechowujemy obiekt
+     */
     BufferedImage buffImage_;
 
     /**

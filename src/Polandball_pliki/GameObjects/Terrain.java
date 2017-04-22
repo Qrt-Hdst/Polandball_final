@@ -1,21 +1,20 @@
 package Polandball_pliki.GameObjects;
 
-import java.awt.image.BufferedImage;
-
 /**
- * Created by Matball on 2017-04-17.
+ * Created by Matball on 2017-04-22.
  */
 
 /**
- * Klasa przodek dla wszystkich obiektów nieruchomych/nieożywionych
+ * Klasa przodek dla obiektow teronowych ( skrzynki, betony itd )
  */
-public class StationaryObject extends GameObject {
+public class Terrain extends StationaryObject {
+
     /**
-     * konstruktor obiektu nieruchomego/nieozywionego
+     * konstruktor obiektu terenu
      * @param x obecne polozenie obiektu na osi x
      * @param y obecne polozenie obiektu na osi y
      */
-    public StationaryObject(int x,int y){
+    public Terrain(int x,int y){
         super();
         x_=x;
         y_=y;
@@ -25,10 +24,12 @@ public class StationaryObject extends GameObject {
     /**
      * konstruktor bezparametrowy
      */
-    public StationaryObject(){
+    public Terrain(){
         super();
         x_=0;
         y_=0;
         buffImage_=null;
     }
+
+
 }

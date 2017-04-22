@@ -11,9 +11,13 @@ import static Polandball_pliki.GetConstans.PolandBallString;
 /**
  * Created by Matball on 2017-04-17.
  */
-public class Beton extends StationaryObject {
+
+/**
+ * klasa przeciwnika typu Beton - niezniszczalnej ściany
+ */
+public class Beton extends Terrain {
     /**
-     * konstruktor obiektu gracza
+     * konstruktor obiektu beton
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -25,7 +29,7 @@ public class Beton extends StationaryObject {
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){

@@ -17,7 +17,7 @@ import static Polandball_pliki.GetConstans.NaziBallString;
  */
 public class Naziball extends Enemy {
     /**
-     * konstruktor obiektu
+     * konstruktor obiektu naziballa
      * @param x obecne polozenie obiektu na osi x
      * @param y obecne polozenie obiektu na osi y
      */
@@ -31,7 +31,7 @@ public class Naziball extends Enemy {
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){
