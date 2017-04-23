@@ -1,9 +1,20 @@
 package Polandball_pliki.GameObjects;
 
+
+
 /**
  * Created by Matball on 2017-04-16.
  */
+
+/**
+ * klasa przodek dla przeciwnikow
+ */
 public class Enemy extends LivingObject {
+    /**
+     * konstruktor obiektu wrog
+     * @param x polozenie na osi x
+     * @param y polozenie na osi y
+     */
     public Enemy(int x,int y){
         super();
         x_=x;
@@ -12,6 +23,10 @@ public class Enemy extends LivingObject {
         velY_=0;
         buffImage_=null;
     }
+
+    /**
+     * konstruktor bezparametrowy
+     */
     public Enemy(){
         super();
         x_=0;

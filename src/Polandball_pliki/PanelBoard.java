@@ -40,7 +40,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     /**
      *  Lista obiektow stacjonarnych
      */
-    private ArrayList<StationaryObject> stationaryObjects=new ArrayList<>();
+    private ArrayList<Terrain> terrains=new ArrayList<>();
     /**
      *Liczba obiektow stacjonarnych
      */
@@ -71,9 +71,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     Timer tm=new Timer(5,this);
     /**
-     * funkcja zawirająca parametry planszy, wczytywanie grafik do bufora
+     * konstruktor zawirający parametry planszy, okreslenie liczby i polozenie GameObject jakie sie znajdą w grze
      */
-
 
     private void PanelBoard() {
 
@@ -103,10 +102,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
                     } else if (field.get(i).get(j).equals("B_")) {
-                        stationaryObjects.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        terrains.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("S_")) {
-                        stationaryObjects.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NG")) {
                         player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
@@ -116,12 +115,12 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else if (field.get(i).get(j).equals("ND")) {
                         items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         number_of_item++;
-                        stationaryObjects.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                        terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                         number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         number_of_item++;
-                        stationaryObjects.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                        terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                         number_of_stationary_object++;
                     }
                 }
@@ -134,10 +133,30 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do
      * @param e parametr przchowujacy informacje na temat zmian w programie
      */
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
+        movePlayer();
+        moveEnemies();//jesli nie chcesz aby potwory sie na starcie ruszaly - zakomentuj
+        repaint();
+    }
+
+    /**
+     * metoda do wywołania zmiany polozenia naszego polandballa
+     */
+
+    void movePlayer(){
         player.changeX(player.getX()+player.get_velX());
         player.changeY(player.getY()+player.get_velY());
-        repaint();//jesli sie zakomentuje tą linie to polandball nie bedzie sie poruszal, ale za to bedzie widziec elementy terenu
+    }
+
+    /**
+     * metoda obslugujaca zmiane polozenie wrogów
+     */
+
+    void moveEnemies(){
+        for(int i=0;i<number_of_enemy;i++){
+            enemy.get(i).changeX(enemy.get(i).getX()+enemy.get(i).get_velX());
+            enemy.get(i).changeY( enemy.get(i).getY()+enemy.get(i).get_velY());
+        }
     }
 
     /**
@@ -204,10 +223,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public int SizeHeightIcon = panelboardheight/Amountoflines;
 
-    /*@Override
-    public void update(Graphics g){
-        paint(g);
-    }*/
 
     /**
      * funkcja rysująca mape poziomu
@@ -218,12 +233,17 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
         drawItem(g);
-        drawPlayerAndEnemy(g);
-        drawStationaryObject(g);
+        drawLivingObject(g);
+        drawTerrain(g);
         //drawBackground(g);
 
         //repaint();
     }
+
+    /**
+     * funkcja rysujaca itemy na grafice
+     * @param g grafika na ktorej jest namalowywana obiekty
+     */
     public void drawItem(Graphics g){
         for(int i=0;i<number_of_item;i++){
             g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
@@ -231,17 +251,23 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     }
     /**
      * funkcja rysujaca gracza jak i jego wrogow
-     * @param g grafika na która jest namalowywana grafika
+     * @param g grafika na która jest namalowywana obiekty
      */
-    public void drawPlayerAndEnemy(Graphics g){
+    public void drawLivingObject(Graphics g){
         g.drawImage(player.getBuffImage(),player.getX(),player.getY(),SizeWidthIcon,SizeHeightIcon,null);
         for(int i=0;i<number_of_enemy;i++){
             g.drawImage(enemy.get(i).getBuffImage(),enemy.get(i).getX(),enemy.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
-    public void drawStationaryObject(Graphics g){
+
+    /**
+     * funkcja rysujaca obiekty terenowe
+     * @param g grafika na której są namalowywane obiekty
+     */
+
+    public void drawTerrain(Graphics g){
         for(int i=0;i<number_of_stationary_object;i++) {
-            g.drawImage(stationaryObjects.get(i).getBuffImage(),stationaryObjects.get(i).getX(),stationaryObjects.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+            g.drawImage(terrains.get(i).getBuffImage(),terrains.get(i).getX(),terrains.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
 

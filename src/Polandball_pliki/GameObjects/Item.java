@@ -3,13 +3,26 @@ package Polandball_pliki.GameObjects;
 /**
  * Created by Matball on 2017-04-17.
  */
+
+/**
+ * klasa rodzic dla wszystkich przedmiotow do zebrania/interakcji
+ */
 public class Item extends StationaryObject {
+    /**
+     * konstruktor obiektu przedmiot
+     * @param x polozenie na osi x
+     * @param y polozenie na osi y
+     */
     public Item(int x,int y){
         super();
         x_=x;
         y_=y;
         buffImage_=null;
     }
+
+    /**
+     * konstruktor bezparametrowy
+     */
     public Item(){
         super();
         x_=0;

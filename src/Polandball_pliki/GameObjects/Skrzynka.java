@@ -10,9 +10,13 @@ import static Polandball_pliki.GetConstans.SkrzynkaString;
 /**
  * Created by Matball on 2017-04-17.
  */
-public class Skrzynka extends StationaryObject {
+
+/**
+ * klasa skrzynka - obiekt który bedzie można zniszczyć za pomocą np. bomb
+ */
+public class Skrzynka extends Terrain {
     /**
-     * konstruktor obiektu gracza
+     * konstruktor obiektu skrzynka
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -24,7 +28,7 @@ public class Skrzynka extends StationaryObject {
     }
 
     /**
-     * metoda tworzca bufferedImage
+     * metoda udostepniająca obiektowi grafike
      * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
      */
     BufferedImage createBufferedImage(){
