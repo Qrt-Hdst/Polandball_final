@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import Polandball_pliki.GameObjects.*;
 import com.sun.glass.ui.Size;
+import com.sun.javafx.scene.control.behavior.KeyBinding;
 
 import static Polandball_pliki.GetConstans.*;
 
@@ -38,7 +39,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     private Polandball player;
     /**
-     *  Lista obiektow stacjonarnych
+     *  Lista obiektow bedacych elementami terenu
      */
     private ArrayList<Terrain> terrains=new ArrayList<>();
     /**
@@ -59,6 +60,12 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * tablica znakow, na ktorej jest zapisana plansza
      */
     private ArrayList<ArrayList<String>> field = new ArrayList<>();
+
+    /**
+     * tablica, do ktorej beda rozdzielane ciagi znakow z pliku konfiguracyjnego
+     */
+
+    public String bufor_string[];
 
     /**
      * konstruktor panelu głównego, zawierający funkcję PanelBoard
@@ -91,11 +98,13 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
             for (int i=0;i<Amountoflines;i++) {
                 field.add(new ArrayList<>());
-                String bufor_string[]=row[i].split(" ");
+                bufor_string=row[i].split(" ");
                 for(int j=0;j<Amountofcolumns;j++) {
                     field.get(i).add(bufor_string[j]);
                 }
             }
+
+
 
 
             for(int i=0;i<Amountoflines;i++){
@@ -129,6 +138,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     }
 
+
+
     /**
      * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do
      * @param e parametr przchowujacy informacje na temat zmian w programie
@@ -140,14 +151,68 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     }
 
     /**
-     * metoda do wywołania zmiany polozenia naszego polandballa
+     * metoda do wywołania zmiany polozenia polandballa
      */
 
-    void movePlayer(){
-        player.changeX(player.getX()+player.get_velX());
-        player.changeY(player.getY()+player.get_velY());
-    }
+    void movePlayer() {
+        int row_player = player.getY() / SizeHeightIcon;
+        int column_player = player.getX() / SizeWidthIcon;
+        ///------------
+        if (player.get_velX() > 0 ) {
+            if(column_player-1<Amountoflines) {
+                if (!(StatioonaryObjectTab[row_player][column_player + 1] == 1)) {
+                    if (player.getX() < SizeWidthIcon * (column_player + 1)) {
+                        player.changeX(player.getX() + player.get_velX());
+                    }
+                }
+           }
+        } else if (player.get_velX() < 0){
+            if (!(player.getX() + player.get_velX() < 0)) {
+                if((column_player>0)){
+                    if (!(StatioonaryObjectTab[row_player][column_player -1] == 1)) {
+                        if (player.getX() > SizeWidthIcon * (column_player )) {
+                           player.changeX(player.getX() + player.get_velX());
+                        }
+                    }
+                }else if(column_player==0){
+                    if (player.getX() > SizeWidthIcon * (column_player )) {
+                        player.changeX(player.getX() + player.get_velX());
+                    }
+                }
+            }
 
+        } else if (player.get_velY() > 0) {
+            if (!(player.getY() + player.get_velY() > SizeHeightIcon * Amountoflines - 1)) {
+                if((row_player<Amountoflines)) {
+                    if (!(StatioonaryObjectTab[row_player + 1][column_player] == 1)) {
+                        if (player.getY() < SizeHeightIcon * (row_player + 1)) {
+                            player.changeY(player.getY() + player.get_velY());
+                        }
+                    }
+                }else if(row_player==Amountoflines){
+                    if(player.getY() < SizeHeightIcon * (row_player + 1)){
+                        player.changeY(player.getY() + player.get_velY());
+                    }
+                }
+            }
+
+        } else if (player.get_velY()<0) {
+            if (!(player.getY() + player.get_velY() < 0)) {
+                if (row_player > 0) {
+                    if (!(StatioonaryObjectTab[row_player - 1][column_player] == 1)) {
+                        if (player.getY() > SizeHeightIcon * (row_player )) {
+                            player.changeY(player.getY() + player.get_velY());
+                        }
+                    }
+                }
+                else if (row_player== 0) {
+                    if (player.getY() > SizeHeightIcon * (row_player )) {
+                        player.changeY(player.getY() + player.get_velY());
+                    }
+                }
+            }
+        }
+    }
     /**
      * metoda obslugujaca zmiane polozenie wrogów
      */
@@ -166,7 +231,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         int c = e.getKeyCode();
-
         if (c == KeyEvent.VK_LEFT) {
             player.change_velX(SpeedPlayer * (-1));
             player.change_velY(0);
@@ -187,7 +251,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param e
      */
     @Override
-    public void keyTyped(KeyEvent e){}
+    public void keyTyped(KeyEvent e){
+
+    }
 
     /**
      * Metoda opisujaca co sie dzieje gdy nie jest wciskany zaden klawisz
@@ -195,33 +261,22 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        player.change_velY(0);
-        player.change_velX(0);
+
+       player.change_velY(0);
+       player.change_velX(0);
     }
-
-    /**
-     * punkt X, od ktorego zaczniemy rysowanie obiektu
-     */
-
-    public int StartDrawingX = 0;
-
-    /**
-     * punkt Y, od ktorego zaczniemy rysowanie obiektu
-     */
-
-    public int StartDrawingY = 0;
 
     /**
      * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
      */
 
-    public int SizeWidthIcon = panelboardwidth/Amountofcolumns;
+    public static int SizeWidthIcon = panelboardwidth/Amountofcolumns;
 
     /**
      * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
      */
 
-    public int SizeHeightIcon = panelboardheight/Amountoflines;
+    public static int SizeHeightIcon = panelboardheight/Amountoflines;
 
 
     /**

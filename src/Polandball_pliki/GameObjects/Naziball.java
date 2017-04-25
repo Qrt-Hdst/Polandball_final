@@ -9,10 +9,6 @@ import static Polandball_pliki.GetConstans.Monsterspeed;
 import static Polandball_pliki.GetConstans.NaziBallString;
 
 /**
- * Created by Matball on 2017-04-16.
- */
-
-/**
  * Klasa przeciwnika typu NaziBall
  */
 public class Naziball extends Enemy {

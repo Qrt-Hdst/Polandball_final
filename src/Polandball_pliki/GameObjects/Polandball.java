@@ -8,10 +8,6 @@ import java.io.IOException;
 import static Polandball_pliki.GetConstans.*;
 
 /**
- * Created by Matball on 2017-04-16.
- */
-
-/**
  * Klasa gracza typu Polandball
  */
 public class Polandball extends LivingObject {

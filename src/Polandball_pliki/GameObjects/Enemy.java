@@ -1,13 +1,7 @@
 package Polandball_pliki.GameObjects;
 
-
-
 /**
- * Created by Matball on 2017-04-16.
- */
-
-/**
- * klasa przodek dla przeciwnikow
+ * klasa przodek dla przeciwników
  */
 public class Enemy extends LivingObject {
     /**

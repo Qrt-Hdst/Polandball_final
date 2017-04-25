@@ -10,9 +10,6 @@ import static Polandball_pliki.GetConstans.NaziBallString;
 import static Polandball_pliki.GetConstans.TurkeyBallString;
 
 /**
- * Created by Matball on 2017-04-16.
- */
-/**
  * Klasa przeciwnika typu TurkeyBall
  */
 public class Turkeyball extends Enemy {

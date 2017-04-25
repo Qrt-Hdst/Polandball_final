@@ -5,6 +5,7 @@ import static Polandball_pliki.GetConstans.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.sound.sampled.Port;
 import javax.swing.*;
 
 /**
@@ -58,6 +59,12 @@ public class SetNameFrame extends JFrame implements ActionListener {
         TextField = new JTextField();
         TextField.setBounds(100,100,150,30);
         add(TextField);
+
+        //label, zawierajacy prośbę o podanie nazwy
+        Info = new JLabel("Proszę podać nazwę ");
+        Info.setBounds(90,65,300,30);
+        Info.setFont(new Font("Serif", Font.PLAIN, 25));
+        add(Info);
 
         //przycisk zatwierdzający wpisany tekst
         Okey = new JButton("OK");
