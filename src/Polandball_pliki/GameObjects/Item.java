@@ -1,10 +1,6 @@
 package Polandball_pliki.GameObjects;
 
 /**
- * Created by Matball on 2017-04-17.
- */
-
-/**
  * klasa rodzic dla wszystkich przedmiotow do zebrania/interakcji
  */
 public class Item extends StationaryObject {

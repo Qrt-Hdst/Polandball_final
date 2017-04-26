@@ -119,10 +119,6 @@ public final class GetConstans {
 
 
 	/**
-	 * Rozklad elementow planszy
-	 **/
-
-	/**
 	 * Pomocnicza zmienna, okreslajaca wysokosc gornego panelu
 	 */
 
@@ -183,6 +179,11 @@ public final class GetConstans {
 	 */
 	public static String BackgroundString;
 
+	/**
+	 * dwuwymaiora tablica, reprezentujaca wystepowanie przeszkody
+	 */
+
+	public static int StatioonaryObjectTab[][];
 
 	/**
 	 * Wczytywanie danych startowych z plikow
@@ -254,6 +255,20 @@ public final class GetConstans {
 			for (int i = 0; i < Amountoflines; i++) {
 				row[i] = doc.getElementsByTagName("row").item(i).getTextContent();
 			}
+
+			StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
+			//wypelnienie stacjonarnej tablicy zerami lub jedynkami
+			for (int k=0;k<Amountoflines;k++) {
+				String bufor[] = row[k].split(" ");
+				for (int j = 0; j < Amountofcolumns; j++) {
+					if (bufor[j].equals("S_") || bufor[j].equals("B_")) {
+						StatioonaryObjectTab[k][j] = 1;
+					} else StatioonaryObjectTab[k][j] = 0;
+
+				}
+			}
+
+
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();

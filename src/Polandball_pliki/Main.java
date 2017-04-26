@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * główna funkcja main
+ * główna funkcja programu
  */
 
 public class Main  {

@@ -7,9 +7,7 @@ import java.io.IOException;
 
 import static Polandball_pliki.GetConstans.KeyString;
 
-/**
- * Created by Matball on 2017-04-17.
- */
+
 public class Key extends Item {
 
     /**

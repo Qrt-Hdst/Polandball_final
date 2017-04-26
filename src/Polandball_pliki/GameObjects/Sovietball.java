@@ -10,10 +10,6 @@ import static Polandball_pliki.GetConstans.NaziBallString;
 import static Polandball_pliki.GetConstans.SovietBallString;
 
 /**
- * Created by Matball on 2017-04-16.
- */
-
-/**
  * Klasa przeciwnika typu SovietBall
  */
 public class Sovietball extends Enemy {

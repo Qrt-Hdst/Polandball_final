@@ -1,10 +1,6 @@
 package Polandball_pliki.GameObjects;
 
 /**
- * Created by Matball on 2017-04-22.
- */
-
-/**
  * Klasa przodek dla obiektow teronowych ( skrzynki, betony itd )
  */
 public class Terrain extends StationaryObject {

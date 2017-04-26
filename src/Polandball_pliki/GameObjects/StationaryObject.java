@@ -3,10 +3,6 @@ package Polandball_pliki.GameObjects;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by Matball on 2017-04-17.
- */
-
-/**
  * Klasa przodek dla wszystkich obiektów nieruchomych/nieożywionych
  */
 public class StationaryObject extends GameObject {

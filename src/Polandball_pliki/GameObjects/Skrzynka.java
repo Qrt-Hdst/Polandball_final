@@ -8,10 +8,6 @@ import java.io.IOException;
 import static Polandball_pliki.GetConstans.SkrzynkaString;
 
 /**
- * Created by Matball on 2017-04-17.
- */
-
-/**
  * klasa skrzynka - obiekt który bedzie można zniszczyć za pomocą np. bomb
  */
 public class Skrzynka extends Terrain {
