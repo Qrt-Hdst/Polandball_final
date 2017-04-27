@@ -155,72 +155,27 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     void movePlayer() {
-        int row_player = player.getY() / SizeHeightIcon;
-        int column_player = player.getX() / SizeWidthIcon;
-        ///------------
-        if (player.get_velX() > 0 ) {
-            if(column_player-1<Amountoflines) {
-                if (!(StatioonaryObjectTab[row_player][column_player + 1] == 1)) {
-                    if (player.getX() < SizeWidthIcon * (column_player + 1)) {
-                        player.changeX(player.getX() + player.get_velX());
-                    }
-                }
-           }
-        } else if (player.get_velX() < 0){
-            if (!(player.getX() + player.get_velX() < 0)) {
-                if((column_player>0)){
-                    if (!(StatioonaryObjectTab[row_player][column_player -1] == 1)) {
-                        if (player.getX() > SizeWidthIcon * (column_player )) {
-                           player.changeX(player.getX() + player.get_velX());
-                        }
-                    }
-                }else if(column_player==0){
-                    if (player.getX() > SizeWidthIcon * (column_player )) {
-                        player.changeX(player.getX() + player.get_velX());
-                    }
-                }
-            }
+        boolean I_can_go=new Collision(player).isNotCollision;
 
-        } else if (player.get_velY() > 0) {
-            if (!(player.getY() + player.get_velY() > SizeHeightIcon * Amountoflines - 1)) {
-                if((row_player<Amountoflines)) {
-                    if (!(StatioonaryObjectTab[row_player + 1][column_player] == 1)) {
-                        if (player.getY() < SizeHeightIcon * (row_player + 1)) {
-                            player.changeY(player.getY() + player.get_velY());
-                        }
-                    }
-                }else if(row_player==Amountoflines){
-                    if(player.getY() < SizeHeightIcon * (row_player + 1)){
-                        player.changeY(player.getY() + player.get_velY());
-                    }
-                }
-            }
-
-        } else if (player.get_velY()<0) {
-            if (!(player.getY() + player.get_velY() < 0)) {
-                if (row_player > 0) {
-                    if (!(StatioonaryObjectTab[row_player - 1][column_player] == 1)) {
-                        if (player.getY() > SizeHeightIcon * (row_player )) {
-                            player.changeY(player.getY() + player.get_velY());
-                        }
-                    }
-                }
-                else if (row_player== 0) {
-                    if (player.getY() > SizeHeightIcon * (row_player )) {
-                        player.changeY(player.getY() + player.get_velY());
-                    }
-                }
-            }
+        if(I_can_go){
+            player.changeX(player.getX() + player.get_velX());
+            player.changeY(player.getY() + player.get_velY());
         }
+
     }
     /**
      * metoda obslugujaca zmiane polozenie wrogów
      */
 
     void moveEnemies(){
+        boolean I_can_go=false;
         for(int i=0;i<number_of_enemy;i++){
-            enemy.get(i).changeX(enemy.get(i).getX()+enemy.get(i).get_velX());
-            enemy.get(i).changeY( enemy.get(i).getY()+enemy.get(i).get_velY());
+            I_can_go=new Collision(enemy.get(i)).isNotCollision;
+            if(I_can_go==true) {
+                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+            }
+            I_can_go=false;
         }
     }
 

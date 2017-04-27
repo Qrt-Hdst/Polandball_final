@@ -263,12 +263,12 @@ public final class GetConstans {
 				for (int j = 0; j < Amountofcolumns; j++) {
 					if (bufor[j].equals("S_") || bufor[j].equals("B_")) {
 						StatioonaryObjectTab[k][j] = 1;
+
 					} else StatioonaryObjectTab[k][j] = 0;
-
+					//System.out.print(StatioonaryObjectTab[k][j]);
 				}
+				//System.out.println();
 			}
-
-
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();
@@ -276,7 +276,6 @@ public final class GetConstans {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-
 	}
 
 	void read_path_to_graphics() {
