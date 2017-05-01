@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import static Polandball_pliki.Main.GetSocket;
 /**
  * Okno główne, wyświetlane podczas uruchomienia gry
  */
@@ -71,6 +72,7 @@ public class MainFrame extends JFrame implements ActionListener {
         Highscores.setFont(new Font("Serif", Font.PLAIN, 20));
         Highscores.setBounds(MainFramewidth/3,(3*MainFrameheight)/7,MainFramewidth/3,50);
         add(Highscores);
+        Highscores.addActionListener(this);
 
         //przycisk wyjścia z gry
         Ending = new JButton("Wyjście");
@@ -96,9 +98,10 @@ public class MainFrame extends JFrame implements ActionListener {
             SetNameFrame setnameframe = new SetNameFrame();
             setnameframe.setVisible(true);
         }
-        //przejscie do listy najlepszych wyników
+        //przejscie do listy najlepszych wyników ---->narazie tylko pobranie serwera  i zapisanie do pliku<----
         else if(source==Highscores){
-
+                Highscores highscores = new Highscores();
+                highscores.GetHighscores(GetSocket());
         }
         //zamknięcie okna głownego, wyjście z gry
         else if(source==Ending)
