@@ -14,155 +14,227 @@ import static Polandball_pliki.GetConstans.*;
 import static Polandball_pliki.PanelBoard.SizeWidthIcon;
 import static Polandball_pliki.PanelBoard.SizeHeightIcon;
 
+/**
+ *  Klasa sprawdzajaca kolizje
+ */
 public class Collision {
 
     /**
-     * zmienna okreslajaca, czy nastapila kolizja
+     * Zmienna okreslajaca, czy nie nastapila kolizja
      */
-    boolean isNotCollision=false;
-
-    double double_column_player=0;
-    double double_row_player=0;
+    boolean isNotCollision = true;
 
     /**
-     *  Metoda stwierdzajaca, czy zachodzi kolizja
+     * Wiersz w typie double, w ktorym znajduje sie dany livingobject
+     */
+
+    double double_row_livingobject;
+
+    /**
+     * Kolumna w typie double, w ktorej znajduje sie dany livingobject
+     */
+
+    double double_column_livingobject;
+
+    /**
+     * Zmienna zaokraglajaca numer wiersza w dol
+     */
+
+    int row_player_north;
+
+    /**
+     * Zmienna zaokraglajaca numer kolumny w dol
+     */
+
+    int column_player_west;
+
+    /**
+     * Metoda stwierdzajaca, czy zachodzi kolizja
      */
     public Collision(LivingObject livingObject) {
-        double double_row_player =((double) livingObject.getY() / (double)SizeHeightIcon)  ;
-        double double_column_player = (double)livingObject.getX() /(double) SizeWidthIcon ;
 
-        //System.out.println(double_row_player +"row");
-        //System.out.println("column_player="+double_column_player+ "livingObject.getX()="+livingObject.getX()+"+ SizeWidthIcon" +SizeWidthIcon);
-        ///------------
-        if(livingObject.get_velX()>0) {
-            int column_player = (int) Math.floor(double_column_player);
-            int row_player = (int) Math.floor(double_row_player);
-            //wypluj_dane(1, row_player, double_row_player, column_player, double_column_player);
+        //wiersz w double, w ktorym znajduje sie dany livingobject
+        double_row_livingobject = (double) livingObject.getY() / (double) SizeHeightIcon;
+        //kolumna w double, w ktorej znajduje sie dany livingobject
+        double_column_livingobject = (double) livingObject.getX() / (double) SizeWidthIcon;
+        //zaokraglenie numeru wiersza w dol
+        row_player_north = (int) Math.floor(double_row_livingobject);
+        //zaokraglenie kolumny w dol
+        column_player_west = (int) Math.floor(double_column_livingobject);
+
+        //sprawdzamy czy obiekt porusza sie w prawo > (wschod)
+        if (livingObject.get_velX() > 0) {
+
             try {
-                if (column_player < Amountofcolumns - 1) {
-                    //wypluj_dane(2, row_player, double_row_player, column_player, double_column_player);
-                    if (!(StatioonaryObjectTab[row_player][column_player + 1] == 1)) {
-                        //wypluj_dane(3, row_player, double_row_player, column_player, double_column_player);
-                        if (livingObject.getX() + livingObject.get_velX() < SizeWidthIcon * (column_player) + 2 * SizeWidthIcon
-                                && livingObject.getX() + livingObject.get_velX() < (Amountofcolumns - 1) * SizeWidthIcon) {
-                            //wypluj_dane(4, row_player, double_row_player, column_player, double_column_player);
-                            isNotCollision = true;
-                        }
-                    }
-                } else if (column_player == Amountofcolumns - 1) {
-                    //wypluj_dane(5, row_player, double_row_player, column_player, double_column_player);
-                    if (livingObject.getX() + SizeWidthIcon < SizeWidthIcon * (column_player) + 1 * SizeWidthIcon) {
-                        //wypluj_dane(6, row_player, double_row_player, column_player, double_column_player);
+                //sprawdzanie czy wyszlismy poza prawa scianke
+                if (double_column_livingobject >= (double) (Amountofcolumns - 1)) {
+                    //System.out.println(1);
+                    isNotCollision = false;
+                }
+                //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko gornej krawedzi wiersza
+                else if (double_row_livingobject < ((double) row_player_north + 0.15)) {
+                    //System.out.println(2);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west + 1] == 1)) {
                         isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
                     }
-                } else {
+                }
+                //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko dolnej krawedzi wiersza
+                else if (double_row_livingobject > ((double) row_player_north + 0.85)) {
+                    //System.out.println(3);
+                    if (!(StatioonaryObjectTab[row_player_north + 1][column_player_west + 1] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                }
+                //sprawdzamy pozycje y-owa obiektu, czy znajduje sie optymalnie w srodku wiersza
+                else if (double_row_livingobject > ((double) row_player_north + 0.15) &&
+                        double_row_livingobject < ((double) row_player_north + 0.85)) {
+                    //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west + 1] == 1) &&
+                            !(StatioonaryObjectTab[row_player_north + 1][column_player_west + 1] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                } else {//System.out.println(5);
                     isNotCollision = false;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                isNotCollision= false;
+                isNotCollision = false;
                 System.out.println("Blad kolizji -wschod");
             }
-        } else if(livingObject.get_velX()<0) {
-            int column_player = (int) Math.floor(double_column_player);
-            int row_player = (int) Math.floor(double_row_player);
-            //wypluj_dane(1, row_player, double_row_player, column_player, double_column_player);
+        }
+        //sprawdzamy czy obiekt porusza sie w lewo < (zachod)
+        else if (livingObject.get_velX() < 0) {
             try {
-                if (column_player > 0) {
-                    //wypluj_dane(2, row_player, double_row_player, column_player, double_column_player);
-                    //System.out.println(StatioonaryObjectTab[row_player][column_player - 1]);
-                    if (!(StatioonaryObjectTab[row_player][column_player - 1] == 1)) {
-                       // wypluj_dane(3, row_player, double_row_player, column_player, double_column_player);
-                        //System.out.println(livingObject.getX() + livingObject.get_velX() + " przerwa " + (SizeWidthIcon * column_player - 2 * SizeWidthIcon));
-                        if (livingObject.getX() + livingObject.get_velX() > SizeWidthIcon * column_player - 2 * SizeWidthIcon &&
-                                livingObject.getX() + livingObject.get_velX() > 0) {
-
-                            //wypluj_dane(4, row_player, double_row_player, column_player, double_column_player);
-                            isNotCollision= true;
-                        }
+                if (double_column_livingobject < 0) {//sprawdzanie czy wyszlismy poza lewa scianke
+                    //System.out.println(1);
+                    isNotCollision = false;
+                }
+                //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko gornej krawedzi wiersza
+                else if (double_row_livingobject < ((double) row_player_north + 0.15)) {
+                    //System.out.println(2);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
                     }
-                } else if (column_player == 0) {
-                    //System.out.println(5 + "column_player " + column_player + "double column_ " + double_column_player);
-                    if (livingObject.getX() + livingObject.get_velX() > 0) {
-                        //System.out.println(6 + "column_player " + column_player + "double column_ " + double_column_player);
-                        isNotCollision=true;
+                }
+                //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko dolnej krawedzi wiersza
+                else if (double_row_livingobject > ((double) row_player_north + 0.85)) {
+                    //System.out.println(3);
+                    if (!(StatioonaryObjectTab[row_player_north + 1][column_player_west] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
                     }
-                } else {
-                    isNotCollision= false;
+                }
+                //sprawdzamy pozycje y-owa obiektu, czy znajduje sie optymalnie w srodku wiersza
+                else if (double_row_livingobject > ((double) row_player_north + 0.15) &&
+                        double_row_livingobject < ((double) row_player_north + 0.85)) {
+                    //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west] == 1) &&
+                            !(StatioonaryObjectTab[row_player_north + 1][column_player_west] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                } else {//System.out.println(5);
+                    isNotCollision = false;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                isNotCollision=false;
+                isNotCollision = false;
                 System.out.println("Blad kolizji -zachod");
             }
         }
-        else if (livingObject.get_velY() > 0) {
-            int column_player=(int)Math.floor(double_column_player);
-
-            int row_player=(int)Math.floor(double_row_player);
-            //wypluj_dane(1,row_player,double_row_player,column_player,double_column_player);
+        //sprawdzamy czy obiekt porusza sie w w gore ^ (polnoc)
+        else if (livingObject.get_velY() < 0) {
             try {
-                if (row_player < Amountoflines-1) {
-                    //wypluj_dane(2,row_player,double_row_player,column_player,double_column_player);
-                    //System.out.println(StatioonaryObjectTab[row_player+1][column_player]);
-                    if (!(StatioonaryObjectTab[row_player+1][column_player] == 1)) {
-                        //wypluj_dane(3,row_player,double_row_player,column_player,double_column_player);
-                        //System.out.println(livingObject.getY()+livingObject.get_velY()+SizeHeightIcon+" przerwa "+ (SizeHeightIcon * (row_player)+2*SizeHeightIcon));
-                        if (livingObject.getY()+SizeHeightIcon+livingObject.get_velY()< SizeHeightIcon * (row_player)+3*SizeHeightIcon
-                                && livingObject.getY()+livingObject.get_velY()<(Amountoflines-1)* SizeHeightIcon) {
-                          //  wypluj_dane(4,row_player,double_row_player,column_player,double_column_player);
-                            isNotCollision = true;
-                        }
-                    }
-                } else if (column_player == Amountoflines-1) {
-                    wypluj_dane(5,row_player,double_row_player,column_player,double_column_player);
-                    if (livingObject.getY()+SizeHeightIcon< SizeHeightIcon * (column_player)+1*SizeHeightIcon) {
-                       // wypluj_dane(6,row_player,double_row_player,column_player,double_column_player);
+                if (double_row_livingobject < 0) {//sprawdzanie czy wyszlismy poza gorna scianke
+                    //System.out.println(1);
+                    isNotCollision = false;
+                }
+                //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko lewej krawedzi kolumny
+                else if (double_column_livingobject < ((double) column_player_west + 0.15)) {
+                    //System.out.println(2);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west] == 1)) {
                         isNotCollision = true;
-                    }
-                }  else {isNotCollision=false;}
-            }
-            catch(ArrayIndexOutOfBoundsException e ) {
-                isNotCollision=false;
-                System.out.println("Blad kolizji -poludnie");
-            }
-        }
-        else if(livingObject.get_velY()<0){
-            int column_player=(int)Math.floor(double_column_player);
-            int row_player=(int)Math.floor(double_row_player);
-            //wypluj_dane(1,row_player,double_row_player,column_player,double_column_player);
-            try {
-                if (row_player > 0) {
-               //     wypluj_dane(2,row_player,double_row_player,column_player,double_column_player);
-                    System.out.println(StatioonaryObjectTab[row_player-1][column_player] );
-                    if (!(StatioonaryObjectTab[row_player-1][column_player] == 1)) {
-                  //      wypluj_dane(3,row_player,double_row_player,column_player,double_column_player);
-                   //     System.out.println(livingObject.getY()+livingObject.get_velY()+" przerwa "+ (SizeHeightIcon * row_player -2*SizeHeightIcon));
-                        if (livingObject.getY()+livingObject.get_velY()> SizeHeightIcon * row_player -2*SizeHeightIcon &&
-                                livingObject.getY()+livingObject.get_velY()>0) {
-                  //          wypluj_dane(4,row_player,double_row_player,column_player,double_column_player);
-                            isNotCollision = true;
-                        }
+                    } else {
+                        isNotCollision = false;
                     }
                 }
-                else if ( row_player == 0 ){
-                   // System.out.println(5+"column_player " + column_player +"double column_ "+double_column_player );
-                    if (livingObject.getY()+livingObject.get_velY() > 0) {
-                  //      System.out.println(6+"column_player " + column_player +"double column_ "+double_column_player );
+                //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko prawej krawedzi kolumny
+                else if (double_column_livingobject > ((double) column_player_west + 0.85)) {
+                    //System.out.println(3);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west + 1] == 1)) {
                         isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
                     }
-                }else {isNotCollision=false;}
-            }
-            catch(ArrayIndexOutOfBoundsException e ) {
-                isNotCollision=false;
+                }
+                //sprawdzamy pozycje x-owa obiektu, czy znajduje sie optymalnie w srodku kolumny
+                else if (double_column_livingobject > ((double) column_player_west + 0.15) &&
+                        double_column_livingobject < ((double) column_player_west + 0.85)) {
+                    //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
+                    if (!(StatioonaryObjectTab[row_player_north][column_player_west] == 1) &&
+                            !(StatioonaryObjectTab[row_player_north][column_player_west + 1] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                } else {//System.out.println(5);
+                    isNotCollision = false;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                isNotCollision = false;
                 System.out.println("Blad kolizji -polnoc");
             }
         }
+        //sprawdzamy czy obiekt porusza sie w dol V (poludnie)
+        else if (livingObject.get_velY() > 0) {
+            try {
+                if (double_row_livingobject >= (double) (Amountoflines - 1)) {//sprawdzanie czy wyszlismy poza dolna scianke
+                    //System.out.println(1);
+                    isNotCollision = false;
+                }
+                //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko lewej krawedzi kolumny
+                else if (double_column_livingobject < ((double) column_player_west + 0.15)) {
+                    //System.out.println(2);
+                    if (!(StatioonaryObjectTab[row_player_north + 1][column_player_west] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                }
+                //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko prawej krawedzi kolumny
+                else if (double_column_livingobject > ((double) column_player_west + 0.85)) {
+                    //System.out.println(3);
+                    if (!(StatioonaryObjectTab[row_player_north + 1][column_player_west + 1] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                }
+                //sprawdzamy pozycje x-owa obiektu, czy znajduje sie optymalnie w srodku kolumny
+                else if (double_column_livingobject > ((double) column_player_west + 0.15) &&
+                        double_column_livingobject < ((double) column_player_west + 0.85)) {
+                    //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
+                    if (!(StatioonaryObjectTab[row_player_north + 1][column_player_west] == 1) &&
+                            !(StatioonaryObjectTab[row_player_north + 1][column_player_west + 1] == 1)) {
+                        isNotCollision = true;
+                    } else {
+                        isNotCollision = false;
+                    }
+                } else {//System.out.println(5);
+                    isNotCollision = false;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                isNotCollision = false;
+                System.out.println("Blad kolizji -poludnie");
+            }
+        }
     }
-
-
-
-    void wypluj_dane(int x,int row_player,double double_row_player,int column_player,double double_column){
-        System.out.println(x+") "+"row_player " + row_player +"double row_ "+double_row_player +" column_player " +column_player +"double_column "+double_column);
-    }
-
-
 }

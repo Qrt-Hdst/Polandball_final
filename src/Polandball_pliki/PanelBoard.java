@@ -112,25 +112,25 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     if (field.get(i).get(j).equals("N_")) {
                     } else if (field.get(i).get(j).equals("B_")) {
                         terrains.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_stationary_object++;
+                        //number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("S_")) {
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_stationary_object++;
+                        //number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NG")) {
                         player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
                     } else if (field.get(i).get(j).equals("NW")) {
                         enemy.add(new Sovietball(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_enemy++;
+                        //number_of_enemy++;
                     } else if (field.get(i).get(j).equals("ND")) {
                         items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_item++;
+                        //number_of_item++;
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
-                        number_of_stationary_object++;
+                        //number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_item++;
+                        //number_of_item++;
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
-                        number_of_stationary_object++;
+                        //number_of_stationary_object++;
                     }
                 }
             }
@@ -245,9 +245,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         drawItem(g);
         drawLivingObject(g);
         drawTerrain(g);
-        //drawBackground(g);
-
-        //repaint();
     }
 
     /**
@@ -255,7 +252,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na ktorej jest namalowywana obiekty
      */
     public void drawItem(Graphics g){
-        for(int i=0;i<number_of_item;i++){
+        for(int i=0;i<items.size();i++){
             g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
@@ -265,7 +262,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public void drawLivingObject(Graphics g){
         g.drawImage(player.getBuffImage(),player.getX(),player.getY(),SizeWidthIcon,SizeHeightIcon,null);
-        for(int i=0;i<number_of_enemy;i++){
+        for(int i=0;i<enemy.size();i++){
             g.drawImage(enemy.get(i).getBuffImage(),enemy.get(i).getX(),enemy.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
@@ -276,7 +273,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     public void drawTerrain(Graphics g){
-        for(int i=0;i<number_of_stationary_object;i++) {
+        for(int i=0;i<terrains.size();i++) {
             g.drawImage(terrains.get(i).getBuffImage(),terrains.get(i).getX(),terrains.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
