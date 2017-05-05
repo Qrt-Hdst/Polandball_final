@@ -1,11 +1,13 @@
 <highscores>
-	<PlayerID id="0">
+	<Player>
+		<id>1</id>
 		<name>Andrzej</name>
 		<score>1000000</score>
-	</PlayerID>
-	<PlayerIDID id="1">
+	</Player>
+	<Player>
+		<id>2</id>
 		<name>polandball</name>
 		<score>574</score>
-	</PlayerID>
+	</Player>
 </highscores>
 		
