@@ -17,9 +17,7 @@ public class Highscores {
      * konstruktor klasy Highscores
      */
 
-    public Highscores(){
-
-    }
+    public Highscores(){}
 
     /**
      * metoda pobieraja z serwera liste najlepszych wynikow i zapisaja ja do swojego pliku highscores.xml
@@ -27,20 +25,30 @@ public class Highscores {
      */
 
     public static void GetHighscores (Socket socket) {
-        serversocket = socket;//------>do zmiany, przuczic do jakiegos konstruktora<------
+        serversocket = socket;//------>do zmiany, perzuczic do jakiegos konstruktora<------
         try {
         if (socket != null) {//sprawdzenie czy gniazdo serwera nie jest nullem(czy zostalo "cos" przypisane)
                 socket.getInputStream().skip(socket.getInputStream().available());//pominiecie odpowiedzi serwera
                 OutputStream outputstream = socket.getOutputStream();//strumien wyjsciowy
-                PrintWriter printwriter = new PrintWriter(outputstream, true);
-                printwriter.println("GET_HIGHSCORES");//utworzenie wiadomosci GET_HIGHSCORES
+                PrintWriter printwriter = new PrintWriter(outputstream, true);//przywiazanie do strumienia wyjsciowego
+                printwriter.println("GET_HIGHSCORES");//utworzenie wiadomosci GET_HIGHSCORES    //wiadomosci ktora bedziemy wysylac
+                System.out.println("WYSLANO WIADOMOSC: GET_HIGHSCORES");
                 InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
                 BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));
-                String answer = buildreader.readLine();
+                String answer = buildreader.readLine();//przypisanie do stringa odczytanej wiadomosci
                 if (answer != "INVALID_COMMAND") {//sprawdzenie czy serwer zrozumial zadanie
-                    PrintWriter out = new PrintWriter("src\\Polandball_pliki\\highscores.xml");
-                    out.println(answer);//zapisanie odebranego tekstu do pliku podanego powyzej
-                    out.close();
+                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);
+                    FileWriter fileWriter = new FileWriter("src\\Polandball_pliki\\highscores.xml");
+                    BufferedWriter bufferedwriter = new BufferedWriter(fileWriter);
+                    String bufor[] = answer.split(" ");//----->PROBLEM Z PODZIELENIEM, NIE WIEM JAKI ZNAK<-----
+                    for(int i=0; i<bufor.length;i++) {
+                        bufferedwriter.write(bufor[i]);//zapisanie odebranego tekstu do pliku podanego powyzej
+                        bufferedwriter.newLine();//znak nowej linni po kazdym zapisanym ciagu znakow
+                    }
+                    bufferedwriter.close();//zamkniecie pliku
+                }
+                else if(answer == "INVALID_COMMAND"){
+                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);
                 }
             }
         else{
