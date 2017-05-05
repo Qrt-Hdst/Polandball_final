@@ -146,7 +146,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public void actionPerformed(ActionEvent e) {
         movePlayer();
-        moveEnemies();//jesli nie chcesz aby potwory sie na starcie ruszaly - zakomentuj
+        //moveEnemies();//jesli nie chcesz aby potwory sie na starcie ruszaly - zakomentuj
         repaint();
     }
 
