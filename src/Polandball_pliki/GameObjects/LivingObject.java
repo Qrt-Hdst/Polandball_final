@@ -27,8 +27,8 @@ public class LivingObject extends GameObject {
         super();
         x_=0;
         y_=0;
-        velX_=0;
-        velY_=0;
+        velX_=1;//testowe
+        velY_=1;//testowe
         buffImage_=null;
     }
     /**

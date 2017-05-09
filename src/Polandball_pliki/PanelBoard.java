@@ -16,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
 import Polandball_pliki.GameObjects.*;
 import com.sun.glass.ui.Size;
 import com.sun.javafx.scene.control.behavior.KeyBinding;
@@ -24,10 +26,6 @@ import static Polandball_pliki.GetConstans.*;
 
 
 public class PanelBoard extends JPanel implements ActionListener,KeyListener{
-    /**
-     * Liczba przeciwnikow na planszy
-     */
-    private int number_of_enemy=0;
 
     /**
      * Tablica obiektow przeciwnikow
@@ -39,22 +37,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     private Polandball player;
     /**
+     * Tablica obiektow przeciwnikow
+     */
+    private ArrayList<Bomb> bomb=new ArrayList<>();
+    /**
      *  Lista obiektow bedacych elementami terenu
      */
     private ArrayList<Terrain> terrains=new ArrayList<>();
-    /**
-     *Liczba obiektow stacjonarnych
-     */
-    private int number_of_stationary_object=0;
 
     /**
      *  Lista itemow (elementow do zebrania/uruchomienia interakcji przez gracza)
      */
     private ArrayList<Item> items=new ArrayList<>();
-    /**
-     *Liczba itemow na planszy
-     */
-    private int number_of_item=0;
 
     /**
      * tablica znakow, na ktorej jest zapisana plansza
@@ -112,41 +106,62 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     if (field.get(i).get(j).equals("N_")) {
                     } else if (field.get(i).get(j).equals("B_")) {
                         terrains.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("S_")) {
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NG")) {
                         player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
                     } else if (field.get(i).get(j).equals("NW")) {
-                        enemy.add(new Sovietball(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_enemy++;
+                        enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                     } else if (field.get(i).get(j).equals("ND")) {
                         items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_item++;
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
-                        number_of_stationary_object++;
                     } else if (field.get(i).get(j).equals("NK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                        number_of_item++;
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
-                        number_of_stationary_object++;
                     }
                 }
             }
+            //metoda tworzaca watki dla wrogow, zdefiniowana pozniej, przeniesiona
+            //zmienic nazwe, storzyc inna metoda ktora przyjmie zmieniona predkosc i bedzie przemieszczala wrogow
+            moveEnemies();
 
+    }
+
+    /**
+     * funkcja losujaca typ potwora
+     */
+    public Enemy lottery_of_enemies(int position_enemyX,int position_enemyY){
+        //instancja klasy enemy do ktorej w zaleznosci od losu przypisze konkretny enemyballa
+        Enemy enemy_;
+        //inicjuje zmienna losujaca
+        Random randomGenerator=new Random();
+        //losuje liczbe od 0 do 2
+        int fate= randomGenerator.nextInt(3);
+
+        if(fate==0){
+            enemy_=new Turkeyball(position_enemyX,position_enemyY);
+        }else if(fate==1){
+            enemy_=new Naziball(position_enemyX,position_enemyY);
+        }else if(fate==2){
+            enemy_=new Sovietball(position_enemyX,position_enemyY);
+        }else {
+            enemy_=null;
+        }
+        return enemy_;
 
     }
 
 
-
     /**
-     * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do
+     * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do b)
      * @param e parametr przchowujacy informacje na temat zmian w programie
      */
     public void actionPerformed(ActionEvent e) {
+        //funkcja odpowiedzialna za poruszenie gracza
         movePlayer();
-        //moveEnemies();//jesli nie chcesz aby potwory sie na starcie ruszaly - zakomentuj
+
+        //moveEnemies();
+        //odmalowywanie gracza po kazdym wykrytym zdarzeniu
         repaint();
     }
 
@@ -155,7 +170,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     void movePlayer() {
-        boolean I_can_go=new Collision(player).isNotCollision;
+        boolean I_can_go=new Collision(player,"player").isNotCollision;
 
         if(I_can_go){
             player.changeX(player.getX() + player.get_velX());
@@ -168,14 +183,16 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     void moveEnemies(){
-        boolean I_can_go=false;
-        for(int i=0;i<number_of_enemy;i++){
-            I_can_go=new Collision(enemy.get(i)).isNotCollision;
-            if(I_can_go==true) {
-                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
-            }
-            I_can_go=false;
+        try {
+                for (int i = 0; i < enemy.size(); i++) {
+                    //System.out.println(0);
+                    new Thread(enemy.get(i).getEnemy()).start();//(new Enemy(enemy.get(i).getEnemy())).start();
+                }
+
+        }
+        catch(Exception e){
+            System.out.println("Blad w watku");
+            System.out.println(e);
         }
     }
 
@@ -186,6 +203,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         int c = e.getKeyCode();
+
         if (c == KeyEvent.VK_LEFT) {
             player.change_velX(SpeedPlayer * (-1));
             player.change_velY(0);
@@ -198,6 +216,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }else if (c == KeyEvent.VK_UP){
             player.change_velY(SpeedPlayer * (-1));
             player.change_velX(0);
+        }
+        //stawianie bomby 
+        else if (c == KeyEvent.VK_SPACE){
+            bomb.add(new Normal_Bomb(player.getX(),player.getY()));
         }
     }
 
@@ -216,7 +238,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     @Override
     public void keyReleased(KeyEvent e) {
-
        player.change_velY(0);
        player.change_velX(0);
     }
@@ -242,20 +263,26 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void paint(Graphics g){
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight);
+        drawBomb(g);
         drawItem(g);
         drawLivingObject(g);
         drawTerrain(g);
-        //drawBackground(g);
-
-        //repaint();
     }
-
+    /**
+     * funkcja rysujaca bomby na grafice
+     * @param g grafika na ktorej jest namalowywana obiekty
+     */
+    public void drawBomb(Graphics g){
+        for(int i=0;i<bomb.size();i++){
+            g.drawImage(bomb.get(i).getBuffImage(),bomb.get(i).getX(),bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
+    }
     /**
      * funkcja rysujaca itemy na grafice
      * @param g grafika na ktorej jest namalowywana obiekty
      */
     public void drawItem(Graphics g){
-        for(int i=0;i<number_of_item;i++){
+        for(int i=0;i<items.size();i++){
             g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
@@ -264,8 +291,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na która jest namalowywana obiekty
      */
     public void drawLivingObject(Graphics g){
+
         g.drawImage(player.getBuffImage(),player.getX(),player.getY(),SizeWidthIcon,SizeHeightIcon,null);
-        for(int i=0;i<number_of_enemy;i++){
+        for(int i=0;i<enemy.size();i++){
             g.drawImage(enemy.get(i).getBuffImage(),enemy.get(i).getX(),enemy.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
@@ -276,10 +304,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     public void drawTerrain(Graphics g){
-        for(int i=0;i<number_of_stationary_object;i++) {
+        for(int i=0;i<terrains.size();i++) {
             g.drawImage(terrains.get(i).getBuffImage(),terrains.get(i).getX(),terrains.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
-
-
 }
