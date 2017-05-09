@@ -5,25 +5,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.Monsterspeed;
-import static Polandball_pliki.GetConstans.NaziBallString;
-import static Polandball_pliki.GetConstans.SovietBallString;
+import static Polandball_pliki.GetConstans.Normal_BombString;
 
 /**
- * Klasa przeciwnika typu SovietBall
+ * Created by Matball on 2017-05-09.
  */
-public class Sovietball extends Enemy {
+public class Normal_Bomb extends Bomb {
+
     /**
-     * konstruktor obiektu Sovietball
-     * @param x obecne polozenie obiektu na osi x
-     * @param y obecne polozenie obiektu na osi y
+     * konstruktor obiektu klucz
+     * @param x polozenie na osi x
+     * @param y polozenie na osi y
      */
-    public Sovietball(int x,int y){
+    public Normal_Bomb(int x,int y){
         super();
         x_=x;
         y_=y;
-        velX_=0;//Monsterspeed;
-        velY_=0;//Monsterspeed;
         buffImage_=createBufferedImage();
     }
 
@@ -33,7 +30,7 @@ public class Sovietball extends Enemy {
      */
     BufferedImage createBufferedImage(){
         try {
-            File file = new File(SovietBallString);
+            File file = new File(Normal_BombString);
             BufferedImage bufferedImage= ImageIO.read(file);
             return bufferedImage;
         }
@@ -45,5 +42,4 @@ public class Sovietball extends Enemy {
         }
         return null;
     }
-
 }

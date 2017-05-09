@@ -4,7 +4,6 @@
  <Amountofcolumns>15</Amountofcolumns>
  <Amountoflines>15</Amountoflines>
  <Monsterspeed>3</Monsterspeed>
- <PlayeerSpeed>3</PlayeerSpeed>
  <Amountoflifes>10</Amountoflifes>
  <Amountofordinarybombs>8</Amountofordinarybombs>
  <Amountofremotebombs>5</Amountofremotebombs>
@@ -15,11 +14,11 @@
  <row>N_ NG N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
  <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
  <row>N_ B_ B_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
- <row>N_ N_ N_ N_ N_ N_ N_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
- <row>NW N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
- <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
- <row>N_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
+ <row>N_ N_ N_ N_ N_ N_ N_ N_ N_ N_ S_ S_ S_ S_ S_</row>
+ <row>N_ S_ S_ S_ S_ S_ N_ N_ N_ N_ S_ S_ S_ S_ S_</row>
+ <row>NW N_ N_ S_ S_ S_ N_ N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ N_ N_ B_ S_ S_ N_ N_ N_ B_ B_ B_ B_ S_ S_</row>
+ <row>N_ S_ S_ B_ S_ S_ N_ N_ N_ N_ S_ S_ S_ s_ S_</row>
  <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
  <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
  <row>N_ N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>

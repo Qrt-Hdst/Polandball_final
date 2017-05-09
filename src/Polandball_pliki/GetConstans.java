@@ -1,5 +1,6 @@
 package Polandball_pliki;
 
+import Polandball_pliki.GameObjects.Normal_Bomb;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -171,6 +172,10 @@ public final class GetConstans {
 	 */
 	public static String KeyString;
 	/**
+	 * Sciezka do grafiki Key
+	 */
+	public static String Normal_BombString;
+	/**
 	 * Sciezka do grafiki Door
 	 */
 	public static String DoorString;
@@ -294,6 +299,7 @@ public final class GetConstans {
 			BetonString = doc.getElementsByTagName("Beton").item(0).getTextContent();
 			DoorString = doc.getElementsByTagName("Door").item(0).getTextContent();
 			KeyString = doc.getElementsByTagName("Key").item(0).getTextContent();
+			Normal_BombString = doc.getElementsByTagName("Normal_bomb").item(0).getTextContent();
 			BackgroundString = doc.getElementsByTagName("Background").item(0).getTextContent();
 
 		} catch (FileNotFoundException e) {
