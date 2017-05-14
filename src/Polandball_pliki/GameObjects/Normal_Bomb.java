@@ -1,9 +1,12 @@
 package Polandball_pliki.GameObjects;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import static Polandball_pliki.GetConstans.Normal_BombString;
 
@@ -22,6 +25,7 @@ public class Normal_Bomb extends Bomb {
         x_=x;
         y_=y;
         buffImage_=createBufferedImage();
+        image_=createImageGIF();
     }
 
     /**
@@ -30,16 +34,35 @@ public class Normal_Bomb extends Bomb {
      */
     BufferedImage createBufferedImage(){
         try {
+            //Image icon =new ImageIcon(new URL())
             File file = new File(Normal_BombString);
             BufferedImage bufferedImage= ImageIO.read(file);
+
             return bufferedImage;
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu");
+            System.out.println("Blad wczytywania obiektu1");
         }catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Blad wczytywania obiektu2");
         }
         return null;
     }
+    /**
+    *   metoda zwracajace zdjecie bedace gif-em <3
+     *   ( uwaga w panelboard, by gif byl rysowany, musi byc  parametr observer  w drawImage  musi byc ustawiony jako "this")
+     *   UWAGA - w przyszlosci bedzie chyba lepiej zastapic metody BufferedImage przez createImageGIF, jest bardziej uniwersalna
+    */
+    Image createImageGIF(){
+        try{
+            image_= Toolkit.getDefaultToolkit().createImage(Normal_BombString); //ladowanie do pliku
+            return image_;
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Blad wczytywania obiektu2");
+        }
+        return null;
+    }
+
 }

@@ -1,5 +1,7 @@
 package Polandball_pliki;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import static Polandball_pliki.GetConstans.*;
 
 import java.awt.*;
@@ -39,6 +41,12 @@ public class MainFrame extends JFrame implements ActionListener {
      */
 
     private JButton ConnectToServer;
+
+    /**
+     * JLabel przechowuje grafike z tlem
+     */
+
+    private JLabel BackgroundLabel;
     /**
      * Adres IP serwera
      */
@@ -126,10 +134,16 @@ public class MainFrame extends JFrame implements ActionListener {
     private void initMainFrame() {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setBackground(Color.WHITE);//---------->dodac grafie<----------
         this.setSize(MainFramewidth,MainFrameheight);
         this.setLayout(null);
+
+
+
+        //dodaje dla okna tlo - tlo jest jeszcze z deka ulomne, nie dostosowuje sie do orzmiaru okna wejsciowego
         setContentPane(new JLabel(new ImageIcon(BackgroundString)));
+
+
+
         /*
         JLabel Information = new JLabel("Informacje",JLabel.CENTER);
         Information.setBounds(0,0,30,10);
@@ -164,6 +178,8 @@ public class MainFrame extends JFrame implements ActionListener {
         Ending.setBounds(MainFramewidth/3,(7*MainFrameheight)/9,MainFramewidth/3,50);
         add(Ending);
         Ending.addActionListener(this);
+
+
 
     }
 

@@ -262,11 +262,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public void paint(Graphics g){
         g.setColor(Color.black);
-        g.fillRect(0,0,panelboardwidth,panelboardheight);
-        drawBomb(g);
-        drawItem(g);
-        drawLivingObject(g);
-        drawTerrain(g);
+        g.fillRect(0,0,panelboardwidth,panelboardheight); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
+        drawBomb(g); //rysuje bomby na planszy
+        drawItem(g); //rysuje itemy na planszy
+        drawLivingObject(g);//rysuje obiekty zywe
+        drawTerrain(g);//rysuje elementy terenu - skrzynki, beton itd
     }
     /**
      * funkcja rysujaca bomby na grafice
@@ -274,7 +274,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public void drawBomb(Graphics g){
         for(int i=0;i<bomb.size();i++){
-            g.drawImage(bomb.get(i).getBuffImage(),bomb.get(i).getX(),bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+            //dzieki temu ze observer ma ustawiony this, gif przeladowuje swoje zdjecia
+            g.drawImage(bomb.get(i).getGIF(),bomb.get(i).getX(),bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
         }
     }
     /**
