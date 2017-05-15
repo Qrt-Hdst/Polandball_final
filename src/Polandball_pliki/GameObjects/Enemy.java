@@ -49,73 +49,79 @@ public class Enemy extends LivingObject implements Runnable {
         this.buffImage_=enemy_second.getBuffImage();
     }
 
+    /**
+     * Metoda zwracaja danego wroga
+     */
     public Enemy getEnemy(){
         return this;
     }
 
+    /**
+     * Metoda run() watku wroga, losoujaca kierunek ruchu, wywolujaca metdoy sprawdzajace kolizje i zmieniajaca pozycje
+     * wrogow po sprawdzeniu warunkow kolizji
+     */
+
     @Override
     public void  run(){
         try {
-            Thread.sleep(1000);
-            //System.out.println(1);
+            while(true){//petla nieskonczona, wrogowie caly czas chodza
+                Thread.sleep(100);//usypianie watku na 1000 milisekund, wszystko wyliczamy co ten czas
+                //System.out.println(1);
+                //wywowlanie odpowiednik metod koloizji, sprawdzenie w ktorych kierunku moze isc dany wrod
+                boolean can_I_go_East = new Collision(this.getEnemy(), "enemy").Collision_East();
+                boolean can_I_go_West = new Collision(this.getEnemy(), "enemy").Collision_West();
+                boolean can_I_go_North = new Collision(this.getEnemy(), "enemy").Collision_North();
+                boolean can_I_go_South = new Collision(this.getEnemy(), "enemy").Collision_South();
 
-            boolean can_I_go_East = new Collision(this.getEnemy(),"enemy").Collision_East();
-            boolean can_I_go_West = new Collision(this.getEnemy(),"enemy").Collision_West();
-            boolean can_I_go_North = new Collision(this.getEnemy(),"enemy").Collision_North();
-            boolean can_I_go_South = new Collision(this.getEnemy(),"enemy").Collision_South();
-            ArrayList<Integer> value_of_directions = new ArrayList<Integer>();
+                //losowanie liczby z przedzialu 0-3, z zaleznosci od wylosowanej liczby nadaje pozniej potworowi
+                //odpowiedni kierunek
+                //0 - Wschód, 1 -Zachód, 2 -Północ, 3 -Południe
+                Random rand = new Random();
+                int kierunek = rand.nextInt(3);
 
-            //Sprawdzenie czy potwór może iśc w danym kierunku, w zależności od możliwego kierunku dodawana jest określona liczba
-            //z której będziemy potem losować nastepny kierunek potwora
-            //0 - Wschód, 1 -Zachód, 2 -Północ, 3 -Południe
+               // System.out.println("wylosowana liczba" + kierunek);
 
-          //  if (can_I_go_East == true) {
-                value_of_directions.add(0);
-         //   } else if (can_I_go_West == true) {
-                value_of_directions.add(1);
-         //   } else if (can_I_go_North == true) {
-                value_of_directions.add(2);
-           // } else if (can_I_go_South == true) {
-                value_of_directions.add(3);
-         //   }
+                //ustawienie predkosci w zaleznosci od kierunku
+                //po kazdym losowaniu kierunku jest sprawdzenie czy przypadkiem nie wykryto kolizji
+                if (kierunek == 0) {
+                   // System.out.println(0);
+                    if (can_I_go_East == true) {
+                        this.change_velX(Monsterspeed * 1);
+                        this.change_velY(0);
+                    }
+                } else if (kierunek == 1) {
+                    //System.out.println(1);
+                    if (can_I_go_West == true) {
+                        this.change_velX(Monsterspeed * (-1));
+                        this.change_velY(0);
+                    }
+                } else if (kierunek == 2) {
+                   // System.out.println(2);
+                    if (can_I_go_North == true) {
+                        this.change_velY(Monsterspeed * (-1));
+                        this.change_velX(0);
+                    }
+                } else if (kierunek == 3) {
+                    //System.out.println(3);
+                    if (can_I_go_South == true) {
+                        this.change_velY(Monsterspeed * (1));
+                        this.change_velX(0);
+                    }
+                } else {
+                    this.change_velX(0);
+                    this.change_velY(0);
+                }
 
-            //losowanie liczb z tablicy dynamicznej
-            Random rand = new Random();
-            int kierunek = rand.nextInt(value_of_directions.size());
-            System.out.println("wylosowana liczba" + kierunek);
-            //ustawienie predkosci w zaleznosci od kierunku
-            if (kierunek == 0) {
-                System.out.println(0 + "dziendobry");
-                if (can_I_go_East==true){
-                this.change_velX(Monsterspeed * 1);
-                this.change_velY(0);}
-            } else if (kierunek == 1) {
-                System.out.println(1);
-                if (can_I_go_West==true){
-                this.change_velX(Monsterspeed * (-1));
-                this.change_velY(0);}
-            } else if (kierunek == 2) {
-                System.out.println(2);
-                if (can_I_go_North==true){
-                this.change_velY(Monsterspeed * (-1));
-                this.change_velX(0);}
-            } else if (kierunek == 3) {
-                System.out.println(3);
-                if (can_I_go_South==true){
-                this.change_velY(Monsterspeed * (1));
-                this.change_velX(0);}
-            } else {
-                this.change_velY(0);
+                //zmieniam
+
+                this.changeX(this.getX() + this.get_velX());
+                this.changeY(this.getY() + this.get_velY());
+
             }
-
-            //zmieniam
-
-            this.changeX(this.getX() + this.get_velX());
-            this.changeY(this.getY() + this.get_velY());
-
         }
         catch(Exception e){
             System.out.println("Blad watku wroga");
         }
+
     }
 }

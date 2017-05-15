@@ -34,7 +34,11 @@ public final class GetConstans {
 
 	public static int MainFramewidth;
 
+	/**
+	 * Rozmiar okna Highscores, ramka jest kwadratowa
+	 */
 
+	public static int HighscoresFrameSize;
 	/**
 	 * Szybkosc gracza
 	 */
@@ -216,11 +220,14 @@ public final class GetConstans {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
+
 			Boardheight = Integer.parseInt(doc.getElementsByTagName("Boardheight").item(0).getTextContent());
 			Boardwidth = Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
 			MainFrameheight=Integer.parseInt(doc.getElementsByTagName("MainFrameheight").item(0).getTextContent());
 			MainFramewidth=Integer.parseInt(doc.getElementsByTagName("MainFramewidth").item(0).getTextContent());
+			HighscoresFrameSize=Integer.parseInt(doc.getElementsByTagName("HighscoresFrameSize").item(0).getTextContent());
 			SpeedPlayer = Integer.parseInt(doc.getElementsByTagName("SpeedPlayer").item(0).getTextContent());
+
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();
@@ -261,6 +268,7 @@ public final class GetConstans {
 				row[i] = doc.getElementsByTagName("row").item(i).getTextContent();
 			}
 
+			//tablica potrzebna do kolizji
 			StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
 			//wypelnienie stacjonarnej tablicy zerami lub jedynkami
 			for (int k=0;k<Amountoflines;k++) {
@@ -270,9 +278,8 @@ public final class GetConstans {
 						StatioonaryObjectTab[k][j] = 1;
 
 					} else StatioonaryObjectTab[k][j] = 0;
-					//System.out.print(StatioonaryObjectTab[k][j]);
 				}
-				//System.out.println();
+
 			}
 		}
 		catch(FileNotFoundException e){

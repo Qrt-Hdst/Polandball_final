@@ -4,5 +4,6 @@
  <Boardwidth>1200</Boardwidth>
  <MainFrameheight>600</MainFrameheight>
  <MainFramewidth>700</MainFramewidth>
+ <HighscoresFrameSize>700</HighscoresFrameSize>
  <SpeedPlayer>3</SpeedPlayer>
 </class>
