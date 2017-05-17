@@ -6,4 +6,5 @@
  <MainFramewidth>700</MainFramewidth>
  <HighscoresFrameSize>700</HighscoresFrameSize>
  <SpeedPlayer>3</SpeedPlayer>
+ <TimeToExplosion>3</TimeToExplosion>
 </class>

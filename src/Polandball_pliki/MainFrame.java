@@ -35,11 +35,6 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton Ending;
 
     /**
-     * Przycisk inicjalizujacy polaczenie z serwerem
-     */
-
-    private JButton ConnectToServer;
-    /**
      * Adres IP serwera
      */
 
@@ -69,7 +64,7 @@ public class MainFrame extends JFrame implements ActionListener {
      * metoda wczytujaca z pliku nr portu i adres ip serwera, tworzoca gniazdo
      * @return gniazdo serwera
      */
-    public static Socket GetSocket() {
+    public static Socket MakeSocket() {
         try {//wczytanie pliku ipconfig
             BufferedReader buildreader = new BufferedReader(new FileReader("src\\Polandball_pliki\\ipconfig.txt"));
             IPAddress = buildreader.readLine();//przypisanie adresu ip serwera z pliku
@@ -87,7 +82,7 @@ public class MainFrame extends JFrame implements ActionListener {
      */
     public static void ConnectToServer() {
         try {
-            GetSocket();//wywolanie metody Getsocket(), utworzenie gniazda
+            MakeSocket();//wywolanie metody Getsocket(), utworzenie gniazda
             /*OutputStream outputstream = serversocket.getOutputStream();//strumien wyjsciowy
             PrintWriter printwriter = new PrintWriter(outputstream, true);//wypisywanie wiadomosci na strumien
             printwriter.println("LOGIN");//uwtorzenie wiadomosci LOGIN              //wyjsciowy
@@ -106,6 +101,14 @@ public class MainFrame extends JFrame implements ActionListener {
             System.out.println("Blad: " + e);
         }
 
+    }
+
+    /**
+     * Metoda zwracajaca utworzone gniazdo
+     * @return gniazdo klienta
+     */
+    public static Socket GetSocket(){
+        return serversocket;
     }
 
 
@@ -129,28 +132,21 @@ public class MainFrame extends JFrame implements ActionListener {
         //przycisk nowej gry
         NewGame = new JButton("Nowa Gra");
         NewGame.setFont(new Font("Serif", Font.PLAIN, 20));
-        NewGame.setBounds(MainFramewidth/3,MainFrameheight/9,MainFramewidth/3,50);
+        NewGame.setBounds(MainFramewidth/3,MainFrameheight/7,MainFramewidth/3,50);
         add(NewGame);
         NewGame.addActionListener(this);
 
-        //przycisk do polaczenia z serwerem
-        ConnectToServer = new JButton("Połącz z serwerem");
-        ConnectToServer.setFont(new Font("Serif", Font.PLAIN, 20));
-        ConnectToServer.setBounds(MainFramewidth/3,(3*MainFrameheight)/9,MainFramewidth/3,50);
-        add(ConnectToServer);
-        ConnectToServer.addActionListener(this);
-
-        //przycisk do listy najlepszych wyników
+        //przycisk, ktory
         Highscores = new JButton("Najlepsze wyniki");
         Highscores.setFont(new Font("Serif", Font.PLAIN, 20));
-        Highscores.setBounds(MainFramewidth/3,(5*MainFrameheight)/9,MainFramewidth/3,50);
+        Highscores.setBounds(MainFramewidth/3,(3*MainFrameheight)/7,MainFramewidth/3,50);
         add(Highscores);
         Highscores.addActionListener(this);
 
         //przycisk wyjścia z gry
         Ending = new JButton("Wyjście");
         Ending.setFont(new Font("Serif", Font.PLAIN, 20));
-        Ending.setBounds(MainFramewidth/3,(7*MainFrameheight)/9,MainFramewidth/3,50);
+        Ending.setBounds(MainFramewidth/3,(5*MainFrameheight)/7,MainFramewidth/3,50);
         add(Ending);
         Ending.addActionListener(this);
 
@@ -172,14 +168,14 @@ public class MainFrame extends JFrame implements ActionListener {
             setnameframe.setVisible(true);
         }
         //polaczenie z serwerem
-        else if(source==ConnectToServer){
-            ConnectToServer();//wywolanie metody laczacej z serwerem
-        }
+        //else if(source==ConnectToServer){
+           // ConnectToServer();//wywolanie metody laczacej z serwerem
+       // }
         //przejscie do listy najlepszych wyników
         else if(source==Highscores){
                 if(serversocket !=null) {
                     Highscores highscores = new Highscores();
-                    highscores.GetHighscores(GetSocket());//pobranie danych z serwera, przypisanie do bufora
+                    highscores.GetHighscores(MakeSocket());//pobranie danych z serwera, przypisanie do bufora
                     highscores.ShowHighscores();//wyswietlenie listy najlepszych wynikow
                 }else{
                     System.out.println("Nie mozna wyswietlic listy najlepszych wyników");

@@ -25,7 +25,7 @@ public class Highscores {
     public static String[] results = new String[10];
 
     /**
-     * konstruktor klasy Highscores
+     * Konstruktor klasy Highscores
      */
 
     public Highscores(){}

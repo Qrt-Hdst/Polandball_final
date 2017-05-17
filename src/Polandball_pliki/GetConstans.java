@@ -23,6 +23,18 @@ public final class GetConstans {
 	public static final String Config = "src\\Polandball_pliki\\config.xml"; //poprawiłem ścieszke
 
 	/**
+	 * Wysokosc ramki
+	 **/
+
+	public static int Boardheight;
+
+	/**
+	 * Szerokosc ramki
+	 **/
+
+	public static int Boardwidth;
+
+	/**
 	 * Wysokość okna głównego - menu
 	 */
 
@@ -39,22 +51,18 @@ public final class GetConstans {
 	 */
 
 	public static int HighscoresFrameSize;
+
 	/**
 	 * Szybkosc gracza
 	 */
+
 	public static int SpeedPlayer;
 
 	/**
-	 * Wysokosc ramki
-	 **/
+	 * Zmienna zawierajaca ilosc sekund, po ktorym wybuchnie bomba
+	 */
 
-	public static int Boardheight;
-
-	/**
-	 * Szerokosc ramki
-	 **/
-
-	public static int Boardwidth;
+	public static int TimeToExplosion;
 
 	/**
 	 * Szybkosc potworow
@@ -227,6 +235,7 @@ public final class GetConstans {
 			MainFramewidth=Integer.parseInt(doc.getElementsByTagName("MainFramewidth").item(0).getTextContent());
 			HighscoresFrameSize=Integer.parseInt(doc.getElementsByTagName("HighscoresFrameSize").item(0).getTextContent());
 			SpeedPlayer = Integer.parseInt(doc.getElementsByTagName("SpeedPlayer").item(0).getTextContent());
+			TimeToExplosion = Integer.parseInt(doc.getElementsByTagName("TimeToExplosion").item(0).getTextContent());
 
 		}
 		catch(FileNotFoundException e){

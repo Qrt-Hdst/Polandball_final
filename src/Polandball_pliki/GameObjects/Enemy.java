@@ -5,6 +5,8 @@ import Polandball_pliki.Collision;
 import java.util.ArrayList;
 import java.util.Random;
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Collision.*;
 
 /**
@@ -63,65 +65,64 @@ public class Enemy extends LivingObject implements Runnable {
 
     @Override
     public void  run(){
-        try {
-            while(true){//petla nieskonczona, wrogowie caly czas chodza
-                Thread.sleep(100);//usypianie watku na 1000 milisekund, wszystko wyliczamy co ten czas
-                //System.out.println(1);
-                //wywowlanie odpowiednik metod koloizji, sprawdzenie w ktorych kierunku moze isc dany wrod
-                boolean can_I_go_East = new Collision(this.getEnemy(), "enemy").Collision_East();
-                boolean can_I_go_West = new Collision(this.getEnemy(), "enemy").Collision_West();
-                boolean can_I_go_North = new Collision(this.getEnemy(), "enemy").Collision_North();
-                boolean can_I_go_South = new Collision(this.getEnemy(), "enemy").Collision_South();
+       synchronized (this) {
+           try {
+               while (true) {//petla nieskonczona, wrogowie caly czas chodza
+                   Thread.sleep(50);//usypianie watku na 1000 milisekund, wszystko wyliczamy co ten czas
+                   //System.out.println(1);
+                   //wywowlanie odpowiednik metod koloizji, sprawdzenie w ktorych kierunku moze isc dany wrod
+                   boolean can_I_go_East = new Collision(this.getEnemy(), "enemy").Collision_East();
+                   boolean can_I_go_West = new Collision(this.getEnemy(), "enemy").Collision_West();
+                   boolean can_I_go_North = new Collision(this.getEnemy(), "enemy").Collision_North();
+                   boolean can_I_go_South = new Collision(this.getEnemy(), "enemy").Collision_South();
 
-                //losowanie liczby z przedzialu 0-3, z zaleznosci od wylosowanej liczby nadaje pozniej potworowi
-                //odpowiedni kierunek
-                //0 - Wschód, 1 -Zachód, 2 -Północ, 3 -Południe
-                Random rand = new Random();
-                int kierunek = rand.nextInt(3);
+                   //losowanie liczby z przedzialu 0-3, z zaleznosci od wylosowanej liczby nadaje pozniej potworowi
+                   //odpowiedni kierunek
+                   //0 - Wschód, 1 -Zachód, 2 -Północ, 3 -Południe
+                   Random rand = new Random();
+                   int kierunek = rand.nextInt(4);
 
-               // System.out.println("wylosowana liczba" + kierunek);
+                   // System.out.println("wylosowana liczba" + kierunek);
 
-                //ustawienie predkosci w zaleznosci od kierunku
-                //po kazdym losowaniu kierunku jest sprawdzenie czy przypadkiem nie wykryto kolizji
-                if (kierunek == 0) {
-                   // System.out.println(0);
-                    if (can_I_go_East == true) {
-                        this.change_velX(Monsterspeed * 1);
-                        this.change_velY(0);
-                    }
-                } else if (kierunek == 1) {
-                    //System.out.println(1);
-                    if (can_I_go_West == true) {
-                        this.change_velX(Monsterspeed * (-1));
-                        this.change_velY(0);
-                    }
-                } else if (kierunek == 2) {
-                   // System.out.println(2);
-                    if (can_I_go_North == true) {
-                        this.change_velY(Monsterspeed * (-1));
-                        this.change_velX(0);
-                    }
-                } else if (kierunek == 3) {
-                    //System.out.println(3);
-                    if (can_I_go_South == true) {
-                        this.change_velY(Monsterspeed * (1));
-                        this.change_velX(0);
-                    }
-                } else {
-                    this.change_velX(0);
-                    this.change_velY(0);
-                }
+                   //ustawienie predkosci w zaleznosci od kierunku
+                   //po kazdym losowaniu kierunku jest sprawdzenie czy przypadkiem nie wykryto kolizji
+                   if (kierunek == 0) {
+                        //System.out.println(0);
+                       if (can_I_go_East == true) {
+                           this.change_velX(1);
+                           this.change_velY(0);
+                       }
+                   } else if (kierunek == 1) {
+                      // System.out.println(1);
+                       if (can_I_go_West == true) {
+                           this.change_velX(-1);
+                           this.change_velY(0);
+                       }
+                   } else if (kierunek == 2) {
+                       //System.out.println(2);
+                       if (can_I_go_North == true) {
+                           this.change_velY(-1);
+                           this.change_velX(0);
+                       }
+                   } else if (kierunek == 3) {
+                      // System.out.println(3);
+                       if (can_I_go_South == true) {
+                           this.change_velY(1);
+                           this.change_velX(0);
+                       }
+                   } else {
+                       this.change_velX(0);
+                       this.change_velY(0);
+                   }
 
-                //zmieniam
+                   //zmiana pozycji wroga, w zaleznosci od mozliwego kierunku
+                   this.changeX(this.getX() + this.get_velX());
+                   this.changeY(this.getY() + this.get_velY());
+               }
 
-                this.changeX(this.getX() + this.get_velX());
-                this.changeY(this.getY() + this.get_velY());
-
-            }
-        }
-        catch(Exception e){
-            System.out.println("Blad watku wroga");
-        }
-
+           } catch (Exception e) {
+               System.out.println("Blad watku wroga");
+           }
+       }
     }
 }
