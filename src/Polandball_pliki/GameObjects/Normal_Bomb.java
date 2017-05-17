@@ -26,6 +26,7 @@ public class Normal_Bomb extends Bomb {
         y_=y;
         buffImage_=createBufferedImage();
         image_=createImageGIF();
+        explosionflag_=false;
     }
 
     /**
@@ -64,5 +65,6 @@ public class Normal_Bomb extends Bomb {
         }
         return null;
     }
+
 
 }

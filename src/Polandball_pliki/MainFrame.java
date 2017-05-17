@@ -1,7 +1,5 @@
 package Polandball_pliki;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import static Polandball_pliki.GetConstans.*;
 
 import java.awt.*;
@@ -37,17 +35,6 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton Ending;
 
     /**
-     * Przycisk inicjalizujacy polaczenie z serwerem
-     */
-
-    private JButton ConnectToServer;
-
-    /**
-     * JLabel przechowuje grafike z tlem
-     */
-
-    private JLabel BackgroundLabel;
-    /**
      * Adres IP serwera
      */
 
@@ -66,12 +53,6 @@ public class MainFrame extends JFrame implements ActionListener {
     public static Socket serversocket;
 
     /**
-     * Zmienna informujaca, czy nastapilo polaczenie z serwerem
-     */
-
-    public static boolean IsserverAvailable = false;
-
-    /**
      * Konstruktor okna głównego, zawierający funkcję initMainFrame
      */
 
@@ -83,7 +64,7 @@ public class MainFrame extends JFrame implements ActionListener {
      * metoda wczytujaca z pliku nr portu i adres ip serwera, tworzoca gniazdo
      * @return gniazdo serwera
      */
-    public static Socket GetSocket() {
+    public static Socket MakeSocket() {
         try {//wczytanie pliku ipconfig
             BufferedReader buildreader = new BufferedReader(new FileReader("src\\Polandball_pliki\\ipconfig.txt"));
             IPAddress = buildreader.readLine();//przypisanie adresu ip serwera z pliku
@@ -98,12 +79,11 @@ public class MainFrame extends JFrame implements ActionListener {
     }
     /**
      * metoda odpowiadaja za polaczenie z serwerem
-     * @return informacja i stanie polaczania - czy nastapilo czy nie
      */
-    public static boolean ConnectToServer() {
+    public static void ConnectToServer() {
         try {
-            GetSocket();//wywolanie metody Getsocket(), utworzenie gniazda
-            OutputStream outputstream = serversocket.getOutputStream();//strumien wyjsciowy
+            MakeSocket();//wywolanie metody Getsocket(), utworzenie gniazda
+            /*OutputStream outputstream = serversocket.getOutputStream();//strumien wyjsciowy
             PrintWriter printwriter = new PrintWriter(outputstream, true);//wypisywanie wiadomosci na strumien
             printwriter.println("LOGIN");//uwtorzenie wiadomosci LOGIN              //wyjsciowy
             System.out.println("WYSLANO WIADOMOSC: LOGIN");//wypisanie wiadomosci w konsoli
@@ -112,18 +92,23 @@ public class MainFrame extends JFrame implements ActionListener {
             String answer =  bufferedreader.readLine();//przypisanie odpowiedzi serwera do stringa
             if (answer.contains("LOGGED_IN")) {//jesli serwer odpowiedzial pomyslnie zwraca jest informacja o nawiazaniu polaczenia
                 System.out.println("OTRZYMANO WIADOMOSC: " + answer);//wypisanie wiadomosci w konsoli
-                IsserverAvailable =true;                            // informacja o dostepnosci serwera
-                return IsserverAvailable;
             }
             else {
                 System.out.println("Nie mozna nawiazac polaczenia");
-                return IsserverAvailable=false;
-            }
+            }*/
         } catch (Exception e) {
             System.out.println("Nie mozna nawiazac polaczenia");
             System.out.println("Blad: " + e);
         }
-        return false;
+
+    }
+
+    /**
+     * Metoda zwracajaca utworzone gniazdo
+     * @return gniazdo klienta
+     */
+    public static Socket GetSocket(){
+        return serversocket;
     }
 
 
@@ -136,14 +121,7 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(MainFramewidth,MainFrameheight);
         this.setLayout(null);
-
-
-
-        //dodaje dla okna tlo - tlo jest jeszcze z deka ulomne, nie dostosowuje sie do orzmiaru okna wejsciowego
         setContentPane(new JLabel(new ImageIcon(BackgroundString)));
-
-
-
         /*
         JLabel Information = new JLabel("Informacje",JLabel.CENTER);
         Information.setBounds(0,0,30,10);
@@ -154,32 +132,23 @@ public class MainFrame extends JFrame implements ActionListener {
         //przycisk nowej gry
         NewGame = new JButton("Nowa Gra");
         NewGame.setFont(new Font("Serif", Font.PLAIN, 20));
-        NewGame.setBounds(MainFramewidth/3,MainFrameheight/9,MainFramewidth/3,50);
+        NewGame.setBounds(MainFramewidth/3,MainFrameheight/7,MainFramewidth/3,50);
         add(NewGame);
         NewGame.addActionListener(this);
 
-        //przycisk do polaczenia z serwerem
-        ConnectToServer = new JButton("Połącz z serwerem");
-        ConnectToServer.setFont(new Font("Serif", Font.PLAIN, 20));
-        ConnectToServer.setBounds(MainFramewidth/3,(3*MainFrameheight)/9,MainFramewidth/3,50);
-        add(ConnectToServer);
-        ConnectToServer.addActionListener(this);
-
-        //przycisk do listy najlepszych wyników
+        //przycisk, ktory
         Highscores = new JButton("Najlepsze wyniki");
         Highscores.setFont(new Font("Serif", Font.PLAIN, 20));
-        Highscores.setBounds(MainFramewidth/3,(5*MainFrameheight)/9,MainFramewidth/3,50);
+        Highscores.setBounds(MainFramewidth/3,(3*MainFrameheight)/7,MainFramewidth/3,50);
         add(Highscores);
         Highscores.addActionListener(this);
 
         //przycisk wyjścia z gry
         Ending = new JButton("Wyjście");
         Ending.setFont(new Font("Serif", Font.PLAIN, 20));
-        Ending.setBounds(MainFramewidth/3,(7*MainFrameheight)/9,MainFramewidth/3,50);
+        Ending.setBounds(MainFramewidth/3,(5*MainFrameheight)/7,MainFramewidth/3,50);
         add(Ending);
         Ending.addActionListener(this);
-
-
 
     }
 
@@ -199,17 +168,17 @@ public class MainFrame extends JFrame implements ActionListener {
             setnameframe.setVisible(true);
         }
         //polaczenie z serwerem
-        else if(source==ConnectToServer){
-            ConnectToServer();//wywolanie metody laczacej z serwerem
-        }
-        //przejscie do listy najlepszych wyników ---->narazie tylko pobranie serwera  i zapisanie do pliku<----
+        //else if(source==ConnectToServer){
+           // ConnectToServer();//wywolanie metody laczacej z serwerem
+       // }
+        //przejscie do listy najlepszych wyników
         else if(source==Highscores){
-                if(IsserverAvailable==true) {
+                if(serversocket !=null) {
                     Highscores highscores = new Highscores();
-                    highscores.GetHighscores(GetSocket());
-                }
-                else{
-                    System.out.println("Nie mozna pobrac listy najlepszych wyników");
+                    highscores.GetHighscores(MakeSocket());//pobranie danych z serwera, przypisanie do bufora
+                    highscores.ShowHighscores();//wyswietlenie listy najlepszych wynikow
+                }else{
+                    System.out.println("Nie mozna wyswietlic listy najlepszych wyników");
                 }
         }
         //zamknięcie okna głownego, wyjście z gry
