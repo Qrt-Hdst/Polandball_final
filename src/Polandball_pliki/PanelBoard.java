@@ -67,6 +67,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public PanelBoard(){PanelBoard();}
 
+    public static int[] tablica = new int[50];
     /**
      * zmienna odliczajaca czas, wymagana przy interfejsie ActionListener i KeyListener
      */
@@ -86,6 +87,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         this.setLocation(0, panelinfooneheight);
         this.setBackground(Color.BLACK);
 
+        for(int i=0;i<50;i++){
+            tablica[i]=i+1;
+        }
 
 
             //dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
@@ -123,7 +127,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             }
             //metoda tworzaca watki dla wrogow, zdefiniowana pozniej, przeniesiona
             //zmienic nazwe, storzyc inna metoda ktora przyjmie zmieniona predkosc i bedzie przemieszczala wrogow
-            moveEnemies();
+            createThreadsForEnemy();
+
+
 
     }
 
@@ -157,12 +163,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param e parametr przchowujacy informacje na temat zmian w programie
      */
     public void actionPerformed(ActionEvent e) {
-        //funkcja odpowiedzialna za poruszenie gracza
-        movePlayer();
-
-        //moveEnemies();
-        //odmalowywanie gracza po kazdym wykrytym zdarzeniu
-        repaint();
+        movePlayer();//funkcja odpowiedzialna za poruszenie gracza
+        checkBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
+        repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
     }
 
     /**
@@ -178,23 +181,48 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }
 
     }
+
     /**
-     * metoda obslugujaca zmiane polozenie wrogów
+     * Metoda tworzaca watki dla wrogow
      */
 
-    void moveEnemies(){
+    void createThreadsForEnemy(){
         try {
-                for (int i = 0; i < enemy.size(); i++) {
-                    //System.out.println(0);
-                    new Thread(enemy.get(i).getEnemy()).start();//(new Enemy(enemy.get(i).getEnemy())).start();
-                }
+            for (int i = 0; i < enemy.size(); i++) {
+                //System.out.println(0);
+                new Thread(enemy.get(i).getEnemy()).start();//(new Enemy(enemy.get(i).getEnemy())).start();
+            }
 
-        }
-        catch(Exception e){
+        } catch(Exception e){
             System.out.println("Blad w watku");
             System.out.println(e);
         }
     }
+
+    /**
+     * Metoda sprawdzajaca, czy bomba juz wybuchla
+     */
+
+    private void checkBombStatus(){
+        for(int i=0;i<bomb.size();i++) {
+            if (bomb.get(i).getExplosionflag() == true){
+                bomb.remove(i);//usuniecie danej bomby z tablicy bomb, jesli wybuchla(czas sie skonczyl)
+            }
+        }
+    }
+    /*void moveEnemies() {
+        try {
+            Thread.sleep(100);
+            for (int i = 0; i < enemy.size(); i++) {
+                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+            }
+        }catch (Exception e){
+
+        }
+
+
+    }*/
 
     /**
      * metoda reagujaca na nacisniecie klawisza
@@ -218,8 +246,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             player.change_velX(0);
         }
         //stawianie bomby 
-        else if (c == KeyEvent.VK_SPACE){
-            bomb.add(new Normal_Bomb(player.getX(),player.getY()));
+        else if (c == KeyEvent.VK_SPACE) {
+            bomb.add(new Normal_Bomb(player.getX(), player.getY()));//dodanie dodani bomby do tablicy
+            new Thread(new Counter(bomb.get(bomb.size()-1))).start();//ustawienie licznika dla danego obiekty typu bomba
+                                                                     //znajdujacego sie w tablicy
         }
     }
 
@@ -254,18 +284,19 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public static int SizeHeightIcon = panelboardheight/Amountoflines;
 
-
     /**
      * funkcja rysująca mape poziomu
      * @param g grafika na której "malujemy" elementy
      */
 
     public void paint(Graphics g){
+
         g.setColor(Color.black);
         g.fillRect(0,0,panelboardwidth,panelboardheight); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
         drawBomb(g); //rysuje bomby na planszy
         drawItem(g); //rysuje itemy na planszy
-        drawLivingObject(g);//rysuje obiekty zywe
+        drawPlayerObject(g);//rysuje playera
+        drawEnemyObject(g);//rysuje wrogow
         drawTerrain(g);//rysuje elementy terenu - skrzynki, beton itd
     }
     /**
@@ -273,9 +304,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na ktorej jest namalowywana obiekty
      */
     public void drawBomb(Graphics g){
+        //rysowanie wszystkich bomb na ekran
         for(int i=0;i<bomb.size();i++){
-            //dzieki temu ze observer ma ustawiony this, gif przeladowuje swoje zdjecia
-            g.drawImage(bomb.get(i).getGIF(),bomb.get(i).getX(),bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
+                 g.drawImage(bomb.get(i).getGIF(),bomb.get(i).getX(),bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
         }
     }
     /**
@@ -288,14 +319,21 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }
     }
     /**
-     * funkcja rysujaca gracza jak i jego wrogow
+     * funkcja rysujaca gracza
      * @param g grafika na która jest namalowywana obiekty
      */
-    public void drawLivingObject(Graphics g){
+    public void drawPlayerObject(Graphics g) {
+        g.drawImage(player.getBuffImage(), player.getX(), player.getY(), SizeWidthIcon, SizeHeightIcon, null);
+    }
+    /**
+     * funkcja rysujaca wrogow
+     * @param g grafika na która jest namalowywana obiekty
+     */
 
-        g.drawImage(player.getBuffImage(),player.getX(),player.getY(),SizeWidthIcon,SizeHeightIcon,null);
+    public void drawEnemyObject(Graphics g){
         for(int i=0;i<enemy.size();i++){
-            g.drawImage(enemy.get(i).getBuffImage(),enemy.get(i).getX(),enemy.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+                g.drawImage(enemy.get(i).getBuffImage(), enemy.get(i).getX(), enemy.get(i).getY(), SizeWidthIcon, SizeHeightIcon, null);
+
         }
     }
 

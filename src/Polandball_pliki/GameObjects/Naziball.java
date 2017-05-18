@@ -12,6 +12,7 @@ import static Polandball_pliki.GetConstans.NaziBallString;
  * Klasa przeciwnika typu NaziBall
  */
 public class Naziball extends Enemy {
+
     /**
      * konstruktor obiektu naziballa
      * @param x obecne polozenie obiektu na osi x
@@ -21,8 +22,8 @@ public class Naziball extends Enemy {
         super();
         x_=x;
         y_=y;
-        velX_=Monsterspeed;
-        velY_=Monsterspeed;
+        velX_=0;
+        velY_=0;
         buffImage_=createBufferedImage();
     }
 
@@ -44,5 +45,6 @@ public class Naziball extends Enemy {
         }
         return null;
     }
+
 
 }

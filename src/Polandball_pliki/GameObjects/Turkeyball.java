@@ -22,8 +22,8 @@ public class Turkeyball extends Enemy {
         super();
         x_=x;
         y_=y;
-        velX_=Monsterspeed;
-        velY_=Monsterspeed;
+        velX_=0;
+        velY_=0;
         buffImage_=createBufferedImage();
     }
     /**
