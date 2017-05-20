@@ -30,11 +30,11 @@
       <file leaf-file-name="PanelBoard.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Polandball_pliki/PanelBoard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="127" column="12" lean-forward="false" selection-start-line="127" selection-start-column="12" selection-end-line="127" selection-end-column="12" />
+            <state relative-caret-position="391">
+              <caret line="86" column="25" lean-forward="true" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1495298753274" expanded="true" signature="14785:14801" ph="{...}" />
+                <marker date="1495300919487" expanded="true" signature="14785:14801" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -198,10 +198,10 @@
         <option value="$PROJECT_DIR$/src/Polandball_pliki/GetConstans.java" />
         <option value="$PROJECT_DIR$/src/Polandball_pliki/PathToGraphics.xml" />
         <option value="$PROJECT_DIR$/src/Polandball_pliki/GameObjects/Explosion.java" />
-        <option value="$PROJECT_DIR$/src/Polandball_pliki/PanelBoard.java" />
         <option value="$PROJECT_DIR$/src/Polandball_pliki/Counter/Counter_Normal_Bomb.java" />
         <option value="$PROJECT_DIR$/src/Polandball_pliki/Counter/Counter_Explosion.java" />
         <option value="$PROJECT_DIR$/src/Polandball_pliki/Counter/Counter.java" />
+        <option value="$PROJECT_DIR$/src/Polandball_pliki/PanelBoard.java" />
       </list>
     </option>
   </component>
@@ -639,7 +639,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="767" y="29" width="1160" height="1051" extended-state="0" />
+    <frame x="767" y="29" width="1160" height="1051" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1028,11 +1028,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Polandball_pliki/PanelBoard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="127" column="12" lean-forward="false" selection-start-line="127" selection-start-column="12" selection-end-line="127" selection-end-column="12" />
+        <state relative-caret-position="391">
+          <caret line="86" column="25" lean-forward="true" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1495298753274" expanded="true" signature="14785:14801" ph="{...}" />
+            <marker date="1495300919487" expanded="true" signature="14785:14801" ph="{...}" />
           </folding>
         </state>
       </provider>
