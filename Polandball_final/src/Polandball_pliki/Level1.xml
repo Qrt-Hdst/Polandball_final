@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<class>
+<LEVEL1>
+ <Amountofcolumns>15</Amountofcolumns>
+ <Amountoflines>15</Amountoflines>
+ <Monsterspeed>3</Monsterspeed>
+ <Amountoflifes>10</Amountoflifes>
+ <Amountofordinarybombs>8</Amountofordinarybombs>
+ <Amountofremotebombs>5</Amountofremotebombs>
+ <Amountofhusarswings>0</Amountofhusarswings>
+ <Amountoflasers>0</Amountoflasers>
+ <Amountofkeys>0</Amountofkeys>
+
+ <row>N_ NG N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ S_ S_</row>
+ <row>N_ B_ B_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
+ <row>N_ N_ N_ N_ N_ N_ N_ N_ N_ N_ S_ S_ S_ S_ S_</row>
+ <row>N_ S_ S_ S_ S_ S_ N_ N_ N_ N_ S_ S_ S_ S_ S_</row>
+ <row>NW N_ N_ S_ S_ S_ N_ N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ N_ N_ B_ S_ S_ N_ N_ N_ B_ B_ B_ B_ S_ S_</row>
+ <row>N_ S_ S_ B_ S_ S_ N_ N_ N_ N_ S_ S_ S_ s_ S_</row>
+ <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
+ <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
+ <row>N_ N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_</row>
+ <row>NW N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ B_ S_</row>
+ <row>N_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_</row>
+ <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ S_</row>
+ <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ ND</row>
+
+</LEVEL1>
+</class>
