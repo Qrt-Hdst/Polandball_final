@@ -1,5 +1,7 @@
 package Polandball_pliki;
 
+import sun.awt.windows.ThemeReader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -44,6 +46,14 @@ public class SetConnection extends JFrame implements ActionListener {
      */
 
     public static String[] configbufor = new String[7];
+
+    /**
+     * Bufor, do ktorego beda zapisywane rozdzielone dane konfiguracyjne poziomu - oddzielnie rozklad pol planszy i reszta
+     * Jego pojemnosc jest dokladnie okreslona, zalezna od ilosci zmiennych konfiguracyjnych
+     */
+
+    public static String[] levelbufor = new String[2];
+
     /**
      * Konstruktor klasy SetConnection, zawierajacy metode createFrame()
      */
@@ -93,10 +103,10 @@ public class SetConnection extends JFrame implements ActionListener {
         Object source = event.getSource();
         if(source==Yes) {
            try {
-               //----------->NIE MA JESZCZE WSZYSTKICH DANYCH Z SERWERA<----------------
                MainFrame.ConnectToServer();//polaczenie z serwerem
                GetBasicConfig(MainFrame.MakeSocket());//pobranie danych konfiguracyjnych
                GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
+               GetLevelConfig(MainFrame.MakeSocket(),1);//pobranie danych pierwszego poziomu na poczatku gry
                MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
                EventQueue.invokeLater(() -> { //utworzenie okna menu
                    MainFrame mainframe = new MainFrame();
@@ -128,7 +138,7 @@ public class SetConnection extends JFrame implements ActionListener {
                 socket.getInputStream().skip(socket.getInputStream().available());//pominiecie odpowiedzi serwera
                 OutputStream outputstream = socket.getOutputStream();//strumien wyjsciowy
                 PrintWriter printwriter = new PrintWriter(outputstream, true);//przywiazanie do strumienia wyjsciowego
-                printwriter.println("GET_CONFIGFILE");//utworzenie wiadomosci GET_HIGHSCORES    //wiadomosci ktora bedziemy wysylac
+                printwriter.println("GET_CONFIGFILE\n");//utworzenie wiadomosci GET_CONFIGfILE    //wiadomosci ktora bedziemy wysylac
                 System.out.println("WYSLANO WIADOMOSC: GET_CONFIGFILE");
                 InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
                 BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));
@@ -138,7 +148,7 @@ public class SetConnection extends JFrame implements ActionListener {
                     configbufor = answer.split(" ");//podzial ciagu tekstu i zaladowanie do bufora
                     //wyswietlenie bufora, zeby sprawdzic czy dobre    wywalic
                     for(int i=0;i<7;i++){
-                    System.out.println(configbufor[i]);}
+                        System.out.println(configbufor[i]);}
                     SetBasicConfic();//wywolanie nizje zdefiniowanej metody
                 }
                 else if(answer == "INVALID_COMMAND"){
@@ -168,4 +178,71 @@ public class SetConnection extends JFrame implements ActionListener {
         SpeedPlayer = Integer.valueOf(configbufor[5]);
         TimeToExplosion = Integer.valueOf(configbufor[6]);
     }
+
+    /**
+     * Metoda pobierajace dane, dotyczace konkretnego poziomu
+     */
+
+    public void GetLevelConfig(Socket socket, int number_of_level){
+        try {
+            if (socket != null) {//sprawdzenie czy gniazdo serwera nie jest nullem(czy zostalo "cos" przypisane)
+                socket.getInputStream().skip(socket.getInputStream().available());//pominiecie odpowiedzi serwera
+                OutputStream outputstream = socket.getOutputStream();//strumien wyjsciowy
+                PrintWriter printwriter = new PrintWriter(outputstream, true);//przywiazanie do strumienia wyjsciowego
+                                                                                         //wiadomosci ktora bedziemy wysylac
+                String level = Integer.toString(number_of_level);//konwersja na text numer poziomu ktory chcemy pobac
+                printwriter.println("GET_LEVEL: "+level+"\n");//utworzenie wiadomosci
+                System.out.println("WYSLANO WIADOMOSC: GET_LEVEL: " +level);
+                InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
+                BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));
+                String answer = buildreader.readLine();//przypisanie do stringa odczytanej wiadomosci
+                if (answer != "INVALID_COMMAND") {//sprawdzenie czy serwer zrozumial zadanie
+                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);//wyswietlenie otrzymanej wiadomosci
+                    levelbufor = answer.split("&");//podzial ciagu tekstu i zaladowanie do bufora
+                    SetLevelConfig();//wywolanie metody obrabiajacej dane
+                }
+                else if(answer == "INVALID_COMMAND"){
+                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);
+                }
+            }
+            else{
+                System.out.println("Blad socketa");//w przypadku, gdy serversocket null
+            }
+        }catch (IOException e) {
+            System.out.println("Dane nie mogły zostać pobrane z serwera zostać pobrane z serwera lub wystapil inny blad");
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Metoda obrabiajaca otrzymane dane, przypisujaca dane do zmiennych aplikacji
+     */
+
+    private void SetLevelConfig(){
+        try{
+            String[] basicparametersbufor ;//= new String[9];//bufor pomocniczy na podstawowe parametry levela
+            basicparametersbufor = levelbufor[0].split(" ");//rozdzielenie parametrow i przypisanei od bufora
+
+            Amountofcolumns = Integer.valueOf(basicparametersbufor[0]);
+            Amountoflines = Integer.valueOf(basicparametersbufor[1]);
+            Monsterspeed = Integer.valueOf(basicparametersbufor[2]);
+            Amountoflifes = Integer.valueOf(basicparametersbufor[3]);
+            Amountofordinarybombs = Integer.valueOf(basicparametersbufor[4]);
+            Amountofremotebombs = Integer.valueOf(basicparametersbufor[5]);
+            Amountofhusarswings = Integer.valueOf(basicparametersbufor[6]);
+            Amountoflasers = Integer.valueOf(basicparametersbufor[7]);
+            Amountofkeys = Integer.valueOf(basicparametersbufor[8]);
+
+            String[] rowsbufor;//bufor pomocniczy do poszczegolnych wierszy planszy
+            rowsbufor = levelbufor[1].split("%");//podzielenie mapy na wiersze
+            row = new String[Amountoflines];//utworzenie tablicy wierszy wykorzystawej w klasie Panelboard
+            for(int i=0;i<Amountoflines;i++) {
+                row[i] = rowsbufor[i];//przypisanie kazdego wiersza z bufora pomocniczego do bufora gry
+            }
+
+        }catch(Exception e){
+             System.out.println(e+"Blad metody SetLevelConfig ");
+        }
+    }
 }
+

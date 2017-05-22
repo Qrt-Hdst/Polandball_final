@@ -42,7 +42,7 @@ public class Highscores {
                 socket.getInputStream().skip(socket.getInputStream().available());//pominiecie odpowiedzi serwera
                 OutputStream outputstream = socket.getOutputStream();//strumien wyjsciowy
                 PrintWriter printwriter = new PrintWriter(outputstream, true);//przywiazanie do strumienia wyjsciowego
-                printwriter.println("GET_HIGHSCORES");//utworzenie wiadomosci GET_HIGHSCORES    //wiadomosci ktora bedziemy wysylac
+                printwriter.println("GET_HIGHSCORES\n");//utworzenie wiadomosci GET_HIGHSCORES    //wiadomosci ktora bedziemy wysylac
                 System.out.println("WYSLANO WIADOMOSC: GET_HIGHSCORES");
                 InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
                 BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));

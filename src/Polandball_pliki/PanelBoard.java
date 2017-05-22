@@ -19,6 +19,7 @@ import Polandball_pliki.Collision.Collision_LivingObject_withExplosion;
 import Polandball_pliki.Collision.Collision_Living_Object_With_Terrain;
 import Polandball_pliki.Collision.Collision_Skrzynki_withExplosion;
 import Polandball_pliki.Counter.Counter;
+import Polandball_pliki.Counter.CounterPlayer;
 import Polandball_pliki.Counter.Counter_Explosion;
 import Polandball_pliki.Counter.Counter_Normal_Bomb;
 import Polandball_pliki.GameObjects.*;
@@ -34,9 +35,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     private ArrayList<Enemy> enemy=new ArrayList<>();
 
     /**
-     * Nasz Gracz
+     * Tablica obiektow typu gracz
      */
-    private Polandball player;
+    private ArrayList<Polandball> player=new ArrayList<>();
     /**
      * Tablica obiektow zwykle bomby
      */
@@ -74,6 +75,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public String bufor_string[];
 
     /**
+     * Zmienna mówiaca czy player zyje
+     */
+    public static boolean PlayerExistence=false;
+
+    /**
      * konstruktor panelu głównego, zawierający funkcję PanelBoard
      */
 
@@ -88,6 +94,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     private void PanelBoard() {
+        //System.out.println("Size of players "+ player.size());
         panelboardheight =(int)(0.75*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelinfooneheight = (int)(0.2*Boardheight);
@@ -119,7 +126,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else if (field.get(i).get(j).equals("S_")) {
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie skrzynki w pole j,i
                     } else if (field.get(i).get(j).equals("NG")) {
-                        player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));//dodanie olayer w polu j,i
+                        player.add(new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie olayer w polu j,i
+                        PlayerExistence=true;
                     } else if (field.get(i).get(j).equals("NW")) {
                         enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie wroga w  pole j,i
                     } else if (field.get(i).get(j).equals("SD")) {
@@ -135,6 +143,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             //tworzenie watkow wrogow
             createThreadsForEnemy();
     }
+
+
 
     /**
      * funkcja losujaca typ potwora
@@ -172,7 +182,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         checkNormalBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
 
         checkExplosionStatus();//sprawdzanie czy przypadkiem eksplozja nie powinna sie juz skonczyc
-
+        checkRespawnPlayer();
         checkCounter();//funkcja sprawdzajaca stan licznik w grze
         repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
     }
@@ -182,14 +192,16 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     void movePlayer() {
-        //zmienna przechowujaca informacje czy player nie zachacza o instancje jakiegos terenu
-        boolean I_can_go=new Collision_Living_Object_With_Terrain(player,"player").getIsNotCollision();
+        if(player.size()>0) {
 
-        if(I_can_go){//jesli jest I_can_go jest true to player moze sie poruszyc
-            player.changeX(player.getX() + player.get_velX());
-            player.changeY(player.getY() + player.get_velY());
+            //zmienna przechowujaca informacje czy player nie zachacza o instancje jakiegos terenu
+            boolean I_can_go = new Collision_Living_Object_With_Terrain(player.get(0), "player").getIsNotCollision();
+
+            if (I_can_go) {//jesli jest I_can_go jest true to player moze sie poruszyc
+                player.get(0).changeX(player.get(0).getX() + player.get(0).get_velX());
+                player.get(0).changeY(player.get(0).getY() + player.get(0).get_velY());
+            }
         }
-
     }
 
     /**
@@ -310,13 +322,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     private void checkPlayerToDestroy(){
-        boolean notDestroy=true;// flaga jednoznacznie stwierdzajaca czy obiekt typu player powinnien zostac usuniety
-        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
-            Explosion explInstance=iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
-                notDestroy = new Collision_LivingObject_withExplosion(player, explInstance).getIsNotCollision();//sprawdzam czy player napewno nie ucierpi w wyniku eksplozji
+        if(player.size()>0) {
+            boolean notDestroy = true;// flaga jednoznacznie stwierdzajaca czy obiekt typu player powinnien zostac usuniety
+            for (Iterator<Explosion> iteratoExplosion = explosions.iterator(); iteratoExplosion.hasNext(); ) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
+                Explosion explInstance = iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
+                notDestroy = new Collision_LivingObject_withExplosion(player.get(0), explInstance).getIsNotCollision();//sprawdzam czy player napewno nie ucierpi w wyniku eksplozji
                 if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze gracz ucierpi w wyniku eksplozji
-                   // player=null; // nie dziala tak- trzeba pomyslec o czymm innym
+                    PlayerExistence=false;
+                    System.out.println("1");
+                    counters.add(new CounterPlayer(player.get(0)));
+                    player.remove(0); //usuwa playera z mapy
                 }
+            }
         }
     }
 
@@ -342,6 +359,29 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     }
 
     /**
+     * Metoda sprawdza czy istnieje w tej chwili na planszy player, jesli nie (a powinnien bo ma np. trzy życia i jedno przed chwilą stracił w wyniku wybuchu) ustawia playera w polu startowy
+     */
+    public void checkRespawnPlayer(){
+
+        if(PlayerExistence==true && player.size()==0) {
+            setRespawnPolandball();//wywolanie metody ustawiajacej gracza w polu startowym
+        }
+    }
+
+    /**
+     * Ustawienie Polandballa w miejscu startowym po respawnie
+     */
+    public void setRespawnPolandball() {
+        for (int i = 0; i < Amountoflines; i++) {
+            for (int j = 0; j < Amountofcolumns; j++) {
+                if (field.get(i).get(j).equals("NG")) {
+                    player.add(new Polandball(SizeWidthIcon * (j), SizeHeightIcon * (i)));//dodanie player w polu j,i
+                }
+            }
+        }
+    }
+
+    /**
      * metoda sprawdzajaca czy ktorys z licznikow nie wykryl konca odliczania i jesli tak to go usunie z tablicy
      */
     void checkCounter(){
@@ -358,26 +398,28 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        int c = e.getKeyCode();
+        if(player.size()>0) {
+            int c = e.getKeyCode();
 
-        if (c == KeyEvent.VK_LEFT) {
-            player.change_velX(SpeedPlayer * (-1));
-            player.change_velY(0);
-        } else if (c == KeyEvent.VK_RIGHT) {
-            player.change_velX(SpeedPlayer * (1));
-            player.change_velY(0);
-        } else if (c == KeyEvent.VK_DOWN){
-            player.change_velY(SpeedPlayer * (1));
-            player.change_velX(0);
-        }else if (c == KeyEvent.VK_UP){
-            player.change_velY(SpeedPlayer * (-1));
-            player.change_velX(0);
-        }
-        //stawianie bomby 
-        else if (c == KeyEvent.VK_SPACE) {
-            normal_bomb.add(new Normal_Bomb(player.getX(), player.getY()));//dodanie dodani bomby do tablicy
-            counters.add(new Counter_Normal_Bomb(normal_bomb.get(normal_bomb.size() - 1) ) );//ustawienie licznika dla danego obiekty typu bomba
-            // znajdujacego sie w tablicy
+            if (c == KeyEvent.VK_LEFT) {
+                player.get(0).change_velX(SpeedPlayer * (-1));
+                player.get(0).change_velY(0);
+            } else if (c == KeyEvent.VK_RIGHT) {
+                player.get(0).change_velX(SpeedPlayer * (1));
+                player.get(0).change_velY(0);
+            } else if (c == KeyEvent.VK_DOWN) {
+                player.get(0).change_velY(SpeedPlayer * (1));
+                player.get(0).change_velX(0);
+            } else if (c == KeyEvent.VK_UP) {
+                player.get(0).change_velY(SpeedPlayer * (-1));
+                player.get(0).change_velX(0);
+            }
+            //stawianie bomby
+            else if (c == KeyEvent.VK_SPACE) {
+                normal_bomb.add(new Normal_Bomb(player.get(0).getX(), player.get(0).getY()));//dodanie dodani bomby do tablicy
+                counters.add(new Counter_Normal_Bomb(normal_bomb.get(normal_bomb.size() - 1)));//ustawienie licznika dla danego obiekty typu bomba
+                // znajdujacego sie w tablicy
+            }
         }
     }
 
@@ -396,8 +438,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     @Override
     public void keyReleased(KeyEvent e) {
-       player.change_velY(0);
-       player.change_velX(0);
+        if(player.size()>0) {
+            player.get(0).change_velY(0);
+            player.get(0).change_velX(0);
+        }
     }
 
     /**
@@ -418,7 +462,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     public void paint(Graphics g){
-
+        //System.out.println("Size of players "+ player.size());
         g.setColor(Color.black);
         g.fillRect(0,0,(int)(0.8*Boardwidth),(int)(0.75*Boardheight)); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
         drawBomb(g); //rysuje bomby na planszy
@@ -465,7 +509,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na która jest namalowywana obiekty
      */
     public void drawPlayerObject(Graphics g) {
-        g.drawImage(player.getBuffImage(), player.getX(), player.getY(), SizeWidthIcon, SizeHeightIcon, null);
+        //System.out.println("Size of players "+ player.size());
+        if(player.size()>0) {
+            g.drawImage(player.get(0).getBuffImage(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
+        }
     }
     /**
      * funkcja rysujaca wrogow

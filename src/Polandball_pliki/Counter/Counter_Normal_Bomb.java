@@ -29,10 +29,16 @@ public class Counter_Normal_Bomb extends Counter {
         normal_bomb_=normal_bomb; //przypisanie do obiektu bomba
     }
 
+    /**
+     * Metoda wywolujaca funkcje checkTimeToExplosionBomb sprawdzajaca czas eksplozji bomby
+     */
     public void checkTime(){
         checkTimeToExplosionBomb();
     }//sprawdzam czas
 
+    /**
+     * Metoda odliczajaca czas do wybuchu bomby
+     */
     public void checkTimeToExplosionBomb(){
         long current = System.currentTimeMillis();//pobieram obecny czas
         if(current-born_time_>3000){//sprawdzam czy minely 3 sekundy od podlozenia bomby, trzeba bedzie ustawic w configu

@@ -70,6 +70,7 @@ public class MainFrame extends JFrame implements ActionListener {
             IPAddress = buildreader.readLine();//przypisanie adresu ip serwera z pliku
             Port = Integer.parseInt(buildreader.readLine());//przypisanie nr portu serwera z pliku
             serversocket = new Socket(IPAddress, Port);//utworzenie gniazda
+
         } catch (Exception e) {
             System.out.println("Nie mozna odczytac pliku");
             System.out.println("Blad: " + e);

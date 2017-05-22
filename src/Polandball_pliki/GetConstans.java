@@ -340,30 +340,31 @@ public final class GetConstans {
 	 * Metoda tworzaca statyczna tablice do tworzenia kolizji
 	 */
 	public static void MakeBoardObstacleTable(){
-
-		//tablica potrzebna do kolizji
-		StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
-		//wypelnienie stacjonarnej tablicy zerami lub jedynkami
-		for (int k=0;k<Amountoflines;k++) {
-			String bufor[] = row[k].split(" ");
-			for (int j = 0; j < Amountofcolumns; j++) {
-				//System.out.print(bufor[j]+ " ");
-				//tworzy 1 tam gdzie jest skrzynka/beton/skrzynka z drzwiami//skrzynka z kluczem// skrzynka z  innymi itemem
-				if (bufor[j].equals("S_") || bufor[j].equals("B_")  ) {
+		try {
+			//tablica potrzebna do kolizji
+			StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
+			//wypelnienie stacjonarnej tablicy zerami lub jedynkami
+			for (int k = 0; k < Amountoflines; k++) {
+				String bufor[] = row[k].split(" ");
+				for (int j = 0; j < Amountofcolumns; j++) {
 					//System.out.print(bufor[j]+ " ");
-					//System.out.print(bufor[j]+ " ");
-					StatioonaryObjectTab[k][j] = 1;
+					//tworzy 1 tam gdzie jest skrzynka/beton/skrzynka z drzwiami//skrzynka z kluczem// skrzynka z  innymi itemem
+					if (bufor[j].equals("S_") || bufor[j].equals("B_")) {
+						//System.out.print(bufor[j]+ " ");
+						//System.out.print(bufor[j]+ " ");
+						StatioonaryObjectTab[k][j] = 1;
+					} else if (bufor[j].equals("SD") || bufor[j].equals("SK") || bufor[j].equals("SI")) {
+						StatioonaryObjectTab[k][j] = 1;
+					} else {
+						StatioonaryObjectTab[k][j] = 0;
+					}
 				}
+				System.out.println();
 
-				else if(bufor[j].equals("SD") || bufor[j].equals("SK") || bufor[j].equals("SI"))
-				{
-					StatioonaryObjectTab[k][j] = 1;
-				}
-				else {StatioonaryObjectTab[k][j] = 0;}
 			}
-			System.out.println();
-
+		}
+		catch(NullPointerException e) {
+			System.out.println("W metodzie MakeBoardObstaclesTable wystapil blad typu NullPointerException");
 		}
 	}
-
 }
