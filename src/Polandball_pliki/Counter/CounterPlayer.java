@@ -24,7 +24,6 @@ public class CounterPlayer extends Counter {
 
     public CounterPlayer(Polandball player){
         super();//wywolanie konstruktora rodzica ( Counter )
-        System.out.println("2");
         born_time_=System.currentTimeMillis();//ustawienie czasu od ktorego liczymy
         isStillNeed_=true;//ustawienie flagi przydatnosci licznika na true
         player_=player;//przypisanie licznika do konkretnego obiektu eksplozji
@@ -41,10 +40,8 @@ public class CounterPlayer extends Counter {
      * Funckcja sprawdzajaca czy nastapil juz czas respawnu gracza po wczesniejszej smierci
      */
     public void checkTimeToRespawn(){
-        System.out.println("3");
         long current = System.currentTimeMillis();//obecny czas komputera
         if(current-born_time_>3000){//wykonuje sie jesli roznica wynosi wiecej niz 500
-            System.out.println("4");
             PlayerExistence=true;//zmieniam wartosc flagi w zmiennej statycznej PanelBoard, na true. Jest to sygnał zeby program zrespawnował gracza w miejscu startowm
             isStillNeed_=false;//ustawiam flage ze instancja tego licznika nie jest juz potrzebna
         }

@@ -94,7 +94,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     private void PanelBoard() {
-        //System.out.println("Size of players "+ player.size());
         panelboardheight =(int)(0.75*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelinfooneheight = (int)(0.2*Boardheight);
@@ -329,7 +328,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 notDestroy = new Collision_LivingObject_withExplosion(player.get(0), explInstance).getIsNotCollision();//sprawdzam czy player napewno nie ucierpi w wyniku eksplozji
                 if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze gracz ucierpi w wyniku eksplozji
                     PlayerExistence=false;
-                    System.out.println("1");
                     counters.add(new CounterPlayer(player.get(0)));
                     player.remove(0); //usuwa playera z mapy
                 }
