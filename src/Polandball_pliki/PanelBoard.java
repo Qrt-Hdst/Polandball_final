@@ -115,18 +115,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
                     } else if (field.get(i).get(j).equals("B_")) {
-                        terrains.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        terrains.add(new Beton(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie betonu w pole j,i
                     } else if (field.get(i).get(j).equals("S_")) {
-                        terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie skrzynki w pole j,i
                     } else if (field.get(i).get(j).equals("NG")) {
-                        player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
+                        player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));//dodanie olayer w polu j,i
                     } else if (field.get(i).get(j).equals("NW")) {
-                        enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie wroga w  pole j,i
                     } else if (field.get(i).get(j).equals("SD")) {
-                        items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SK")) {
-                        items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                        items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Klucz w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     }
                     //do zrobienia jeszcze if z itemami typu skrzydla husarskie czy laser sprawiedliwosci
@@ -147,16 +147,16 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         //losuje liczbe od 0 do 2
         int fate= randomGenerator.nextInt(3);
 
-        if(fate==0){
+        if(fate==0){//kiedy wylosuje zero losuje turkey balla
             enemy_=new Turkeyball(position_enemyX,position_enemyY);
-        }else if(fate==1){
+        }else if(fate==1){//kiedy wylosuje jeden losuje naziballa
             enemy_=new Naziball(position_enemyX,position_enemyY);
-        }else if(fate==2){
+        }else if(fate==2){//kiedy wylosuje dwa losuje sovietballa
             enemy_=new Sovietball(position_enemyX,position_enemyY);
         }else {
-            enemy_=null;
+            enemy_=null;//zwraca null w innych przypadkach, jakis blad w losowaniu
         }
-        return enemy_;
+        return enemy_;//zwracam wylosowanego wroga
 
     }
 
@@ -182,9 +182,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     void movePlayer() {
+        //zmienna przechowujaca informacje czy player nie zachacza o instancje jakiegos terenu
         boolean I_can_go=new Collision_Living_Object_With_Terrain(player,"player").getIsNotCollision();
 
-        if(I_can_go){
+        if(I_can_go){//jesli jest I_can_go jest true to player moze sie poruszyc
             player.changeX(player.getX() + player.get_velX());
             player.changeY(player.getY() + player.get_velY());
         }
@@ -198,7 +199,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     void createThreadsForEnemy(){
         try {
             for (int i = 0; i < enemy.size(); i++) {
-                //System.out.println(0);
                 new Thread(enemy.get(i).getEnemy()).start();//(new Enemy(enemy.get(i).getEnemy())).start();
             }
 
@@ -218,28 +218,28 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             //zmiana predkosci (poruszania sie) wroga, w zaleznosci od kierunku
             switch(kierunek) {
                 case 0:
-                enemy.get(i).change_velX(1);
-                enemy.get(i).change_velY(0);
-                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                    enemy.get(i).change_velX(1);
+                    enemy.get(i).change_velY(0);
+                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
                 case 1:
-                enemy.get(i).change_velX(-1);
-                enemy.get(i).change_velY(0);
-                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                    enemy.get(i).change_velX(-1);
+                    enemy.get(i).change_velY(0);
+                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
                 case 2:
-                enemy.get(i).change_velY(-1);
-                enemy.get(i).change_velX(0);
-                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                    enemy.get(i).change_velY(-1);
+                    enemy.get(i).change_velX(0);
+                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
                 case 3:
-                enemy.get(i).change_velY(1);
-                enemy.get(i).change_velX(0);
-                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                    enemy.get(i).change_velY(1);
+                    enemy.get(i).change_velX(0);
+                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
             }
         }
@@ -250,9 +250,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     private void checkNormalBombStatus(){
+        //sprawdzam wszystkie bomby po kolei
         for(int i=0;i<normal_bomb.size();i++) {
-            if (normal_bomb.get(i).getExplosionflag() == true){
-                createExplosion(normal_bomb.get(i));
+            if (normal_bomb.get(i).getExplosionflag() == true){//wywoluje sie gdy flaga bomby informujaca ze ma teraz eksplozje jest true
+                createExplosion(normal_bomb.get(i)); // tworze eksplozje na ekranie
                 normal_bomb.remove(i);//usuniecie danej bomby z tablicy bomb, jesli wybuchla(czas sie skonczyl)
             }
         }
@@ -267,7 +268,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
         explosions.add(new Explosion(bomb.getX()-SizeWidthIcon,bomb.getY()-SizeHeightIcon));//dodaje do tablicy obiekt typu eksplozja
         // UWAGAbedzie wymiarow 3 na 3 wiec przesuwam go o jedna kolumne na zachod i o wiersz na polnoc
-        checkTerrainToDestroyByExplosion();
+        checkTerrainToDestroyByExplosion();//wywoluje funkcje sprawdzajaca czy w wyniku ekplozji nie powinno sie zniszczyc jakiejs skrzynki
         counters.add(new Counter_Explosion(explosions.get(explosions.size()-1) ) );//dodaje licznik liczacy czas trwania eksplozji
     }
 
@@ -276,17 +277,15 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public void checkTerrainToDestroyByExplosion(){
 
-        boolean notDestroy=true;
+        boolean notDestroy=true;//zmienna przechowujaca informacje czy aby napewno dochodzi do jakiegoś zniszczenia obiektu
 
-        //int i=0;
-        //Iterator<Integer> iteratoIndex =index_to_delete.
-        for(Iterator<Terrain> iteratoTerrain =terrains.iterator();iteratoTerrain.hasNext();) {
-            Terrain ter = iteratoTerrain.next();
-            if (ter.getNameClassObject().equals(SkrzynkaString)) {
-                notDestroy = new Collision_Skrzynki_withExplosion( ter, explosions.get(explosions.size() - 1) ).getIsNotCollision();
-                if (!notDestroy) {
-                    StatioonaryObjectTab[ter.getRowY()][ter.getColumnX()]=0;
-                    iteratoTerrain.remove();
+        for(Iterator<Terrain> iteratoTerrain =terrains.iterator();iteratoTerrain.hasNext();) {// dokonuje iteracji po calym zbiorze terrain za pomoca iteratorow, 1) tworze iterator 2) ustawiam go na pierwszy element tej kolejkcji
+            Terrain ter = iteratoTerrain.next();//tworze instancje obiektu w petli na podstawie obiektu na ktory wskazuje iterator
+            if (ter.getNameClassObject().equals(SkrzynkaString)) {//jesli element skrzynka zwroci parametr name_class_object taki sam jak SkrzynkaString, to wykona sie if
+                notDestroy = new Collision_Skrzynki_withExplosion( ter, explosions.get(explosions.size() - 1) ).getIsNotCollision();//sprawdzam czy ta konkretne skrzynke moze zniszczyc eksplozja
+                if (!notDestroy) {//jesli eksplozja pokazuje ze mamy zniszczyc obiekt wykonuje sie if
+                    StatioonaryObjectTab[ter.getRowY()][ter.getColumnX()]=0;//zmieniam wartosc w tablicy stworzonej w GetConstan apropo pol w ktore mogą wejsc living object
+                    iteratoTerrain.remove();//usun obiekt wskazywany przez iterator ( a wlasciwie to pozbadz sie wszelkich wskaznikow na niego wskazujacych )
                 }
             }
         }
@@ -297,44 +296,45 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * Metoda sprawdzajaca status Eksplozji ( czy sie juz skonczyla czy nie , jesli tak to usuwa obiekt eksplozja
      */
     private void checkExplosionStatus(){
-        for (int i=0;i<explosions.size();i++){
-            if(explosions.get(i).get_end_of_explosion()==true){
+        for (int i=0;i<explosions.size();i++){//iteruje po co calej kolekcji eksplozje
+            if(explosions.get(i).get_end_of_explosion()==true){//jesli eksplozja ma flage oznaczajaca koniec jej istnienie to odpala sie if z usunieciem eksplozji z ekranu
                 explosions.remove(i);
             }
         }
-        checkPlayerToDetroy();
-        checkEnemyToDestroy();
+        checkPlayerToDestroy();//sprawdza czy player nie zginie w wyniku wybuchu eksplozji
+        checkEnemyToDestroy();//sprawdza czy ktorys z potwoorow nie zginie w wyniku eksplozji
     }
 
-    private void checkPlayerToDetroy(){
-        boolean notDestroy=true;
-        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {
-            // System.out.println("Here3"+ " "+explosions.size());
-            Explosion explInstance=iteratoExplosion.next();{
-                //System.out.println("Here4"+ " "+explosions.size());
-                notDestroy = new Collision_LivingObject_withExplosion(player, explInstance).getIsNotCollision();
-                //System.out.println(!notDestroy +"!notDestroy");
-                if (!notDestroy) {
+    /**
+     * Metoda sprawdza czy obiekt typu player nie zostanie zniszczonyw  wyniku eksplozjii
+     */
+
+    private void checkPlayerToDestroy(){
+        boolean notDestroy=true;// flaga jednoznacznie stwierdzajaca czy obiekt typu player powinnien zostac usuniety
+        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
+            Explosion explInstance=iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
+                notDestroy = new Collision_LivingObject_withExplosion(player, explInstance).getIsNotCollision();//sprawdzam czy player napewno nie ucierpi w wyniku eksplozji
+                if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze gracz ucierpi w wyniku eksplozji
                    // player=null; // nie dziala tak- trzeba pomyslec o czymm innym
                 }
-
-            }
         }
     }
 
+    /**
+     * Metoda sprawdzająca czy obiekt typu Enemy nie zostanie zniszczony w wyniku eksplozji
+     */
+
     private void checkEnemyToDestroy(){
-        boolean notDestroy=true;
+        boolean notDestroy=true;// flaga jednoznacznie stwierdzajaca czy obiekt typu player powinnien zostac usuniety
 
-        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {
-           // System.out.println("Here3"+ " "+explosions.size());
-            Explosion explInstance=iteratoExplosion.next();
+        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
+            Explosion explInstance=iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
 
-            for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {
-                //System.out.println("Here4"+ " "+explosions.size());
-                Enemy enemInstance = iteratoEnemy.next();
-                    notDestroy = new Collision_LivingObject_withExplosion(enemInstance, explInstance).getIsNotCollision();
-                    if (!notDestroy) {
-                        iteratoEnemy.remove();
+            for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {//iteruje po kolekcji enemy 1) tworze iterator dla kolekcji enemy 2) przypisuje go do do pierwszego elementu kolekcji enemy
+                Enemy enemInstance = iteratoEnemy.next();//tworze instancje obiektu typu enemy na podstawie obiektu na ktory wskazuje w danej chwili iterator
+                    notDestroy = new Collision_LivingObject_withExplosion(enemInstance, explInstance).getIsNotCollision();//sprawdzam czy enemy napewno nie ucierpi w wyniku eksplozji
+                    if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze gracz ucierpi w wyniku eksplozji
+                        iteratoEnemy.remove();//usuwa enemy wskazywany przez iterator
                     }
 
             }
@@ -345,10 +345,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * metoda sprawdzajaca czy ktorys z licznikow nie wykryl konca odliczania i jesli tak to go usunie z tablicy
      */
     void checkCounter(){
-        for(int i=0;i<counters.size();i++){
-            counters.get(i).checkTime();
-            if(counters.get(i).getisStillNeed()==false){
-                counters.remove(i);
+        for(int i=0;i<counters.size();i++){//iteruje po kolekcji liczniki
+            counters.get(i).checkTime();//sprawdzam czy aby i-ty element kolekcji liczniki nie powinien juz zakonczyc swojego dzialania
+            if(counters.get(i).getisStillNeed()==false){//sprawdzam czy licznik w ogole jeszcze jest potrzebny
+                counters.remove(i);//usuwam niepotrzebny licznik
             }
         }
     }
