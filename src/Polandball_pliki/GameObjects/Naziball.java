@@ -25,6 +25,9 @@ public class Naziball extends Enemy {
         velX_=0;
         velY_=0;
         buffImage_=createBufferedImage();
+        name_class_object=NaziBallString;
+        distance_from_elevation_walls=1/16;
+        distance_from_azimuth_walls=1/8;
     }
 
     /**

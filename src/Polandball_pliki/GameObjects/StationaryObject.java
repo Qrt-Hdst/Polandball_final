@@ -16,6 +16,7 @@ public class StationaryObject extends GameObject {
         x_=x;
         y_=y;
         buffImage_=null;
+        name_class_object=null;
     }
 
     /**

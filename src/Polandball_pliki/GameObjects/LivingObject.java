@@ -4,8 +4,22 @@ package Polandball_pliki.GameObjects;
  * Klasa przodek dla wszystkich poruszającyhc/żyjących obiektow
  */
 public class LivingObject extends GameObject {
+    /**
+     * prędkośc obiektu na osi x
+     */
     int velX_;
+    /**
+     * prędkośc obiektu na osi y
+     */
     int velY_;
+    /**
+     * przerwa miedzy punktami skrajnymi na zachodzie i wschodzie balla a krawedziami bocznymi grafiki
+     */
+    double distance_from_elevation_walls;
+    /**
+     * przerwa miedzy punktami skrajnymi na północy i południu balla a krawedziami sufitu i podłogi grafiki
+     */
+    double distance_from_azimuth_walls;
     /**
      * konstruktor obiektu będącego poruszającym się/żyjącym obiektem
      * @param x obecne polozenie obiektu na osi x
@@ -17,7 +31,10 @@ public class LivingObject extends GameObject {
         y_=y;
         velX_=0;
         velY_=0;
+        name_class_object=null;
         buffImage_=null;
+        distance_from_azimuth_walls=0;
+        distance_from_elevation_walls=0;
     }
 
     /**
@@ -27,9 +44,11 @@ public class LivingObject extends GameObject {
         super();
         x_=0;
         y_=0;
-        velX_=1;//testowe
-        velY_=1;//testowe
+        velX_=0;
+        velY_=0;
         buffImage_=null;
+        distance_from_azimuth_walls=0;
+        distance_from_elevation_walls=0;
     }
     /**
      * Zmienia wartosc predkosci na osi X
@@ -58,4 +77,7 @@ public class LivingObject extends GameObject {
      */
     public int get_velY(){return velY_;}
 
+    public double getDistance_from_elevation_walls(){return distance_from_elevation_walls;}
+
+    public double getDistance_from_azimuth_walls(){return distance_from_azimuth_walls;}
 }

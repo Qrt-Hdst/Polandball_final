@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import static Polandball_pliki.GetConstans.BetonString;
 import static Polandball_pliki.GetConstans.Normal_BombString;
 
 /**
@@ -26,6 +27,7 @@ public class Normal_Bomb extends Bomb {
         y_=y;
         buffImage_=createBufferedImage();
         image_=createImageGIF();
+        name_class_object=Normal_BombString;
         explosionflag_=false;
     }
 

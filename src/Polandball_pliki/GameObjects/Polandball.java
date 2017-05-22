@@ -22,7 +22,10 @@ public class Polandball extends LivingObject {
         y_=y;
         velX_=0;
         velY_=0;
+        name_class_object=PolandBallString;
         buffImage_=createBufferedImage();
+        distance_from_elevation_walls=3/16;
+        distance_from_azimuth_walls=3/16;
     }
 
     /**

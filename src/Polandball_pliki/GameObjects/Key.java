@@ -19,6 +19,7 @@ public class Key extends Item {
         super();
         x_=x;
         y_=y;
+        name_class_object=KeyString;
         buffImage_=createBufferedImage();
     }
 

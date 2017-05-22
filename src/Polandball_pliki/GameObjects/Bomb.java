@@ -6,6 +6,8 @@ package Polandball_pliki.GameObjects;
 
 import java.awt.*;
 
+import static Polandball_pliki.GetConstans.BetonString;
+
 /**
  * klasa rodzic dla wszystkich rodzajow bomb
  */
@@ -48,6 +50,7 @@ public class Bomb extends StationaryObject {
         super();
         x_ = x;
         y_ = y;
+        name_class_object=null;
         buffImage_ = null;
         image_ = null;
         explosionflag_ =false;
@@ -60,6 +63,7 @@ public class Bomb extends StationaryObject {
         super();
         x_ = 0;
         y_ = 0;
+        name_class_object=null;
         buffImage_ = null;
         image_ = null;
         explosionflag_=false;

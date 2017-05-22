@@ -14,6 +14,7 @@ public class Item extends StationaryObject {
         x_=x;
         y_=y;
         buffImage_=null;
+        name_class_object=null;
     }
 
     /**
@@ -24,5 +25,6 @@ public class Item extends StationaryObject {
         x_=0;
         y_=0;
         buffImage_=null;
+        name_class_object=null;
     }
 }

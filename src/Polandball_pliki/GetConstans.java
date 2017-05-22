@@ -1,6 +1,5 @@
 package Polandball_pliki;
 
-import Polandball_pliki.GameObjects.Normal_Bomb;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -65,6 +64,18 @@ public final class GetConstans {
 	public static int TimeToExplosion;
 
 	/**
+	 * Ilosc kolumn
+	 **/
+
+	public static int Amountofcolumns;
+
+	/**
+	 *Ilosc wierszy
+	 **/
+
+	public static int Amountoflines;
+
+	/**
 	 * Szybkosc potworow
 	 **/
 
@@ -76,17 +87,6 @@ public final class GetConstans {
 
 	public static int Amountoflifes;
 
-	/**
-	 * Ilosc kolumn
-	 **/
-
-	public static int Amountofcolumns;
-
-	/**
-	 *Ilosc wierszy
-	 **/
-
-	public static int Amountoflines;
 
 	/**
  	* Ilosc zwykłych bomb
@@ -184,13 +184,17 @@ public final class GetConstans {
 	 */
 	public static String KeyString;
 	/**
-	 * Sciezka do grafiki Key
+	 * Sciezka do gifa Normal_Bomb
 	 */
 	public static String Normal_BombString;
 	/**
 	 * Sciezka do grafiki Door
 	 */
 	public static String DoorString;
+	/**
+	 * Scieszka do gif-a z grafiką
+	 */
+	public static String ExplosionString;
 	/**
 	 * Sciezka do grafiki tła menu wejsciowego
 	 */
@@ -203,18 +207,13 @@ public final class GetConstans {
 	public static int StatioonaryObjectTab[][];
 
 	/**
-	 * Wczytywanie danych startowych z plikow
+	 * Konstruktor klasy GetConstans, wczytywanie danych startowych z plikow
 	 **/
 
 	public GetConstans(){
 		read_on_config();
-		read_on_level(1);
+		read_on_level(3);
 		read_path_to_graphics();
-		panelboardheight =(int)(0.75*Boardheight);
-		panelboardwidth =(int)(0.8*Boardwidth);
-		panelinfooneheight = (int)(0.2*Boardheight);
-		panelinfotwoheight =(int)(0.75*Boardheight);
-		panelinfotwowidth = (int)(0.2*Boardwidth);
 	}
 
 	/**
@@ -247,8 +246,8 @@ public final class GetConstans {
 	}
 
 	/**
+	 * Metoda odpowiedzialna za wczytywanie poziomu
 	 * @param level parametr decydujacy ktory level zostanie wczytany
-	 * wczytanie pliku
 	 */
 
 	void read_on_level(int level){
@@ -261,11 +260,13 @@ public final class GetConstans {
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
 
-			Monsterspeed = Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
 
-			Amountoflifes = Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
+
+
 			Amountofcolumns = Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines = Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
+			Monsterspeed = Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
+			Amountoflifes = Integer.parseInt(doc.getElementsByTagName("Amountoflifes").item(0).getTextContent());
 			Amountofordinarybombs = Integer.parseInt(doc.getElementsByTagName("Amountofordinarybombs").item(0).getTextContent());
 			Amountofremotebombs = Integer.parseInt(doc.getElementsByTagName("Amountofremotebombs").item(0).getTextContent());
 			Amountofhusarswings = Integer.parseInt(doc.getElementsByTagName("Amountofhusarswings").item(0).getTextContent());
@@ -276,20 +277,8 @@ public final class GetConstans {
 			for (int i = 0; i < Amountoflines; i++) {
 				row[i] = doc.getElementsByTagName("row").item(i).getTextContent();
 			}
-
-			//tablica potrzebna do kolizji
-			StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
-			//wypelnienie stacjonarnej tablicy zerami lub jedynkami
-			for (int k=0;k<Amountoflines;k++) {
-				String bufor[] = row[k].split(" ");
-				for (int j = 0; j < Amountofcolumns; j++) {
-					if (bufor[j].equals("S_") || bufor[j].equals("B_")) {
-						StatioonaryObjectTab[k][j] = 1;
-
-					} else StatioonaryObjectTab[k][j] = 0;
-				}
-
-			}
+			//wywolanie metody tworzacej statyczna tablicy do wykrywania kolzji
+			MakeBoardObstacleTable();
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();
@@ -299,7 +288,11 @@ public final class GetConstans {
 		}
 	}
 
-	void read_path_to_graphics() {
+	/**
+	 * Metoda wczytujaca sciezki do grafik gry
+	 */
+
+	public static void read_path_to_graphics() {
 		try {
 			File file = new File("src\\Polandball_pliki\\PathToGraphics.xml");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -316,6 +309,7 @@ public final class GetConstans {
 			DoorString = doc.getElementsByTagName("Door").item(0).getTextContent();
 			KeyString = doc.getElementsByTagName("Key").item(0).getTextContent();
 			Normal_BombString = doc.getElementsByTagName("Normal_bomb").item(0).getTextContent();
+			ExplosionString = doc.getElementsByTagName("Explosion").item(0).getTextContent();
 			BackgroundString = doc.getElementsByTagName("Background").item(0).getTextContent();
 
 		} catch (FileNotFoundException e) {
@@ -325,6 +319,12 @@ public final class GetConstans {
 		}
 	}
 
+	/**
+	 * Metoda tworzaca sciezke do poziomu
+	 * @param level
+	 * @return path - sciezka do konkretnego levela
+	 */
+
 	String create_path_to_level(int level){
 		String first_part="src\\Polandball_pliki\\Level";
 		String second_part=Integer.toString(level);
@@ -332,8 +332,38 @@ public final class GetConstans {
 
 		String path=first_part+second_part+third_part;
 
-		System.out.println(path);
+		//System.out.println(path);
 		return path;
+	}
+
+	/**
+	 * Metoda tworzaca statyczna tablice do tworzenia kolizji
+	 */
+	public static void MakeBoardObstacleTable(){
+
+		//tablica potrzebna do kolizji
+		StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
+		//wypelnienie stacjonarnej tablicy zerami lub jedynkami
+		for (int k=0;k<Amountoflines;k++) {
+			String bufor[] = row[k].split(" ");
+			for (int j = 0; j < Amountofcolumns; j++) {
+				//System.out.print(bufor[j]+ " ");
+				//tworzy 1 tam gdzie jest skrzynka/beton/skrzynka z drzwiami//skrzynka z kluczem// skrzynka z  innymi itemem
+				if (bufor[j].equals("S_") || bufor[j].equals("B_")  ) {
+					//System.out.print(bufor[j]+ " ");
+					//System.out.print(bufor[j]+ " ");
+					StatioonaryObjectTab[k][j] = 1;
+				}
+
+				else if(bufor[j].equals("SD") || bufor[j].equals("SK") || bufor[j].equals("SI"))
+				{
+					StatioonaryObjectTab[k][j] = 1;
+				}
+				else {StatioonaryObjectTab[k][j] = 0;}
+			}
+			System.out.println();
+
+		}
 	}
 
 }

@@ -154,7 +154,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 
     /**
-     * funkcja obsługująca naciśniecia przycisków
+     * Funkcja obsługująca naciśniecia przycisków
      * @param event
      */
 

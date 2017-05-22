@@ -20,6 +20,7 @@ public class Door extends Item {
         super();
         x_=x;
         y_=y;
+        name_class_object=DoorString;
         buffImage_=createBufferedImage();
     }
 

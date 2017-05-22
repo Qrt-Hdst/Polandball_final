@@ -25,6 +25,7 @@ public class Beton extends Terrain {
         super();
         x_=x;
         y_=y;
+        name_class_object=BetonString;
         buffImage_=createBufferedImage();
     }
 

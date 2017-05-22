@@ -2,6 +2,9 @@ package Polandball_pliki.GameObjects;
 
 import java.awt.image.BufferedImage;
 
+import static Polandball_pliki.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+
 /**
  * Created by Matball on 2017-04-16.
  */
@@ -10,6 +13,10 @@ import java.awt.image.BufferedImage;
  * Klasa-rodzic wszystkich obiektow na planszy
  */
 public class GameObject  {
+    /**
+     * zmienna okreslajaca nazwe typu obiektu
+     */
+    String name_class_object;
     /**
      * pozycja górnej krawedzi obiektu na x
      */
@@ -80,6 +87,29 @@ public class GameObject  {
      */
     public void changeY(int y){
         y_=y;
+    }
+
+
+    /**
+     * Podaje scieszke do grafiki jakiej uzytow klasie
+     */
+    public String getNameClassObject(){return name_class_object;}
+
+
+    //UWAGA podejrzewam ze beda problemy przy skalowaniu
+    /**
+     * Zwraca kolumne lewego gornego punktu
+     */
+    public int getColumnX(){
+        return this.getX()/SizeWidthIcon;
+    }
+
+    //UWAGA podejrzewam ze beda problemy przy skalowaniu
+    /**
+     * Zwraca wiersz lewego gornego punktu
+     */
+    public int getRowY(){
+        return this.getY()/SizeHeightIcon;
     }
 
 

@@ -1,13 +1,9 @@
 package Polandball_pliki.GameObjects;
 
-import Polandball_pliki.Collision;
+import Polandball_pliki.Collision.Collision_Living_Object_With_Terrain;
 
-import java.util.ArrayList;
-import java.util.Random;
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
-import static Polandball_pliki.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.Collision.*;
+import java.util.Random;
 
 /**
  * Klasa przodek dla przeciwnikow
@@ -25,6 +21,7 @@ public class Enemy extends LivingObject implements Runnable {
         velX_=0;
         velY_=0;
         buffImage_=null;
+        name_class_object=null;
     }
 
     /**
@@ -37,6 +34,7 @@ public class Enemy extends LivingObject implements Runnable {
         velX_=Monsterspeed;
         velY_=Monsterspeed;
         buffImage_=null;
+        name_class_object=null;
     }
 
     /**
@@ -52,6 +50,18 @@ public class Enemy extends LivingObject implements Runnable {
     }
 
     /**
+     * Zmienna określająca, który kierunek bedzie rozpatrywany podczas psrawdzania kolizji
+     */
+    int enemydirection=0;
+
+    /**
+     * Metoda zwracajaca kierunek ruchu wroga
+     * @return enemydirection - kierunek wroga
+     */
+    public int getEnemydirection(){
+        return enemydirection;
+    }
+    /**
      * Metoda zwracaja danego wroga
      */
     public Enemy getEnemy(){
@@ -65,64 +75,133 @@ public class Enemy extends LivingObject implements Runnable {
 
     @Override
     public void  run(){
-       synchronized (this) {
            try {
-               while (true) {//petla nieskonczona, wrogowie caly czas chodza
-                   Thread.sleep(50);//usypianie watku na 1000 milisekund, wszystko wyliczamy co ten czas
-                   //System.out.println(1);
-                   //wywowlanie odpowiednik metod koloizji, sprawdzenie w ktorych kierunku moze isc dany wrod
-                   boolean can_I_go_East = new Collision(this.getEnemy(), "enemy").Collision_East();
-                   boolean can_I_go_West = new Collision(this.getEnemy(), "enemy").Collision_West();
-                   boolean can_I_go_North = new Collision(this.getEnemy(), "enemy").Collision_North();
-                   boolean can_I_go_South = new Collision(this.getEnemy(), "enemy").Collision_South();
+               while (true) {//petla nieskonczona, caly czas sprawdzany jest możliwy kierunek ruchu
+                   Thread.sleep(5);//usypianie watku na x milisekund, wszystko wyliczamy co ten czas
+                   //tworzenie obiektow klasy Collision, do sprawdzania kolizji
+                   boolean can_I_go_East = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_East();
+                   boolean can_I_go_West = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_West();
+                   boolean can_I_go_North = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_North();
+                   boolean can_I_go_South = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_South();
+                   //w zaleznosci od obranego kierunku (kierunku w jakim w tej chwili porusza sie dany wrog)
+                   //jest sprawdzana odpowiednia kolizja, w odpowiedniej kolejnosci
+                   //0-wschod,1-zachod,2-polnoc,3-poludnie
+                   //------------->bez losowania kierunku<-----------------
+                   /*switch (enemydirection) {
+                       case 0:
+                           if (can_I_go_East == true) {
+                               enemydirection = 0;
+                           } else if (can_I_go_West == true) {
+                                   enemydirection = 1;
+                           } else if (can_I_go_North == true ) {
+                                   enemydirection = 2;
+                           } else if (can_I_go_South == true) {
+                                   enemydirection = 3;
+                           }
+                           break;
+                       case 1:
+                           if (can_I_go_West == true) {
+                               enemydirection = 1;
+                           } else if (can_I_go_North == true) {
+                                   enemydirection = 2;
+                           } else if (can_I_go_South == true) {
+                                   enemydirection = 3;
+                           } else if (can_I_go_East == true) {
+                                   enemydirection = 0;
+                           }
+                           break;
+                       case 2:
+                           if (can_I_go_North == true) {
+                               enemydirection = 2;
+                           } else if (can_I_go_South == true) {
+                                   enemydirection = 3;
+                           } else if (can_I_go_East == true) {
+                                   enemydirection = 0;
+                           } else if (can_I_go_West == true) {
+                                   enemydirection = 1;
+                           }
+                           break;
+                       case 3:
+                           if (can_I_go_South == true) {
+                               enemydirection = 3;
+                           } else if (can_I_go_East == true) {
+                                   enemydirection = 0;
+                           } else if (can_I_go_West == true) {
+                                   enemydirection = 1;
+                           } else if (can_I_go_North == true) {
+                                   enemydirection = 2;
+                           }
+                           break;
+                   }*/
 
-                   //losowanie liczby z przedzialu 0-3, z zaleznosci od wylosowanej liczby nadaje pozniej potworowi
-                   //odpowiedni kierunek
-                   //0 - Wschód, 1 -Zachód, 2 -Północ, 3 -Południe
-                   Random rand = new Random();
-                   int kierunek = rand.nextInt(4);
-
-                   // System.out.println("wylosowana liczba" + kierunek);
-
-                   //ustawienie predkosci w zaleznosci od kierunku
-                   //po kazdym losowaniu kierunku jest sprawdzenie czy przypadkiem nie wykryto kolizji
-                   if (kierunek == 0) {
-                        //System.out.println(0);
-                       if (can_I_go_East == true) {
-                           this.change_velX(1);
-                           this.change_velY(0);
-                       }
-                   } else if (kierunek == 1) {
-                      // System.out.println(1);
-                       if (can_I_go_West == true) {
-                           this.change_velX(-1);
-                           this.change_velY(0);
-                       }
-                   } else if (kierunek == 2) {
-                       //System.out.println(2);
-                       if (can_I_go_North == true) {
-                           this.change_velY(-1);
-                           this.change_velX(0);
-                       }
-                   } else if (kierunek == 3) {
-                      // System.out.println(3);
-                       if (can_I_go_South == true) {
-                           this.change_velY(1);
-                           this.change_velX(0);
-                       }
-                   } else {
-                       this.change_velX(0);
-                       this.change_velY(0);
+                   //-------------->z losowaniem kierunku<-------------
+                   //-------------->upewnic sie czy dziala<------------
+                   switch (enemydirection) {
+                       case 0:
+                           if (can_I_go_East == true) {
+                               enemydirection = 0;
+                           } else {
+                               Random rand = new Random();//jak nie moze isc juz, to losujemy nastepny kirunek, tak dla kazdego
+                               int los = rand.nextInt(3);
+                               if (can_I_go_West == true && los == 0 ) {
+                                   enemydirection = 1;
+                               } else if (can_I_go_North == true && los == 1) {
+                                   enemydirection = 2;
+                               } else if (can_I_go_South == true && los == 2) {
+                                   enemydirection = 3;
+                               }
+                           }
+                           break;
+                       case 1:
+                           if (can_I_go_West == true) {
+                               enemydirection = 1;
+                           } else{
+                               Random rand = new Random();
+                               int los = rand.nextInt(3);
+                               if (can_I_go_North == true && los == 0) {
+                                   enemydirection = 2;
+                               } else if (can_I_go_South == true && los == 1) {
+                                   enemydirection = 3;
+                               } else if (can_I_go_East == true && los == 2) {
+                                   enemydirection = 0;
+                               }
+                           }
+                           break;
+                       case 2:
+                           if (can_I_go_North == true) {
+                               enemydirection = 2;
+                           } else {
+                               Random rand = new Random();
+                               int los = rand.nextInt(3);
+                               if (can_I_go_South == true && los == 0) {
+                                   enemydirection = 3;
+                               } else if (can_I_go_East == true && los == 1) {
+                                   enemydirection = 0;
+                               } else if (can_I_go_West == true && los == 2) {
+                                   enemydirection = 1;
+                               }
+                           }
+                           break;
+                       case 3:
+                           if (can_I_go_South == true) {
+                               enemydirection = 3;
+                           } else {
+                               Random rand = new Random();
+                               int los = rand.nextInt(3);
+                               if (can_I_go_East == true && los == 0) {
+                                   enemydirection = 0;
+                               } else if (can_I_go_West == true && los == 1) {
+                                   enemydirection = 1;
+                               } else if (can_I_go_North == true && los == 3) {
+                                   enemydirection = 2;
+                               }
+                           }
+                           break;
                    }
 
-                   //zmiana pozycji wroga, w zaleznosci od mozliwego kierunku
-                   this.changeX(this.getX() + this.get_velX());
-                   this.changeY(this.getY() + this.get_velY());
                }
-
-           } catch (Exception e) {
+           }catch(Exception e){
                System.out.println("Blad watku wroga");
            }
-       }
     }
 }

@@ -22,6 +22,7 @@ public class PanelInfoOne extends JPanel{
 
     private void PanelInfoOne(){
 
+        panelinfooneheight = (int)(0.2*Boardheight);
         this.setSize(Boardwidth,panelinfooneheight);
         this.setLocation(0,0);
         this.setBackground(Color.GRAY);

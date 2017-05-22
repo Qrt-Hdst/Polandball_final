@@ -4,7 +4,6 @@ package Polandball_pliki;
  * Pole gry, plansza
  */
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -12,15 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
+import Polandball_pliki.Collision.Collision_LivingObject_withExplosion;
+import Polandball_pliki.Collision.Collision_Living_Object_With_Terrain;
+import Polandball_pliki.Collision.Collision_Skrzynki_withExplosion;
+import Polandball_pliki.Counter.Counter;
+import Polandball_pliki.Counter.Counter_Explosion;
+import Polandball_pliki.Counter.Counter_Normal_Bomb;
 import Polandball_pliki.GameObjects.*;
-import com.sun.glass.ui.Size;
-import com.sun.javafx.scene.control.behavior.KeyBinding;
 
 import static Polandball_pliki.GetConstans.*;
 
@@ -37,13 +38,24 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     private Polandball player;
     /**
-     * Tablica obiektow przeciwnikow
+     * Tablica obiektow zwykle bomby
      */
-    private ArrayList<Bomb> bomb=new ArrayList<>();
+    private ArrayList<Normal_Bomb> normal_bomb=new ArrayList<>();
+
+    /**
+     *  Tablica obiektow eksplozji
+     */
+
+    private ArrayList<Explosion> explosions =new ArrayList<>();
+
+    /**
+     * Tablica licznikow jakie sa w tej chwili w bazie danych
+     */
+    private ArrayList<Counter> counters=new ArrayList<>();
     /**
      *  Lista obiektow bedacych elementami terenu
      */
-    private ArrayList<Terrain> terrains=new ArrayList<>();
+    public ArrayList<Terrain> terrains=new ArrayList<>();
 
     /**
      *  Lista itemow (elementow do zebrania/uruchomienia interakcji przez gracza)
@@ -67,17 +79,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public PanelBoard(){PanelBoard();}
 
-    public static int[] tablica = new int[50];
     /**
      * zmienna odliczajaca czas, wymagana przy interfejsie ActionListener i KeyListener
      */
-    Timer tm=new Timer(5,this);
+    Timer tm=new Timer(15,this);
     /**
      * konstruktor zawirający parametry planszy, okreslenie liczby i polozenie GameObject jakie sie znajdą w grze
      */
 
     private void PanelBoard() {
-
+        panelboardheight =(int)(0.75*Boardheight);
+        panelboardwidth =(int)(0.8*Boardwidth);
+        panelinfooneheight = (int)(0.2*Boardheight);
         tm.start();
         addKeyListener(this);
         setFocusable(true);
@@ -87,13 +100,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         this.setLocation(0, panelinfooneheight);
         this.setBackground(Color.BLACK);
 
-        for(int i=0;i<50;i++){
-            tablica[i]=i+1;
-        }
-
-
             //dwuwymiarowa tablica, w której zawarte są kody poszczególnych pól planszy, wczytywane z pliku konfiguracyjnego
-
             for (int i=0;i<Amountoflines;i++) {
                 field.add(new ArrayList<>());
                 bufor_string=row[i].split(" ");
@@ -103,8 +110,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             }
 
 
-
-
+            //wypelnienie dynamicznej tablicy elementami, w zaleznosci od wczytanej konfiguracji
             for(int i=0;i<Amountoflines;i++){
                 for(int j=0;j<Amountofcolumns;j++) {
                     if (field.get(i).get(j).equals("N_")) {
@@ -116,21 +122,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                         player=new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i));
                     } else if (field.get(i).get(j).equals("NW")) {
                         enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));
-                    } else if (field.get(i).get(j).equals("ND")) {
+                    } else if (field.get(i).get(j).equals("SD")) {
                         items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
-                    } else if (field.get(i).get(j).equals("NK")) {
+                    } else if (field.get(i).get(j).equals("SK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     }
+                    //do zrobienia jeszcze if z itemami typu skrzydla husarskie czy laser sprawiedliwosci
                 }
             }
-            //metoda tworzaca watki dla wrogow, zdefiniowana pozniej, przeniesiona
-            //zmienic nazwe, storzyc inna metoda ktora przyjmie zmieniona predkosc i bedzie przemieszczala wrogow
+            //tworzenie watkow wrogow
             createThreadsForEnemy();
-
-
-
     }
 
     /**
@@ -163,8 +166,14 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param e parametr przchowujacy informacje na temat zmian w programie
      */
     public void actionPerformed(ActionEvent e) {
-        movePlayer();//funkcja odpowiedzialna za poruszenie gracza
-        checkBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
+        movePlayer();//meteda odpowiedzialna za poruszenie gracza
+        moveEnemy();//metoda odpowiedzialna za poruszanie wrogow
+
+        checkNormalBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
+
+        checkExplosionStatus();//sprawdzanie czy przypadkiem eksplozja nie powinna sie juz skonczyc
+
+        checkCounter();//funkcja sprawdzajaca stan licznik w grze
         repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
     }
 
@@ -173,7 +182,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     void movePlayer() {
-        boolean I_can_go=new Collision(player,"player").isNotCollision;
+        boolean I_can_go=new Collision_Living_Object_With_Terrain(player,"player").getIsNotCollision();
 
         if(I_can_go){
             player.changeX(player.getX() + player.get_velX());
@@ -198,32 +207,151 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             System.out.println(e);
         }
     }
+    /**
+     * Metoda poruszajaca wrogow
+     */
+
+    void moveEnemy(){
+        for(int i=0;i<enemy.size();i++){
+        //dla kazdego worga kierunek ruchu jest wyliczany w niezaleznym watku
+        int kierunek = enemy.get(i).getEnemydirection();
+            //zmiana predkosci (poruszania sie) wroga, w zaleznosci od kierunku
+            switch(kierunek) {
+                case 0:
+                enemy.get(i).change_velX(1);
+                enemy.get(i).change_velY(0);
+                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                break;
+                case 1:
+                enemy.get(i).change_velX(-1);
+                enemy.get(i).change_velY(0);
+                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                break;
+                case 2:
+                enemy.get(i).change_velY(-1);
+                enemy.get(i).change_velX(0);
+                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                break;
+                case 3:
+                enemy.get(i).change_velY(1);
+                enemy.get(i).change_velX(0);
+                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
+                break;
+            }
+        }
+    }
 
     /**
      * Metoda sprawdzajaca, czy bomba juz wybuchla
      */
 
-    private void checkBombStatus(){
-        for(int i=0;i<bomb.size();i++) {
-            if (bomb.get(i).getExplosionflag() == true){
-                bomb.remove(i);//usuniecie danej bomby z tablicy bomb, jesli wybuchla(czas sie skonczyl)
+    private void checkNormalBombStatus(){
+        for(int i=0;i<normal_bomb.size();i++) {
+            if (normal_bomb.get(i).getExplosionflag() == true){
+                createExplosion(normal_bomb.get(i));
+                normal_bomb.remove(i);//usuniecie danej bomby z tablicy bomb, jesli wybuchla(czas sie skonczyl)
             }
         }
     }
-    /*void moveEnemies() {
-        try {
-            Thread.sleep(100);
-            for (int i = 0; i < enemy.size(); i++) {
-                enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
-            }
-        }catch (Exception e){
 
+    /**
+     * Metoda tworzaca eksplozja w okreslonym obszarze
+     *
+     * @param bomb  bomba ktora wybucha i zostawia eksplozje
+     */
+    private void createExplosion(Bomb bomb){
+
+        explosions.add(new Explosion(bomb.getX()-SizeWidthIcon,bomb.getY()-SizeHeightIcon));//dodaje do tablicy obiekt typu eksplozja
+        // UWAGAbedzie wymiarow 3 na 3 wiec przesuwam go o jedna kolumne na zachod i o wiersz na polnoc
+        checkTerrainToDestroyByExplosion();
+        counters.add(new Counter_Explosion(explosions.get(explosions.size()-1) ) );//dodaje licznik liczacy czas trwania eksplozji
+    }
+
+    /**
+     * Metoda Sprawdza czy eksplozja nie zniszczyla jakichs skrzynek, jesli tak to je niszczy
+     */
+    public void checkTerrainToDestroyByExplosion(){
+
+        boolean notDestroy=true;
+
+        //int i=0;
+        //Iterator<Integer> iteratoIndex =index_to_delete.
+        for(Iterator<Terrain> iteratoTerrain =terrains.iterator();iteratoTerrain.hasNext();) {
+            Terrain ter = iteratoTerrain.next();
+            if (ter.getNameClassObject().equals(SkrzynkaString)) {
+                notDestroy = new Collision_Skrzynki_withExplosion( ter, explosions.get(explosions.size() - 1) ).getIsNotCollision();
+                if (!notDestroy) {
+                    StatioonaryObjectTab[ter.getRowY()][ter.getColumnX()]=0;
+                    iteratoTerrain.remove();
+                }
+            }
         }
 
+    }
 
-    }*/
+    /**
+     * Metoda sprawdzajaca status Eksplozji ( czy sie juz skonczyla czy nie , jesli tak to usuwa obiekt eksplozja
+     */
+    private void checkExplosionStatus(){
+        for (int i=0;i<explosions.size();i++){
+            if(explosions.get(i).get_end_of_explosion()==true){
+                explosions.remove(i);
+            }
+        }
+        checkPlayerToDetroy();
+        checkEnemyToDestroy();
+    }
 
+    private void checkPlayerToDetroy(){
+        boolean notDestroy=true;
+        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {
+            // System.out.println("Here3"+ " "+explosions.size());
+            Explosion explInstance=iteratoExplosion.next();{
+                //System.out.println("Here4"+ " "+explosions.size());
+                notDestroy = new Collision_LivingObject_withExplosion(player, explInstance).getIsNotCollision();
+                //System.out.println(!notDestroy +"!notDestroy");
+                if (!notDestroy) {
+                   // player=null; // nie dziala tak- trzeba pomyslec o czymm innym
+                }
+
+            }
+        }
+    }
+
+    private void checkEnemyToDestroy(){
+        boolean notDestroy=true;
+
+        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {
+           // System.out.println("Here3"+ " "+explosions.size());
+            Explosion explInstance=iteratoExplosion.next();
+
+            for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {
+                //System.out.println("Here4"+ " "+explosions.size());
+                Enemy enemInstance = iteratoEnemy.next();
+                    notDestroy = new Collision_LivingObject_withExplosion(enemInstance, explInstance).getIsNotCollision();
+                    if (!notDestroy) {
+                        iteratoEnemy.remove();
+                    }
+
+            }
+        }
+    }
+
+    /**
+     * metoda sprawdzajaca czy ktorys z licznikow nie wykryl konca odliczania i jesli tak to go usunie z tablicy
+     */
+    void checkCounter(){
+        for(int i=0;i<counters.size();i++){
+            counters.get(i).checkTime();
+            if(counters.get(i).getisStillNeed()==false){
+                counters.remove(i);
+            }
+        }
+    }
     /**
      * metoda reagujaca na nacisniecie klawisza
      * @param e wydarzenie przechowujace informacje na temat wcisnietego klawisza
@@ -247,9 +375,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }
         //stawianie bomby 
         else if (c == KeyEvent.VK_SPACE) {
-            bomb.add(new Normal_Bomb(player.getX(), player.getY()));//dodanie dodani bomby do tablicy
-            new Thread(new Counter(bomb.get(bomb.size()-1))).start();//ustawienie licznika dla danego obiekty typu bomba
-                                                                     //znajdujacego sie w tablicy
+            normal_bomb.add(new Normal_Bomb(player.getX(), player.getY()));//dodanie dodani bomby do tablicy
+            counters.add(new Counter_Normal_Bomb(normal_bomb.get(normal_bomb.size() - 1) ) );//ustawienie licznika dla danego obiekty typu bomba
+            // znajdujacego sie w tablicy
         }
     }
 
@@ -276,13 +404,13 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
      */
 
-    public static int SizeWidthIcon = panelboardwidth/Amountofcolumns;
+    public static int SizeWidthIcon = ((int)(0.8*Boardwidth))/Amountofcolumns;
 
     /**
      * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
      */
 
-    public static int SizeHeightIcon = panelboardheight/Amountoflines;
+    public static int SizeHeightIcon = ((int)(0.75*Boardheight))/Amountoflines;
 
     /**
      * funkcja rysująca mape poziomu
@@ -292,12 +420,13 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void paint(Graphics g){
 
         g.setColor(Color.black);
-        g.fillRect(0,0,panelboardwidth,panelboardheight); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
+        g.fillRect(0,0,(int)(0.8*Boardwidth),(int)(0.75*Boardheight)); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
         drawBomb(g); //rysuje bomby na planszy
         drawItem(g); //rysuje itemy na planszy
         drawPlayerObject(g);//rysuje playera
         drawEnemyObject(g);//rysuje wrogow
         drawTerrain(g);//rysuje elementy terenu - skrzynki, beton itd
+        drawExplosion(g);//rysuje eksplozje
     }
     /**
      * funkcja rysujaca bomby na grafice
@@ -305,8 +434,21 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public void drawBomb(Graphics g){
         //rysowanie wszystkich bomb na ekran
-        for(int i=0;i<bomb.size();i++){
-                 g.drawImage(bomb.get(i).getGIF(),bomb.get(i).getX(),bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
+        for(int i=0;i<normal_bomb.size();i++){
+                 g.drawImage(normal_bomb.get(i).getGIF(),normal_bomb.get(i).getX(),normal_bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
+        }
+    }
+
+    /**
+     * funkcja rysujaca eksplozji na grafice
+     * @param g grafika na którje jest namalowywane obiekty
+     */
+    public void drawExplosion(Graphics g) {
+        //rysowanie wszystkich eksplozji na ekran
+        for (int i = 0; i < explosions.size(); i++) {
+            {
+                g.drawImage(explosions.get(i).getGIF(), explosions.get(i).getX(), explosions.get(i).getY(), 3*SizeWidthIcon, 3*SizeHeightIcon, this);
+            }
         }
     }
     /**

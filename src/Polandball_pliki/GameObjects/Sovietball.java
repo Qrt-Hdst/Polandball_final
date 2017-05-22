@@ -24,7 +24,10 @@ public class Sovietball extends Enemy {
         y_=y;
         velX_=0;//Monsterspeed;
         velY_=0;//Monsterspeed;
+        name_class_object=SovietBallString;
         buffImage_=createBufferedImage();
+        distance_from_elevation_walls=1/32;
+        distance_from_azimuth_walls=1/32;
     }
 
     /**

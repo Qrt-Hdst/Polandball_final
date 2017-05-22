@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<class>
+<LEVEL1>
+ <Amountofcolumns>30</Amountofcolumns>
+ <Amountoflines>16</Amountoflines>
+ <Monsterspeed>3</Monsterspeed>
+ <Amountoflifes>3</Amountoflifes>
+ <Amountofordinarybombs>8</Amountofordinarybombs>
+ <Amountofremotebombs>5</Amountofremotebombs>
+ <Amountofhusarswings>0</Amountofhusarswings>
+ <Amountoflasers>0</Amountoflasers>
+ <Amountofkeys>0</Amountofkeys>
+
+
+
+
+
+
+
+ <row>N_ NG S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
+ <row>N_ NW N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_ N_ S_ N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ NW N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_</row>
+ <row>N_ NW N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_ N_ S_ N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ NW N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_ N_ S_ N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ NW N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ B_ B_ N_ N_ N_ B_ N_ B_ B_ B_ B_ N_ B_ B_ B_ N_ B_ N_ B_ B_ B_ N_ B_ N_ N_ NW N_ N_ N_</row>
+ <row>N_ B_ N_ B_ N_ B_ B_ N_ B_ N_ N_ B_ N_ B_ N_ N_ N_ B_ N_ B_ NW NW N_ B_ N_ N_ NW B_ N_ N_</row>
+ <row>N_ B_ N_ N_ B_ N_ B_ N_ B_ N_ N_ B_ N_ B_ N_ N_ N_ B_ N_ B_ NW NW N_ B_ N_ N_ B_ N_ N_ N_</row>
+ <row>N_ B_ N_ N_ N_ N_ B_ N_ B_ B_ B_ B_ N_ B_ N_ N_ N_ B_ N_ B_ NW NW N_ B_ N_ B_ NW N_ N_ N_</row>
+ <row>N_ B_ N_ N_ N_ NW B_ N_ B_ N_ N_ B_ N_ B_ N_ N_ N_ B_ N_ B_ B_ B_ N_ B_ B_ N_ NW N_ N_ N_</row>
+ <row>N_ B_ N_ N_ N_ NW B_ N_ B_ N_ N_ B_ N_ B_ N_ N_ N_ B_ N_ B_ N_ N_ N_ B_ N_ B_ NW N_ N_ N_</row>
+ <row>N_ B_ N_ N_ N_ NW B_ N_ B_ N_ N_ B_ N_ B_ N_ N_ N_ B_ N_ B_ NW NW N_ B_ N_ N_ B_ N_ N_ N_</row>
+ <row>N_ B_ N_ N_ N_ NW B_ N_ B_ N_ N_ B_ N_ B_ B_ B_ N_ B_ N_ B_ B_ B_ N_ B_ N_ N_ NW B_ N_ N_</row>
+ <row>S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>
+
+
+</LEVEL1>
+</class>

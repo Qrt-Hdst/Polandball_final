@@ -1,29 +1,22 @@
-package Polandball_pliki;
+package Polandball_pliki.Collision;
 
 import Polandball_pliki.GameObjects.LivingObject;
-import Polandball_pliki.GameObjects.Enemy;
-import Polandball_pliki.GameObjects.Polandball;
-import Polandball_pliki.GameObjects.StationaryObject;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.GetConstans.Amountofcolumns;
+import static Polandball_pliki.GetConstans.Amountoflines;
+import static Polandball_pliki.GetConstans.StatioonaryObjectTab;
 import static Polandball_pliki.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.PanelBoard.SizeWidthIcon;
 
 /**
- *  Klasa sprawdzajaca kolizje
+ * Created by Matball on 2017-05-20.
  */
-public class Collision {
 
-    /**
-     * Zmienna okreslajaca, czy nie nastapila kolizja
-     */
-    public boolean isNotCollision = true;
+/**
+ * Klasa typu kolizja rostrzygajaca czy obiekt typu living object moze przejsc przez dana komorke
+ * (o ile nie ma tam zadnej skrzynki/betonu
+ */
+public class Collision_Living_Object_With_Terrain extends Collision {
 
     /**
      * Wiersz w typie double, w ktorym znajduje sie dany livingobject
@@ -56,9 +49,8 @@ public class Collision {
     //nalezy ustawic na "player" jak wrog to "enemy"
     //wykorzystanie metod sprawdzajacyh konkretny kierunek ruchu, kazda z tych metod, gdy nie wykryje kolizji wg.
     //podanych warunkow ustawia kolozje na true ------>mozna zmienic<------
-    //!!!!!!!!!!!!!!!!!!!!!!!!!TRZEBA ZROBIC ODDZIELNIE DLA WROGOW, BO NIE LAPIE JAK PLAYER CHODZI!!!!!!!!!!!!!!!!!!!!
-    public Collision(LivingObject livingobject, String kind_of_living_object) {
-
+    public Collision_Living_Object_With_Terrain(LivingObject livingobject, String kind_of_living_object) {
+        super(); //wywoluje konstruktor klasy rodzica
         //wiersz w double, w ktorym znajduje sie dany livingobject
         double_row_livingobject = (double) livingobject.getY() / (double) SizeHeightIcon;
         //kolumna w double, w ktorej znajduje sie dany livingobject
