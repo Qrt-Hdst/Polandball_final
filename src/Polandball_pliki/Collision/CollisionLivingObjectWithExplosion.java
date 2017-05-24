@@ -13,7 +13,7 @@ import static Polandball_pliki.PanelBoard.SizeWidthIcon;
 /**
  * Obiekt Kolizja wykrywajacy likwidacje obiektow typu livingObject przez eksplozje
  */
-public class Collision_LivingObject_withExplosion extends Collision{
+public class CollisionLivingObjectWithExplosion extends Collision{
 
     /**
      * Max zachodni punkt eksplozji
@@ -49,7 +49,7 @@ public class Collision_LivingObject_withExplosion extends Collision{
      */
     int LivingObject_point_south;
 
-    public  Collision_LivingObject_withExplosion(LivingObject livingObject, Explosion explosion){
+    public  CollisionLivingObjectWithExplosion(LivingObject livingObject, Explosion explosion){
         super();
 
      //Punkty skrajne eksplozji

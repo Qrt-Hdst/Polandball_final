@@ -13,7 +13,7 @@ import static Polandball_pliki.PanelBoard.SizeWidthIcon;
 /**
  * Klasa zajmujaca sie sytuacja kiedy eksplozja moze zniszczyc jakes skrzynki
  */
-public class Collision_Skrzynki_withExplosion extends Collision{
+public class CollisionExplosionWithSkrzynki extends Collision{
     /**
      * Max zachodni punkt eksplozji
      */
@@ -54,7 +54,7 @@ public class Collision_Skrzynki_withExplosion extends Collision{
      * @param skrzynka
      * @param explosion
      */
-    public Collision_Skrzynki_withExplosion(Terrain skrzynka, Explosion explosion){
+    public CollisionExplosionWithSkrzynki(Terrain skrzynka, Explosion explosion){
         super();
         //Punkty skrajne eksplozji
 

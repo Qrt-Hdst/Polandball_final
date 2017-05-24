@@ -1,6 +1,6 @@
 package Polandball_pliki.GameObjects;
 
-import Polandball_pliki.Collision.Collision_Living_Object_With_Terrain;
+import Polandball_pliki.Collision.CollisionLivingObjectWithTerrain;
 
 import static Polandball_pliki.GetConstans.*;
 import java.util.Random;
@@ -79,10 +79,10 @@ public class Enemy extends LivingObject implements Runnable {
                while (true) {//petla nieskonczona, caly czas sprawdzany jest możliwy kierunek ruchu
                    Thread.sleep(5);//usypianie watku na x milisekund, wszystko wyliczamy co ten czas
                    //tworzenie obiektow klasy Collision, do sprawdzania kolizji
-                   boolean can_I_go_East = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_East();
-                   boolean can_I_go_West = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_West();
-                   boolean can_I_go_North = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_North();
-                   boolean can_I_go_South = new Collision_Living_Object_With_Terrain(this.getEnemy(), "enemy").Collision_South();
+                   boolean can_I_go_East = new CollisionLivingObjectWithTerrain(this.getEnemy(), "enemy").Collision_East();
+                   boolean can_I_go_West = new CollisionLivingObjectWithTerrain(this.getEnemy(), "enemy").Collision_West();
+                   boolean can_I_go_North = new CollisionLivingObjectWithTerrain(this.getEnemy(), "enemy").Collision_North();
+                   boolean can_I_go_South = new CollisionLivingObjectWithTerrain(this.getEnemy(), "enemy").Collision_South();
                    //w zaleznosci od obranego kierunku (kierunku w jakim w tej chwili porusza sie dany wrog)
                    //jest sprawdzana odpowiednia kolizja, w odpowiedniej kolejnosci
                    //0-wschod,1-zachod,2-polnoc,3-poludnie

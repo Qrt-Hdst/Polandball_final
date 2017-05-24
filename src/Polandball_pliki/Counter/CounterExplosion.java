@@ -12,7 +12,7 @@ import static Polandball_pliki.GetConstans.TimeToExplosion;
 /**
  * Klasa typu Counter odliczajaca czas do konca eksplozji ( i znikniecia jej grafiki na mapie
  */
-public class Counter_Explosion extends Counter  {
+public class CounterExplosion extends Counter  {
 
     /**
      * Instacja klasy Eksplozji
@@ -26,7 +26,7 @@ public class Counter_Explosion extends Counter  {
      * @param explosion eksplozja ktorej odlicza czas trwania
      */
 
-    public Counter_Explosion(Explosion explosion){
+    public CounterExplosion(Explosion explosion){
         super();//wywolanie konstruktora rodzica ( Counter )
         born_time_=System.currentTimeMillis();//ustawienie czasu od ktorego liczymy
         isStillNeed_=true;//ustawienie flagi przydatnosci licznika na true

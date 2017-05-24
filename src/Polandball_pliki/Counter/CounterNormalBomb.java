@@ -10,7 +10,7 @@ import Polandball_pliki.GameObjects.Normal_Bomb;
 /**
  * Klasa typu Counter odliczajaca tykniecia do wybuchu zwyklej bomby
  */
-public class Counter_Normal_Bomb extends Counter {
+public class CounterNormalBomb extends Counter {
     /**
      * Instacja klasy Normal_Bomb
      */
@@ -22,7 +22,7 @@ public class Counter_Normal_Bomb extends Counter {
      * Konstruktor ustawiajacy czas i pocztkowe wartosci Licznika
      * @param normal_bomb bomba ktorej odlicza czas licznik
      */
-    public Counter_Normal_Bomb(Normal_Bomb normal_bomb){
+    public CounterNormalBomb(Normal_Bomb normal_bomb){
         super();
         born_time_=System.currentTimeMillis();// ustawiam czas kiedy powstal counter
         isStillNeed_=true; // flaga mowiaca czy counter nadal cos sensownego liczy
