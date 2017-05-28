@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
 import static Polandball_pliki.GetConstans.*;
 
@@ -104,21 +105,26 @@ public class SetConnection extends JFrame implements ActionListener {
         if(source==Yes) {
            try {
                MainFrame.ConnectToServer();//polaczenie z serwerem
-               GetBasicConfig(MainFrame.MakeSocket());//pobranie danych konfiguracyjnych
-               GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
-               GetLevelConfig(MainFrame.MakeSocket(),1);//pobranie danych pierwszego poziomu na poczatku gry
-               MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
-               EventQueue.invokeLater(() -> { //utworzenie okna menu
-                   MainFrame mainframe = new MainFrame();
-                   mainframe.setVisible(true);
-               });
-               this.setVisible(false);
+               if(MainFrame.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
+                   GetBasicConfig(MainFrame.MakeSocket());//pobranie danych konfiguracyjnych
+                   GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
+                   GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+                   MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
+                   EventQueue.invokeLater(() -> { //utworzenie okna menu
+                       MainFrame mainframe = new MainFrame();
+                       mainframe.setVisible(true);
+                   });
+                   this.setVisible(false);
+               }else{//jak nie sie nie udalo to komunikacik i dobranoc
+                   JOptionPane.showMessageDialog(null, "Nie udało się uruchomić gry w trybie online.");
+               }
            }catch (Exception e){
                System.out.println(e);
            }
         }
         if(source==No) {
-            GetConstans getConstans_=new GetConstans();//
+            GetConstans getConstans_=new GetConstans();//wczytanie grafik i podstawowych parametrow aplikacji
+            GetConstans.read_on_level(3);//wczytanie parametrow poziomu, narazie 3 level do testow
             //utworzenie okna menu
             EventQueue.invokeLater(() -> {
                 MainFrame mainframe = new MainFrame();
@@ -177,6 +183,8 @@ public class SetConnection extends JFrame implements ActionListener {
         HighscoresFrameSize = Integer.valueOf(configbufor[4]);
         SpeedPlayer = Integer.valueOf(configbufor[5]);
         TimeToExplosion = Integer.valueOf(configbufor[6]);
+        //ilosc poczatkowych punktow, zawsze 0;
+        Amountofpoints=0;
     }
 
     /**

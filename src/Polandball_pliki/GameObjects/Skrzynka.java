@@ -36,7 +36,7 @@ public class Skrzynka extends Terrain {
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu");
+            System.out.println("Blad wczytywania obiektu typu skrzynka");
         }catch (Exception e) {
             e.printStackTrace();
         }

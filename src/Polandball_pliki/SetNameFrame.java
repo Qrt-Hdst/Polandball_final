@@ -5,6 +5,9 @@ import static Polandball_pliki.GetConstans.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 import javax.sound.sampled.Port;
 import javax.swing.*;
 
@@ -75,7 +78,7 @@ public class SetNameFrame extends JFrame implements ActionListener {
     }
 
     /**
-     * funkcja obsługująca zdarzenia okna - wczytywanie nazwy gracza
+     * Metoda obsługująca zdarzenia okna - wczytywanie nazwy gracza
      * @param event
      */
 
@@ -83,19 +86,25 @@ public class SetNameFrame extends JFrame implements ActionListener {
         Object source = event.getSource();
         //wczytanie nazwy gracza, zamknięcie okna, przejście do poziomu 1
         if(source==Okey){
-            nickname = TextField.getText();
-            LevelFrame levelframe = new LevelFrame();
-            levelframe.setVisible(true);
-            this.setVisible(false);
+                nickname = TextField.getText();//wczytanie nazwy gracza z pola tekstowego
+                if(nickname.length() > 10 || nickname.indexOf(" ") != -1){
+                    //NAZWA GRACZA NIE MOZE BYC DLUZSZA NIZ 10 ZNAKOW i nie moze zawierac spacji
+                    JOptionPane.showMessageDialog(null, "Nieprawidłowa nazwa gracza");
+                    // ^ informacja o nieprawidlowej nazwie gracza
+                }else{//jak wszystko okey to gramy
+                 LevelFrame levelframe = new LevelFrame();
+                 levelframe.setVisible(true);
+                 this.setVisible(false);
+                }
         }
 
     }
 
     /**
-     * funkcja zwracająca tekst wpisany w textfielda
+     * Metoda zwracająca tekst wpisany w textfielda
      */
 
-    public String GetName(){
+    public static String GetName(){
         return nickname;
     }
 

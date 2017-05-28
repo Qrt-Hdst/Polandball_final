@@ -40,7 +40,7 @@ public class Polandball extends LivingObject {
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu");
+            System.out.println("Blad wczytywania obiektu typu Polandball");
         }catch (Exception e) {
             e.printStackTrace();
         }

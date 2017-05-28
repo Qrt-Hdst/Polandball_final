@@ -99,6 +99,7 @@ public class CollisionExplosionWithSkrzynki extends Collision{
 
         }
 
+
         //kolizja z wschodnia czescia eksplozji    exp|skrzynki
 
         //sprawdzam czy obiekt miesci sie w wschodnim i zachodnim punkcie eksplozji

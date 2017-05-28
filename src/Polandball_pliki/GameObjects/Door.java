@@ -36,7 +36,7 @@ public class Door extends Item {
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu");
+            System.out.println("Blad wczytywania obiektu typu drzwi");
         }catch (Exception e) {
             e.printStackTrace();
         }

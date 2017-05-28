@@ -45,10 +45,10 @@ public class Normal_Bomb extends Bomb {
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu1");
+            System.out.println("Blad wczytywania obiektu typu normal_bomb");
         }catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu2");
+            System.out.println("Blad wczytywania obiektu typu normal_bomb");
         }
         return null;
     }
@@ -63,7 +63,7 @@ public class Normal_Bomb extends Bomb {
             return image_;
         }catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu2");
+            System.out.println("Blad wczytywania obiektu typu normal_bomb");
         }
         return null;
     }

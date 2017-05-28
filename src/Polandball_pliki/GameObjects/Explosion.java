@@ -71,7 +71,7 @@ public class Explosion extends GameObject {
                 System.out.println("Blad wczytywania obiektu1");
             }catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Blad wczytywania obiektu2");
+                System.out.println("Blad wczytywania obiektu typu eksplozja");
             }
             return null;
         }
@@ -86,7 +86,7 @@ public class Explosion extends GameObject {
                 return image_;
             }catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Blad wczytywania obiektu3");
+                System.out.println("Blad wczytywania obiektu typu eksplozja");
             }
             return null;
         }

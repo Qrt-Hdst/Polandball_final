@@ -11,6 +11,35 @@ import static Polandball_pliki.GetConstans.*;
 public class PanelInfoOne extends JPanel{
 
     /**
+     * Label odpowiedzialny za wyswietlanie ilosci zyc
+     */
+    public static JLabel LifeLabel2;
+
+    /**
+     * Label odpowiedzialny za wyswietlanie punktow
+     */
+
+    public static JLabel PointLabel2;
+
+    /**
+     * Label odpowiedzialny za pokazywanie, ile pozostalo czasu
+     */
+
+    public static  JLabel TimeLabel2;
+
+    /**
+     * Label odpowiedzialny za wyswietlanie aktualnego poziomu
+     */
+
+    public static JLabel LevelLabel2;
+
+    /**
+     * Zmienna przechowujaca nazwe gracza
+     */
+
+    public static String PlayerName;
+
+    /**
      * konstruktor panelu pierwszego, zawierający funkcję PanelInfoOne
      */
 
@@ -55,28 +84,33 @@ public class PanelInfoOne extends JPanel{
         //ilosc zyc zawarta w pliku konfiguracyjnym
         String ilosczyc =Integer.toString(Amountoflifes);
 
-        JLabel LifeLabel2 = new JLabel(ilosczyc,JLabel.CENTER);
+        LifeLabel2 = new JLabel(ilosczyc,JLabel.CENTER);
         LifeLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(LifeLabel2);
 
-        JLabel PointLabel2 = new JLabel("0",JLabel.CENTER);
+        //ilosc punktow, zawsze 0, konwersja
+        String iloscpunktow = Integer.toString(Amountofpoints=0);
+
+        PointLabel2 = new JLabel(iloscpunktow,JLabel.CENTER);
         PointLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(PointLabel2);
 
-        JLabel TimeLabel2 = new JLabel("0:00",JLabel.CENTER);
+        //czas, od ktorego odliczamy
+        String iloscczasu = Integer.toString((int) Math.floor(LevelTime / 60)) + ":0"
+                + Integer.toString((int) (LevelTime - (Math.floor(LevelTime / 60)) * 60));
+
+        TimeLabel2 = new JLabel(iloscczasu,JLabel.CENTER);
         TimeLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(TimeLabel2);
 
-        JLabel LevelLabel2 = new JLabel("I",JLabel.CENTER);
+        LevelLabel2 = new JLabel(Integer.toString(WhiChLevel),JLabel.CENTER);
         LevelLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(LevelLabel2);
 
-        //stworzenie obiektu klasy klasy SetNameFrame w celu wczytania nazwy podanej w textfieldzi tej klasy
-        String name;
-        SetNameFrame nick = new SetNameFrame();
-        name=nick.GetName();
+        //wyswietlenie nazwy gracza wczytanej w okienku wyboru nicku w odpowiednim labelu
+        PlayerName = SetNameFrame.GetName();
 
-        JLabel NameLabel2 = new JLabel(name,JLabel.CENTER);
+        JLabel NameLabel2 = new JLabel(PlayerName,JLabel.CENTER);
         NameLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(NameLabel2);
 

@@ -5,27 +5,24 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.BetonString;
-import static Polandball_pliki.GetConstans.PolandBallString;
+import static Polandball_pliki.GetConstans.KeyString;
+import static Polandball_pliki.GetConstans.WingsOfHussarString;
 
 /**
- * Created by Matball on 2017-04-17.
+ * Item Skrzydła hussarskie do zebrania
  */
+public class WingsOfHussar extends Item {
 
-/**
- * klasa przeciwnika typu Beton - niezniszczalnej ściany
- */
-public class Beton extends Terrain {
     /**
-     * konstruktor obiektu beton
+     * konstruktor obiektu klucz
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
-    public Beton(int x,int y){
+    public WingsOfHussar(int x, int y){
         super();
         x_=x;
         y_=y;
-        name_class_object=BetonString;
+        name_class_object=WingsOfHussarString;
         buffImage_=createBufferedImage();
     }
 
@@ -35,13 +32,13 @@ public class Beton extends Terrain {
      */
     BufferedImage createBufferedImage(){
         try {
-            File file = new File(BetonString);
+            File file = new File(WingsOfHussarString);
             BufferedImage bufferedImage= ImageIO.read(file);
             return bufferedImage;
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu typu beton");
+            System.out.println("Blad wczytywania obiektu skrzydła hussarksie");
         }catch (Exception e) {
             e.printStackTrace();
         }

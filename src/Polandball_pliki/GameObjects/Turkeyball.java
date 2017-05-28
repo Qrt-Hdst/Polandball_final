@@ -41,7 +41,7 @@ public class Turkeyball extends Enemy {
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu");
+            System.out.println("Blad wczytywania obiektu turkey ball");
         }catch (Exception e) {
             e.printStackTrace();
         }

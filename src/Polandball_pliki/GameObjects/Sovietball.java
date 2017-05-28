@@ -42,7 +42,7 @@ public class Sovietball extends Enemy {
         }
         catch(IOException e ){
             e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu");
+            System.out.println("Blad wczytywania obiektu sovietball");
         }catch (Exception e) {
             e.printStackTrace();
         }

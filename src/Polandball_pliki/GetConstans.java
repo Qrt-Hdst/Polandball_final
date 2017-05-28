@@ -64,6 +64,54 @@ public final class GetConstans {
 	public static int TimeToExplosion;
 
 	/**
+	 * Ilosc punktow gracza na poczatku, zawsze 0
+	 */
+
+	public static int Amountofpoints;
+
+	/**
+	 * Punkty za zniszczenie skrzynek
+	 */
+
+	public static int PointsForCreate;
+
+	/**
+	 * Punkty za zabicie potwora
+	 */
+
+	public static int PointsForMonster;
+
+	/**
+	 * Punkty za podniesienie przedmiotu
+	 */
+
+	public static int PointsForItem;
+
+	/**
+	 * Punkty za zdobycie skrzynki zlota
+	 */
+
+	public static int PointsForChestOfGold;
+
+	/**
+	 * Punkty za zdobycie klucza
+	 */
+
+	public static int PointsForKey;
+
+	/**
+	 * Punkty za przejscie poziomu
+	 */
+
+	public static int PointsForLevel;
+
+	/**
+	 * Punkty bonusowe za kazda sekunde pozostala do uplyniecia ustalonego progu czasowego
+	 */
+
+	public static int PointsForSecond;
+
+	/**
 	 * Ilosc kolumn
 	 **/
 
@@ -117,6 +165,12 @@ public final class GetConstans {
 	 */
 
 	public static int Amountofkeys;
+
+	/**
+	 * Czas konkretnego poziomu
+	 */
+
+	public static int LevelTime;
 
 	/**
 	 * Pomocnicza zmienna, okreslajaca wysokosc panelboard
@@ -184,9 +238,36 @@ public final class GetConstans {
 	 */
 	public static String KeyString;
 	/**
+	 * Sciezka do grafiki WingsOfHussar
+	 */
+	public static String WingsOfHussarString;
+	/**
+	 * Sciezka do grafiki BoxOfBomb
+	 */
+	public static String BoxOfBombsString;
+	/**
+	 * Sciezka do grafiki BoxOfBomb
+	 */
+	public static String GunLaserString;
+
+	/**
+	 * Sciezka do grafiki Heart
+	 */
+	public static String HeartString;
+
+	/**
+	 * Sciezka do grafiki skrzynki ze złotem
+	 */
+	public static String ChestOfGoldString;
+
+	/**
 	 * Sciezka do gifa Normal_Bomb
 	 */
 	public static String Normal_BombString;
+	/**
+	 * Scieszka do grafiki Remote_Bomb
+	 */
+	public static String Remote_BombString;
 	/**
 	 * Sciezka do grafiki Door
 	 */
@@ -207,12 +288,17 @@ public final class GetConstans {
 	public static int StatioonaryObjectTab[][];
 
 	/**
+	 * Zmienna informujaca, ktory poziom zostal zaladowany
+	 */
+
+	public static int WhiChLevel;
+	/**
 	 * Konstruktor klasy GetConstans, wczytywanie danych startowych z plikow
 	 **/
 
 	public GetConstans(){
 		read_on_config();
-		read_on_level(3);
+		//read_on_level(3);
 		read_path_to_graphics();
 	}
 
@@ -220,14 +306,14 @@ public final class GetConstans {
 	 * Wczytanie stałych z pliku configuracyjnego
 	 */
 
-	void read_on_config(){
+	public static void read_on_config(){
 		try {
 			File file = new File(Config);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
-
+			//podstawowe parametry aplikacji
 			Boardheight = Integer.parseInt(doc.getElementsByTagName("Boardheight").item(0).getTextContent());
 			Boardwidth = Integer.parseInt(doc.getElementsByTagName("Boardwidth").item(0).getTextContent());
 			MainFrameheight=Integer.parseInt(doc.getElementsByTagName("MainFrameheight").item(0).getTextContent());
@@ -235,6 +321,16 @@ public final class GetConstans {
 			HighscoresFrameSize=Integer.parseInt(doc.getElementsByTagName("HighscoresFrameSize").item(0).getTextContent());
 			SpeedPlayer = Integer.parseInt(doc.getElementsByTagName("SpeedPlayer").item(0).getTextContent());
 			TimeToExplosion = Integer.parseInt(doc.getElementsByTagName("TimeToExplosion").item(0).getTextContent());
+			//ilosc poczatkowych punktow, zawsze 0
+			Amountofpoints=0;
+			//punktacja gry
+			PointsForCreate = Integer.parseInt(doc.getElementsByTagName("PointsForCreate").item(0).getTextContent());
+			PointsForMonster = Integer.parseInt(doc.getElementsByTagName("PointsForMonster").item(0).getTextContent());
+			PointsForItem = Integer.parseInt(doc.getElementsByTagName("PointsForItem").item(0).getTextContent());
+			PointsForChestOfGold = Integer.parseInt(doc.getElementsByTagName("PointsForChestOfGold").item(0).getTextContent());
+			PointsForKey = Integer.parseInt(doc.getElementsByTagName("PointsForKey").item(0).getTextContent());
+			PointsForLevel = Integer.parseInt(doc.getElementsByTagName("PointsForLevel").item(0).getTextContent());
+			PointsForSecond = Integer.parseInt(doc.getElementsByTagName("PointsForSecond").item(0).getTextContent());
 
 		}
 		catch(FileNotFoundException e){
@@ -250,9 +346,9 @@ public final class GetConstans {
 	 * @param level parametr decydujacy ktory level zostanie wczytany
 	 */
 
-	void read_on_level(int level){
+	public static void read_on_level(int level){
 		try {
-
+			WhiChLevel = level;// zmeinna globalne, mowiaca ktory aktualny level jest zaladowany
 			String path_to_level=create_path_to_level(level);
 			File file = new File(path_to_level);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -272,6 +368,7 @@ public final class GetConstans {
 			Amountofhusarswings = Integer.parseInt(doc.getElementsByTagName("Amountofhusarswings").item(0).getTextContent());
 			Amountoflasers = Integer.parseInt(doc.getElementsByTagName("Amountoflasers").item(0).getTextContent());
 			Amountofkeys = Integer.parseInt(doc.getElementsByTagName("Amountofkeys").item(0).getTextContent());
+			LevelTime = Integer.parseInt(doc.getElementsByTagName("LevelTime").item(0).getTextContent());
 
 			row = new String[Amountoflines];
 			for (int i = 0; i < Amountoflines; i++) {
@@ -300,21 +397,35 @@ public final class GetConstans {
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
 
+
+			//LivingObject
 			PolandBallString = doc.getElementsByTagName("PolandBall").item(0).getTextContent();
 			TurkeyBallString = doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
 			SovietBallString = doc.getElementsByTagName("SovietBall").item(0).getTextContent();
 			NaziBallString = doc.getElementsByTagName("NaziBall").item(0).getTextContent();
+			//Tereny
 			SkrzynkaString = doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
 			BetonString = doc.getElementsByTagName("Beton").item(0).getTextContent();
+			//Itemy
+			WingsOfHussarString = doc.getElementsByTagName("WingsOfHussars").item(0).getTextContent();
+			ChestOfGoldString = doc.getElementsByTagName("ChestOfGold").item(0).getTextContent();
+			BoxOfBombsString = doc.getElementsByTagName("BoxOfBombs").item(0).getTextContent();
+			GunLaserString = doc.getElementsByTagName("GunLaser").item(0).getTextContent();
+			HeartString = doc.getElementsByTagName("Heart").item(0).getTextContent();
 			DoorString = doc.getElementsByTagName("Door").item(0).getTextContent();
 			KeyString = doc.getElementsByTagName("Key").item(0).getTextContent();
+			//Bomby
 			Normal_BombString = doc.getElementsByTagName("Normal_bomb").item(0).getTextContent();
+			Remote_BombString= doc.getElementsByTagName("Remote_bomb").item(0).getTextContent();
+			//Inne
 			ExplosionString = doc.getElementsByTagName("Explosion").item(0).getTextContent();
 			BackgroundString = doc.getElementsByTagName("Background").item(0).getTextContent();
 
 		} catch (FileNotFoundException e) {
+			System.out.println("Blad wczytania grafik");
 			e.printStackTrace();
 		} catch (Exception e) {
+			System.out.println("Blad wczytania grafik");
 			e.printStackTrace();
 		}
 	}
@@ -325,7 +436,7 @@ public final class GetConstans {
 	 * @return path - sciezka do konkretnego levela
 	 */
 
-	String create_path_to_level(int level){
+	static String create_path_to_level(int level){
 		String first_part="src\\Polandball_pliki\\Level";
 		String second_part=Integer.toString(level);
 		String third_part=".xml";
@@ -367,4 +478,5 @@ public final class GetConstans {
 			System.out.println("W metodzie MakeBoardObstaclesTable wystapil blad typu NullPointerException");
 		}
 	}
+
 }

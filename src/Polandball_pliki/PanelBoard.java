@@ -5,8 +5,7 @@ package Polandball_pliki;
  */
 
 import javax.swing.*;
-import java.awt.Graphics;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,16 +13,16 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 
-import Polandball_pliki.Collision.CollisionLivingObjectWithExplosion;
-import Polandball_pliki.Collision.CollisionLivingObjectWithTerrain;
-import Polandball_pliki.Collision.CollisionExplosionWithSkrzynki;
-import Polandball_pliki.Collision.CollisionPlayerWithEnemy;
+import Polandball_pliki.Collision.*;
 import Polandball_pliki.Counter.Counter;
 import Polandball_pliki.Counter.CounterPlayer;
 import Polandball_pliki.Counter.CounterExplosion;
 import Polandball_pliki.Counter.CounterNormalBomb;
 import Polandball_pliki.GameObjects.*;
+
 
 import static Polandball_pliki.GetConstans.*;
 
@@ -33,7 +32,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     /**
      * Tablica obiektow przeciwnikow
      */
-    private ArrayList<Enemy> enemy=new ArrayList<>();
+    public static ArrayList<Enemy> enemy=new ArrayList<>();
 
     /**
      * Tablica obiektow typu gracz
@@ -78,6 +77,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * Zmienna mówiaca czy player zyje
      */
     public static boolean PlayerExistence=false;
+
+    /**
+     * Watek zegara gry
+     */
+    public static Thread timethread;
 
     /**
      * konstruktor panelu głównego, zawierający funkcję PanelBoard
@@ -137,19 +141,56 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SI")) {
                         //kiedy ogarne itemy trzeba wrzucic funkcje do losowania itemu w tym miejscu
+                        items.add(lottery_of_items(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     }
                     //do zrobienia jeszcze if z itemami typu skrzydla husarskie czy laser sprawiedliwosci
                 }
             }
-            //tworzenie watkow wrogow
-            createThreadsForEnemy();
+        createThreadsForEnemy();//tworzenie watkow wrogow
+        GameTime gametime = new GameTime();//ustawienie zegara gry,utworzenie obiektu zegara
+        timethread =new Thread(gametime.getGameTime());//stworzenie watku dla zegara
+        timethread.start();//uruchomienie watku zegara
+        //------------->TRZEBA ZABIC TEN WATEK PRZY ZAMKNIECIU OKNA LUB PRZY NASTEPNYM POZIOMIE<----------------------
     }
 
 
+    /**
+     *Funkcja losujaca item, jaki ma sie pojawic pod skrzynka w danym miejscu
+     */
+    public Item lottery_of_items(int position_itemX,int position_itemY){
+        Item item_;
+
+        Random randomGenerator =new Random();
+
+        int fate= randomGenerator.nextInt(5);
+
+        if(fate==0){
+            item_=new WingsOfHussar(position_itemX,position_itemY);
+        }
+        else if(fate==1){
+            item_=new ChestOfGold(position_itemX,position_itemY);
+        }
+        else if(fate==2){
+            item_=new BoxOfBomb(position_itemX,position_itemY);
+        }
+        else if(fate==3){
+            item_=new GunLaser(position_itemX,position_itemY);
+        }
+        else if(fate==4){
+            item_=new Heart(position_itemX,position_itemY);
+        }
+        else {
+            item_=null;
+        }
+
+        return item_;
+
+    }
+
 
     /**
-     * funkcja losujaca typ potwora
+     * Funkcja losujaca typ potwora
      */
     public Enemy lottery_of_enemies(int position_enemyX,int position_enemyY){
         //instancja klasy enemy do ktorej w zaleznosci od losu przypisze konkretny enemyballa
@@ -172,7 +213,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     }
 
-
     /**
      * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do b)
      * @param e parametr przchowujacy informacje na temat zmian w programie
@@ -180,13 +220,60 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void actionPerformed(ActionEvent e) {
         movePlayer();//meteda odpowiedzialna za poruszenie gracza
         moveEnemy();//metoda odpowiedzialna za poruszanie wrogow
-
+        checkPlayerHasCollectedItem();//metoda sprawdzajaca czy gracz zebrał którys item
         checkNormalBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
-
         checkExplosionStatus();//sprawdzanie czy przypadkiem eksplozja nie powinna sie juz skonczyc
         checkRespawnPlayer(); // sprawdzanie czy w razie gdyby player zginal nie nastapil czas jego respawnu
         checkCounter();//funkcja sprawdzajaca stan licznik w grze
         repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
+    }
+
+
+    /**
+     * Metoda sprawdzajaca czy gracz nie zebral ktoregos elementu
+     */
+    void checkPlayerHasCollectedItem(){
+        if(items.size()>0 && player.size()>0){
+
+            boolean Player_not_take_a_item=false;//zmienna okreslajaca czy player schwycil item
+            for(Iterator<Item> iteratoItems = items.iterator(); iteratoItems.hasNext();) {//iteratoItems wskazuje na kolejne elementy z kolekcji items
+                Item itemInstance=iteratoItems.next();// przypisuje obiekt item na obiekt na który wskazuje iteraItems
+                Player_not_take_a_item=new CollisionPlayerWithItem(player.get(0),itemInstance).getIsNotCollision();
+
+                if(!Player_not_take_a_item){
+                    System.out.println("Zlapalem " +itemInstance.getNameClassObject());
+                    Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                    PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    iteratoItems.remove();//usuwam element jesli kolizja wykryla zetkniecie sie itema i gracza
+                   //sprawdzamy, ktory itemek podnieslismy
+                    if(itemInstance.getNameClassObject().equals("src//GameGraphics//Winge_of_hussars.png")){
+                        Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings,1);//dodanie skrzydel do ekwipunku
+                        PanelInfoTwo.Iloscskrzydelhusarskich.setText(Integer.toString(Amountofhusarswings));//wyswietlenie w labelu
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//ChestOfGold.png")){
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForChestOfGold);//punty za skrzynke zlota
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//Gun_laser.png")){
+                        Amountoflasers = ChangeInfoStatus(Amountoflasers,1);//dodanie lasera do ekwipunku
+                        PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));//wyswietlenie w labelu
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//Heart.png")){
+                        Amountoflifes = ChangeInfoStatus(Amountoflifes,1);//dodanie zycia
+                        PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//wyswietlenie w labelu
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//Remote_bomb.png")){
+                        Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs,1);//dodanie zdalnej bomby
+                        PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//wyswietlenie w labelu
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    }
+                }
+            }
+
+        }
     }
 
     /**
@@ -195,7 +282,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     void movePlayer() {
         if(player.size()>0) {
-
             //zmienna przechowujaca informacje czy player nie zachacza o instancje jakiegos terenu
             boolean I_can_go = new CollisionLivingObjectWithTerrain(player.get(0), "player").getIsNotCollision();
             boolean Enemy_didnt_caught_player= checkPotentialCollisionWithEnemy();
@@ -218,6 +304,10 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 PlayerExistence=false;
                 counters.add(new CounterPlayer(player.get(0)));
                 player.remove(0); //usuwa playera z mapy
+                Amountoflifes=ChangeInfoStatus(Amountoflifes,-1);//zmniejszenie zyc o 1
+                PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//aktualizacja wyswietlenia ilosci zyc
+                checkPlayerLifes();//metoda sprawdzajaca czy graczowi nei skonczyly sie zycia
+                System.out.println(Amountoflifes);
                 return isNotCollision;
             }
         }
@@ -294,7 +384,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     /**
      * Metoda tworzaca eksplozja w okreslonym obszarze
-     *
      * @param bomb  bomba ktora wybucha i zostawia eksplozje
      */
     private void createExplosion(Bomb bomb){
@@ -339,7 +428,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     }
 
     /**
-     * Metoda sprawdza czy obiekt typu player nie zostanie zniszczonyw  wyniku eksplozjii
+     * Metoda sprawdza czy obiekt typu player nie zostanie zniszczonywn w wyniku eksplozjii
      */
 
     private void checkPlayerToDestroy(){
@@ -348,10 +437,13 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             for (Iterator<Explosion> iteratoExplosion = explosions.iterator(); iteratoExplosion.hasNext(); ) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
                 Explosion explInstance = iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
                 notDestroy = new CollisionLivingObjectWithExplosion(player.get(0), explInstance).getIsNotCollision();//sprawdzam czy player napewno nie ucierpi w wyniku eksplozji
-                if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze gracz ucierpi w wyniku eksplozji
+                if (!notDestroy) {//jesli w wyniku oblicazen wyszlo ze gracz ucierpi w wyniku eksplozji
+                    Amountoflifes=ChangeInfoStatus(Amountoflifes,-1);//zmniejszenie zyc o 1
+                    PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//aktualizacja wyswietlenia ilosci zyc
                     PlayerExistence=false;
                     counters.add(new CounterPlayer(player.get(0)));
                     player.remove(0); //usuwa playera z mapy
+                    checkPlayerLifes();//metoda sprawdzajaca czy graczowi nei skonczyly sie zycia
                 }
             }
         }
@@ -362,7 +454,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     private void checkEnemyToDestroy(){
-        boolean notDestroy=true;// flaga jednoznacznie stwierdzajaca czy obiekt typu player powinnien zostac usuniety
+        boolean notDestroy=true;// flaga jednoznacznie stwierdzajaca czy obiekt typu enemy powinnien zostac usuniety
 
         for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
             Explosion explInstance=iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
@@ -370,8 +462,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {//iteruje po kolekcji enemy 1) tworze iterator dla kolekcji enemy 2) przypisuje go do do pierwszego elementu kolekcji enemy
                 Enemy enemInstance = iteratoEnemy.next();//tworze instancje obiektu typu enemy na podstawie obiektu na ktory wskazuje w danej chwili iterator
                     notDestroy = new CollisionLivingObjectWithExplosion(enemInstance, explInstance).getIsNotCollision();//sprawdzam czy enemy napewno nie ucierpi w wyniku eksplozji
-                    if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze gracz ucierpi w wyniku eksplozji
+                    if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze potwor ucierpi w wyniku eksplozji
                         iteratoEnemy.remove();//usuwa enemy wskazywany przez iterator
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForMonster);//punty za zabicie potwora
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        //--------------->ZABIJAC WATKI WROGOW<----------------
                     }
 
             }
@@ -436,9 +531,13 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             }
             //stawianie bomby
             else if (c == KeyEvent.VK_SPACE) {
-                normal_bomb.add(new Normal_Bomb(player.get(0).getX(), player.get(0).getY()));//dodanie dodani bomby do tablicy
-                counters.add(new CounterNormalBomb(normal_bomb.get(normal_bomb.size() - 1)));//ustawienie licznika dla danego obiekty typu bomba
-                // znajdujacego sie w tablicy
+                if(Amountofordinarybombs>0) {//sprawdzenie czy mamy jeszcze bomby
+                    normal_bomb.add(new Normal_Bomb(player.get(0).getX(), player.get(0).getY()));//dodanie dodani bomby do tablicy
+                    counters.add(new CounterNormalBomb(normal_bomb.get(normal_bomb.size() - 1)));//ustawienie licznika dla danego obiekty typu bomba
+                    Amountofordinarybombs = ChangeInfoStatus(Amountofordinarybombs, -1);//zmniejszenie ilosci bomb
+                    PanelInfoTwo.Iloscbombzwyklych.setText(Integer.toString(Amountofordinarybombs));//aktualizacja ilosci bomb
+                    // znajdujacego sie w tablicy
+                }else{System.out.println("Nie masz wiecej bomb");}
             }
         }
     }
@@ -485,12 +584,21 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         //System.out.println("Size of players "+ player.size());
         g.setColor(Color.black);
         g.fillRect(0,0,(int)(0.8*Boardwidth),(int)(0.75*Boardheight)); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
-        drawBomb(g); //rysuje bomby na planszy
         drawItem(g); //rysuje itemy na planszy
+        drawBomb(g); //rysuje bomby na planszy
         drawPlayerObject(g);//rysuje playera
         drawEnemyObject(g);//rysuje wrogow
         drawTerrain(g);//rysuje elementy terenu - skrzynki, beton itd
         drawExplosion(g);//rysuje eksplozje
+    }
+    /**
+     * funkcja rysujaca itemy na grafice
+     * @param g grafika na ktorej jest namalowywana obiekty
+     */
+    public void drawItem(Graphics g){
+        for(int i=0;i<items.size();i++){
+            g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
     }
     /**
      * funkcja rysujaca bomby na grafice
@@ -515,15 +623,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             }
         }
     }
-    /**
-     * funkcja rysujaca itemy na grafice
-     * @param g grafika na ktorej jest namalowywana obiekty
-     */
-    public void drawItem(Graphics g){
-        for(int i=0;i<items.size();i++){
-            g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
-        }
-    }
+
     /**
      * funkcja rysujaca gracza
      * @param g grafika na która jest namalowywana obiekty
@@ -554,6 +654,46 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void drawTerrain(Graphics g){
         for(int i=0;i<terrains.size();i++) {
             g.drawImage(terrains.get(i).getBuffImage(),terrains.get(i).getX(),terrains.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
+    }
+
+    /**
+     * Metoda zmieniajaca okreslony parametr
+     * @param whattochange informuje jaka rzecz chcemy zmienic
+     * @param howmuchtochange o ile chemy ja zmienic
+     */
+    public static int ChangeInfoStatus(int whattochange, int howmuchtochange){
+        whattochange=whattochange+howmuchtochange;
+        return whattochange;
+    }
+
+    /**
+     * Metoda sprawdzajaca, czy gra nie powinna sie juz skonczyc, gdy gracz straci zycia
+     */
+    private void checkPlayerLifes(){
+        if(Amountoflifes==0){
+            //JOptionPane.showMessageDialog(null, "Koniec gry");
+            GameOver gameover = new GameOver();
+            gameover.setVisible(true);
+
+        }
+    }
+
+    /**
+     * Metoda przywracajaca ustawienia sprzed rozpoczecia rozgrywki
+     */
+
+    public static void MakeDefaultOption(){
+        try{
+            timethread.stop();//zatrzymanie watku licznika
+            GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
+            GetConstans.read_on_level(3);//narazie trzeci level, zawsze ma byc 1
+         //------------->ZABIC WATKI WROGOW<---------------
+            for (int i = 0; i < enemy.size(); i++) {
+                //enemy.get(i).getEnemy().stop();//(new Enemy(enemy.get(i).getEnemy())).start();
+            }
+        }catch(Exception e){
+            System.out.println(e+"Blad metody panelboarda - PanelBoard, MakeDefaultOption()");
         }
     }
 }

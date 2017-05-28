@@ -1,15 +1,22 @@
 package Polandball_pliki;
 
 
+import sun.plugin2.message.ShowStatusMessage;
+
 import javax.swing.*;
 
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.ActionEvent;
 import static Polandball_pliki.GetConstans.*;
 
 /**
  * Okno gry, zawierające plansze konkretnego poziomu, informacje o stanie rozgrywki
  */
 
-public class LevelFrame extends JFrame {
+public class LevelFrame extends JFrame implements WindowListener, ActionListener {
 
     /**
      * kontruktor klasy LevelFrame, zawierjący funkcję initLevelFrame
@@ -23,11 +30,11 @@ public class LevelFrame extends JFrame {
      * funkcja zawierająca parametry i poszczególne panele gry
      */
 
-    private void initLevelFrame(){
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void initLevelFrame() {
         // zamkniecie okna gry nie powoduje
-        this.setSize(Boardwidth,Boardheight);
+        this.setSize(Boardwidth, Boardheight);
         this.setLayout(null);
+        this.addWindowListener(this);
 
         //panel, który będzie naszą plansza do dodawania elementów poziomu
         PanelBoard panelboard = new PanelBoard();
@@ -46,5 +53,28 @@ public class LevelFrame extends JFrame {
 
 
     }
-
+    //test
+    public void windowClosing(WindowEvent e) {
+       // System.out.println("Metoda windowClosing levelframe");
+        try{
+            PanelBoard.MakeDefaultOption();
+        }catch(Exception error){
+            System.out.println(error+"Blad zamkniecia levelframe - klasa levelframe, metoda windowClosing");
+        }
+    }
+   //metody wymagane przez interfejs, przydadza sie pozniej
+    public void windowActivated(WindowEvent e) {
+    }
+    public void windowClosed(WindowEvent e) {
+    }
+    public void windowDeactivated(WindowEvent e) {
+    }
+    public void windowDeiconified(WindowEvent e) {
+    }
+    public void windowIconified(WindowEvent e) {
+    }
+    public void windowOpened(WindowEvent e) {
+    }
+    public void actionPerformed(ActionEvent e) {
+    }
 }
