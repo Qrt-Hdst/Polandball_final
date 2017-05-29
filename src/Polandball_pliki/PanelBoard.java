@@ -39,6 +39,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     private ArrayList<Polandball> player=new ArrayList<>();
     /**
+     * Tablica obiektow zdalnych bomb
+     */
+    private Remote_Bomb remote_bomb=null;
+
+    /**
      * Tablica obiektow zwykle bomby
      */
     private ArrayList<Normal_Bomb> normal_bomb=new ArrayList<>();
@@ -240,7 +245,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 Item itemInstance=iteratoItems.next();// przypisuje obiekt item na obiekt na który wskazuje iteraItems
                 Player_not_take_a_item=new CollisionPlayerWithItem(player.get(0),itemInstance).getIsNotCollision();
 
-                if(!Player_not_take_a_item){
+                //wykonuje sie sie kiedy player wykonal kolizje z itemem i w omawianym miejscu nie ma zadnej skrzynki
+                if(!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()]==0){
                     System.out.println("Zlapalem " +itemInstance.getNameClassObject());
                     Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
                     PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
@@ -539,6 +545,19 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     // znajdujacego sie w tablicy
                 }else{System.out.println("Nie masz wiecej bomb");}
             }
+            else if (c == KeyEvent.VK_Z && normal_bomb.size()<3){
+                System.out.println("remote "+(Amountofremotebombs>0) );
+                if(Amountofremotebombs>0) {
+                    remote_bomb=new Remote_Bomb(player.get(0).getX(), player.get(0).getY());//dodanie bomby do tablicy
+                    Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs, -1);//zmniejszenie ilosci bomb
+                    PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//aktualizacja ilosci bomb
+                    //znajdujace sie w tablicy
+                }
+            }
+            else if(remote_bomb!=null && c == KeyEvent.VK_X){
+                createExplosion(remote_bomb); // tworze eksplozje na ekranie
+                remote_bomb=null; //zwracam referencje na obiekt null, z powrotem moge stawiac bombe
+            }
         }
     }
 
@@ -609,6 +628,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         for(int i=0;i<normal_bomb.size();i++){
                  g.drawImage(normal_bomb.get(i).getGIF(),normal_bomb.get(i).getX(),normal_bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
         }
+        if(remote_bomb!=null){
+            g.drawImage(remote_bomb.getBuffImage(),remote_bomb.getX(),remote_bomb.getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
     }
 
     /**
@@ -626,7 +648,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     /**
      * funkcja rysujaca gracza
-     * @param g grafika na która jest namalowywana obiekty
+     * @param g grafika na która jest namalowywana ombiekty
      */
     public void drawPlayerObject(Graphics g) {
         //System.out.println("Size of players "+ player.size());

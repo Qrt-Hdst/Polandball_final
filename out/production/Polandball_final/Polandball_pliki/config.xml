@@ -11,6 +11,7 @@
  <PointsForCreate>10</PointsForCreate>
  <PointsForMonster>50</PointsForMonster>
  <PointsForItem>5</PointsForItem>
+ <PointsForChestOfGold>100</PointsForChestOfGold>
  <PointsForKey>20</PointsForKey>
  <PointsForLevel>200</PointsForLevel>
  <PointsForSecond>1</PointsForSecond>

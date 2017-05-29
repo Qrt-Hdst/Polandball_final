@@ -437,7 +437,7 @@ public final class GetConstans {
 	 */
 
 	static String create_path_to_level(int level){
-		String first_part="src\\Polandball_pliki\\Level";
+		String first_part="src\\Polandball_pliki\\Level_Folder\\Level";
 		String second_part=Integer.toString(level);
 		String third_part=".xml";
 

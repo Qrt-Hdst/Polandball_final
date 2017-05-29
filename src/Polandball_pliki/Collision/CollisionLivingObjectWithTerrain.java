@@ -42,6 +42,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
 
     int column_livingobject_west;
 
+
+
     /**
      * Metoda stwierdzajaca, czy zachodzi kolizja
      */
@@ -51,6 +53,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
     //podanych warunkow ustawia kolozje na true ------>mozna zmienic<------
     public CollisionLivingObjectWithTerrain(LivingObject livingobject, String kind_of_living_object) {
         super(); //wywoluje konstruktor klasy rodzica
+
         //wiersz w double, w ktorym znajduje sie dany livingobject
         double_row_livingobject = (double) livingobject.getY() / (double) SizeHeightIcon;
         //kolumna w double, w ktorej znajduje sie dany livingobject
@@ -96,15 +99,16 @@ public class CollisionLivingObjectWithTerrain extends Collision {
         try {
             //sprawdzanie czy wyszlismy poza prawa scianke
             if (double_column_livingobject >= (double) (Amountofcolumns - 1)) {
-                //System.out.println(1);
+               // System.out.println("H");
                 isNotCollision = false;
             }
             //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko gornej krawedzi wiersza
             else if (double_row_livingobject < ((double) row_livingobject_north + 0.15)) {
-                //System.out.println(2);
                 if (!(StatioonaryObjectTab[row_livingobject_north][column_livingobject_west + 1] == 1)) {
+                    //System.out.println("a");
                     isNotCollision = true;
                 } else {
+                    //System.out.println("m");
                     isNotCollision = false;
                 }
             }
@@ -189,8 +193,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
     //sprawdzanie kolizji w gore ^
     public boolean Collision_North(){
         try {
-            if (double_row_livingobject < 0) {//sprawdzanie czy wyszlismy poza gorna scianke
-                //System.out.println(1);
+            if (double_row_livingobject <= 0) {//sprawdzanie czy wyszlismy poza gorna scianke
                 isNotCollision = false;
             }
             //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko lewej krawedzi kolumny
