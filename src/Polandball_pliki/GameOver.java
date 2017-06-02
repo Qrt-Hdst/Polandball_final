@@ -12,7 +12,7 @@ import java.net.Socket;
 
 import static Polandball_pliki.GetConstans.*;
 import static Polandball_pliki.PanelInfoOne.PlayerName;
-
+import static Polandball_pliki.SetNameFrame.levelframe;
 /**
  * Klasa odpowiedzialna za wyswietlenie okna konca gry
  */
@@ -70,6 +70,11 @@ public class GameOver extends JFrame implements ActionListener{
         Okey.addActionListener(this);
 
     }
+
+    /**
+     * Metoda oblusgujaca zdarzenia klasy GameOver
+     * @param event
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         Object source = event.getSource();
@@ -77,29 +82,31 @@ public class GameOver extends JFrame implements ActionListener{
             try{
                 SendScoreandName(MainFrame.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
                 this.dispose();//setVisible(false);
+                levelframe.dispose();//zamkniecie okna gry
+                LevelFrame.tm.stop();//zatrzymanie timera
+                PanelBoard.MakeDefaultOption();//przywrocenie domyslnych parametrow
             } catch(Exception e){
                 System.out.println(e+"Blad przycisku OK - klasa GameOver");
             }
         }
     }
+
+    /**
+     * Metoda wysylajaca koncowy wynik danej rozgrywki wraz z nazwa gracza do serwera
+     * @param socket
+     */
     public void SendScoreandName(Socket socket){
         try {
             if (socket != null) {//sprawdzenie czy gniazdo serwera nie jest nullem(czy zostalo "cos" przypisane)
                 OutputStream outputstream = socket.getOutputStream();//strumien wyjsciowy
                 PrintWriter printwriter = new PrintWriter(outputstream, true);//przywiazanie do strumienia wyjsciowego
-                //wiadomosci ktora bedziemy wysylac
+                //wiadomosc, ktora bedziemy wysylac - nick gracza + wynik gracza
                 printwriter.println("PUT_SCORE "+ PlayerName + " " + Integer.toString(Amountofpoints)+ "\n");//utworzenie wiadomosci
-                System.out.println("WYSLANO WIADOMOSC: PUT_SCORE ");
-               InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
+                System.out.println("WYSLANO WIADOMOSC: PUT_SCORE " + PlayerName + " " + Integer.toString(Amountofpoints)+ "\n");
+                InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
                 BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));
                 String answer = buildreader.readLine();//przypisanie do stringa odczytanej wiadomosci
-                if (answer != "INVALID_COMMAND") {//sprawdzenie czy serwer zrozumial zadanie
-                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);//wyswietlenie otrzymanej wiadomosci
-
-                }
-                else if(answer == "INVALID_COMMAND"){
-                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);
-                }
+                System.out.println("OTRZYMANO WIADOMOSC: " +answer);//wyswietlenie otrzymanej wiadomosci
             }
             else{
                 System.out.println("Blad socketa");//w przypadku, gdy serversocket null

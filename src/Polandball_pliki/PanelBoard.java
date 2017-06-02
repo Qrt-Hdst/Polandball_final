@@ -23,8 +23,8 @@ import Polandball_pliki.Counter.CounterExplosion;
 import Polandball_pliki.Counter.CounterNormalBomb;
 import Polandball_pliki.GameObjects.*;
 
-
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.SetConnection.current_level;
 
 
 public class PanelBoard extends JPanel implements ActionListener,KeyListener{
@@ -37,51 +37,66 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     /**
      * Tablica obiektow typu gracz
      */
-    private ArrayList<Polandball> player=new ArrayList<>();
+    public static  ArrayList<Polandball> player=new ArrayList<>();
     /**
      * Tablica obiektow zdalnych bomb
      */
-    private Remote_Bomb remote_bomb=null;
+    public static Remote_Bomb remote_bomb=null;
 
     /**
      * Tablica obiektow zwykle bomby
      */
-    private ArrayList<Normal_Bomb> normal_bomb=new ArrayList<>();
+    public static ArrayList<Normal_Bomb> normal_bomb=new ArrayList<>();
 
     /**
      *  Tablica obiektow eksplozji
      */
-    private ArrayList<Explosion> explosions =new ArrayList<>();
+    public static ArrayList<Explosion> explosions =new ArrayList<>();
 
     /**
      * Tablica licznikow jakie sa w tej chwili w bazie danych
      */
-    private ArrayList<Counter> counters=new ArrayList<>();
+    public static ArrayList<Counter> counters=new ArrayList<>();
 
     /**
      *  Lista obiektow bedacych elementami terenu
      */
-    public ArrayList<Terrain> terrains=new ArrayList<>();
+    public static ArrayList<Terrain> terrains=new ArrayList<>();
 
     /**
      *  Lista itemow (elementow do zebrania/uruchomienia interakcji przez gracza)
      */
-    private ArrayList<Item> items=new ArrayList<>();
+    public static ArrayList<Item> items=new ArrayList<>();
 
     /**
      * tablica znakow, na ktorej jest zapisana plansza
      */
-    private ArrayList<ArrayList<String>> field = new ArrayList<>();
-
+    public static ArrayList<ArrayList<String>> field = new ArrayList<>();
+    /**
+     * Tablica watkow wrogow
+     */
+    public static ArrayList<Thread> TableOfEnemyThreads = new ArrayList<>();
     /**
      * tablica, do ktorej beda rozdzielane ciagi znakow z pliku konfiguracyjnego
      */
     public String bufor_string[];
 
     /**
-     * Zmienna mówiaca czy player zyje
+     * Zmienna mówiaca, czy player zyje
      */
     public static boolean PlayerExistence=false;
+
+
+    /**
+     * Zmienna okreslajaca, czy gra znajduje sie w stanie pauzy
+     */
+    public static boolean PauseActive = false;
+
+    /**
+     * Zmienna okreslajaca, czy mozemy postawic kolejna zdalna bombe
+     */
+
+    public static boolean PermissionForRemoteBomb=true;
 
     /**
      * Watek zegara gry
@@ -94,10 +109,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public PanelBoard(){PanelBoard();}
 
-    /**
-     * zmienna odliczajaca czas, wymagana przy interfejsie ActionListener i KeyListener
-     */
-    Timer tm=new Timer(30,this);
+
     /**
      * konstruktor zawirający parametry planszy, okreslenie liczby i polozenie GameObject jakie sie znajdą w grze
      */
@@ -106,7 +118,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         panelboardheight =(int)(0.75*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelinfooneheight = (int)(0.2*Boardheight);
-        tm.start();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -223,14 +234,16 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param e parametr przchowujacy informacje na temat zmian w programie
      */
     public void actionPerformed(ActionEvent e) {
-        movePlayer();//meteda odpowiedzialna za poruszenie gracza
-        moveEnemy();//metoda odpowiedzialna za poruszanie wrogow
-        checkPlayerHasCollectedItem();//metoda sprawdzajaca czy gracz zebrał którys item
-        checkNormalBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
-        checkExplosionStatus();//sprawdzanie czy przypadkiem eksplozja nie powinna sie juz skonczyc
-        checkRespawnPlayer(); // sprawdzanie czy w razie gdyby player zginal nie nastapil czas jego respawnu
-        checkCounter();//funkcja sprawdzajaca stan licznik w grze
-        repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
+        if(PauseActive==false) {
+            movePlayer();//meteda odpowiedzialna za poruszenie gracza
+            moveEnemy();//metoda odpowiedzialna za poruszanie wrogow
+            checkPlayerHasCollectedItem();//metoda sprawdzajaca czy gracz zebrał którys item
+            checkNormalBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
+            checkExplosionStatus();//sprawdzanie czy przypadkiem eksplozja nie powinna sie juz skonczyc
+            checkRespawnPlayer(); // sprawdzanie czy w razie gdyby player zginal nie nastapil czas jego respawnu
+            checkCounter();//funkcja sprawdzajaca stan licznik w grze
+            repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
+        }
     }
 
 
@@ -270,10 +283,12 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                         PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//wyswietlenie w labelu
                         Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
                         PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//Remote_bomb.png")){
+                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//box_of_bombs.png")){
                         Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs,1);//dodanie zdalnej bomby
                         PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//wyswietlenie w labelu
-                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                        Amountofordinarybombs = ChangeInfoStatus(Amountofordinarybombs,2);//dodanie zwyklej bomby
+                        PanelInfoTwo.Iloscbombzwyklych.setText(Integer.toString(Amountofordinarybombs));//wyswietlenie w labelu
+                        Amountofpoints=ChangeInfoStatus(Amountofpoints,3*PointsForItem);//punty za itemek
                         PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
                     }
                 }
@@ -328,7 +343,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     void createThreadsForEnemy(){
         try {
             for (int i = 0; i < enemy.size(); i++) {
-                new Thread(enemy.get(i).getEnemy()).start();//(new Enemy(enemy.get(i).getEnemy())).start();
+                Thread EnemyThread = new Thread(enemy.get(i).getEnemy());//.start();//(new Enemy(enemy.get(i).getEnemy())).start();
+                EnemyThread.start();
+                TableOfEnemyThreads.add(EnemyThread);
             }
 
         } catch(Exception e){
@@ -349,28 +366,22 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 case 0:
                     enemy.get(i).change_velX(1);
                     enemy.get(i).change_velY(0);
-                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
                 case 1:
                     enemy.get(i).change_velX(-1);
                     enemy.get(i).change_velY(0);
-                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
                 case 2:
                     enemy.get(i).change_velY(-1);
                     enemy.get(i).change_velX(0);
-                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
                 case 3:
                     enemy.get(i).change_velY(1);
                     enemy.get(i).change_velX(0);
-                    enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
-                    enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
                 break;
             }
+            enemy.get(i).changeX(enemy.get(i).getX() + enemy.get(i).get_velX());
+            enemy.get(i).changeY(enemy.get(i).getY() + enemy.get(i).get_velY());
         }
     }
 
@@ -414,6 +425,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 if (!notDestroy) {//jesli eksplozja pokazuje ze mamy zniszczyc obiekt wykonuje sie if
                     StatioonaryObjectTab[ter.getRowY()][ter.getColumnX()]=0;//zmieniam wartosc w tablicy stworzonej w GetConstan apropo pol w ktore mogą wejsc living object
                     iteratoTerrain.remove();//usun obiekt wskazywany przez iterator ( a wlasciwie to pozbadz sie wszelkich wskaznikow na niego wskazujacych )
+                    Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForCreate);//punkty za skrzynki
+                    PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//aktualizacja wyswietlenia punktow
                 }
             }
         }
@@ -462,19 +475,20 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     private void checkEnemyToDestroy(){
         boolean notDestroy=true;// flaga jednoznacznie stwierdzajaca czy obiekt typu enemy powinnien zostac usuniety
 
-        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {//iteruje po kolekcji explosion 1) tworze iterator dla kolekcji ekplozjii 2) przypisuje go do do pierwszego elementu kolekcji
-            Explosion explInstance=iteratoExplosion.next();//tworze instancje obiektu typu eksplozja na podstawie obiektu na ktory wskazuje w danej chwili iterator
-
+        for(Iterator<Explosion> iteratoExplosion = explosions.iterator();iteratoExplosion.hasNext();) {//przelatuje po kolekcji explosion
+            Explosion explInstance=iteratoExplosion.next();// przypisuje do zminnej insntanceExplosion obiekt na ktory wskazuje iterator
+            int i=0;
             for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {//iteruje po kolekcji enemy 1) tworze iterator dla kolekcji enemy 2) przypisuje go do do pierwszego elementu kolekcji enemy
                 Enemy enemInstance = iteratoEnemy.next();//tworze instancje obiektu typu enemy na podstawie obiektu na ktory wskazuje w danej chwili iterator
                     notDestroy = new CollisionLivingObjectWithExplosion(enemInstance, explInstance).getIsNotCollision();//sprawdzam czy enemy napewno nie ucierpi w wyniku eksplozji
                     if (!notDestroy) {//jesli w wyniku obliczen wyszlo ze potwor ucierpi w wyniku eksplozji
+                        TableOfEnemyThreads.get(i).stop();
+                        TableOfEnemyThreads.remove(i);
                         iteratoEnemy.remove();//usuwa enemy wskazywany przez iterator
                         Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForMonster);//punty za zabicie potwora
                         PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                        //--------------->ZABIJAC WATKI WROGOW<----------------
                     }
-
+                i++;
             }
         }
     }
@@ -519,46 +533,57 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if(player.size()>0) {
-            int c = e.getKeyCode();
+        int c = e.getKeyCode();
+        if(PauseActive==false) { // sprawdzam czy gra nie jest w stanie pauzy
+            if (player.size() > 0) {
 
-            if (c == KeyEvent.VK_LEFT) {
-                player.get(0).change_velX(SpeedPlayer * (-1));
-                player.get(0).change_velY(0);
-            } else if (c == KeyEvent.VK_RIGHT) {
-                player.get(0).change_velX(SpeedPlayer * (1));
-                player.get(0).change_velY(0);
-            } else if (c == KeyEvent.VK_DOWN) {
-                player.get(0).change_velY(SpeedPlayer * (1));
-                player.get(0).change_velX(0);
-            } else if (c == KeyEvent.VK_UP) {
-                player.get(0).change_velY(SpeedPlayer * (-1));
-                player.get(0).change_velX(0);
-            }
-            //stawianie bomby
-            else if (c == KeyEvent.VK_SPACE) {
-                if(Amountofordinarybombs>0) {//sprawdzenie czy mamy jeszcze bomby
-                    normal_bomb.add(new Normal_Bomb(player.get(0).getX(), player.get(0).getY()));//dodanie dodani bomby do tablicy
-                    counters.add(new CounterNormalBomb(normal_bomb.get(normal_bomb.size() - 1)));//ustawienie licznika dla danego obiekty typu bomba
-                    Amountofordinarybombs = ChangeInfoStatus(Amountofordinarybombs, -1);//zmniejszenie ilosci bomb
-                    PanelInfoTwo.Iloscbombzwyklych.setText(Integer.toString(Amountofordinarybombs));//aktualizacja ilosci bomb
-                    // znajdujacego sie w tablicy
-                }else{System.out.println("Nie masz wiecej bomb");}
-            }
-            else if (c == KeyEvent.VK_Z && normal_bomb.size()<3){
-                System.out.println("remote "+(Amountofremotebombs>0) );
-                if(Amountofremotebombs>0) {
-                    remote_bomb=new Remote_Bomb(player.get(0).getX(), player.get(0).getY());//dodanie bomby do tablicy
-                    Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs, -1);//zmniejszenie ilosci bomb
-                    PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//aktualizacja ilosci bomb
-                    //znajdujace sie w tablicy
+                if (c == KeyEvent.VK_LEFT) {
+                    player.get(0).change_velX(SpeedPlayer * (-1));
+                    player.get(0).change_velY(0);
+                } else if (c == KeyEvent.VK_RIGHT) {
+                    player.get(0).change_velX(SpeedPlayer * (1));
+                    player.get(0).change_velY(0);
+                } else if (c == KeyEvent.VK_DOWN) {
+                    player.get(0).change_velY(SpeedPlayer * (1));
+                    player.get(0).change_velX(0);
+                } else if (c == KeyEvent.VK_UP) {
+                    player.get(0).change_velY(SpeedPlayer * (-1));
+                    player.get(0).change_velX(0);
+                }
+                //stawianie bomby
+                else if (c == KeyEvent.VK_SPACE) {
+                    if (Amountofordinarybombs > 0) {//sprawdzenie czy mamy jeszcze bomby
+                        normal_bomb.add(new Normal_Bomb(player.get(0).getX(), player.get(0).getY()));//dodanie dodani bomby do tablicy
+                        counters.add(new CounterNormalBomb(normal_bomb.get(normal_bomb.size() - 1)));//ustawienie licznika dla danego obiekty typu bomba
+                        Amountofordinarybombs = ChangeInfoStatus(Amountofordinarybombs, -1);//zmniejszenie ilosci bomb
+                        PanelInfoTwo.Iloscbombzwyklych.setText(Integer.toString(Amountofordinarybombs));//aktualizacja ilosci bomb
+                        // znajdujacego sie w tablicy
+                    } else {
+                        System.out.println("Nie masz wiecej bomb");
+                    }
+                } else if (c == KeyEvent.VK_Z && normal_bomb.size() < 3 && PermissionForRemoteBomb!=false) {
+                    System.out.println("remote " + (Amountofremotebombs > 0));
+                    if (Amountofremotebombs > 0) {
+                        remote_bomb = new Remote_Bomb(player.get(0).getX(), player.get(0).getY());//dodanie bomby do tablicy
+                        Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs, -1);//zmniejszenie ilosci bomb
+                        PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//aktualizacja ilosci bomb
+                        //znajdujace sie w tablicy
+                        PermissionForRemoteBomb=false;//nie mozemy postawic nastepnej zdalnej bomby
+                    }
+                } else if (remote_bomb != null && c == KeyEvent.VK_X) {
+                    createExplosion(remote_bomb); // tworze eksplozje na ekranie
+                    remote_bomb = null; //zwracam referencje na obiekt null, z powrotem moge stawiac bombe
+                    PermissionForRemoteBomb=true;//po zdetonowaniu zdalnej bomby mozemy postawic nastepna
+                } else if (c == KeyEvent.VK_P){
+                    PauseActive=true;
+
                 }
             }
-            else if(remote_bomb!=null && c == KeyEvent.VK_X){
-                createExplosion(remote_bomb); // tworze eksplozje na ekranie
-                remote_bomb=null; //zwracam referencje na obiekt null, z powrotem moge stawiac bombe
-            }
         }
+        else if( c==KeyEvent.VK_P ) {
+            PauseActive=false;
+        }
+
     }
 
     /**
@@ -626,7 +651,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void drawBomb(Graphics g){
         //rysowanie wszystkich bomb na ekran
         for(int i=0;i<normal_bomb.size();i++){
-                 g.drawImage(normal_bomb.get(i).getGIF(),normal_bomb.get(i).getX(),normal_bomb.get(i).getY(),SizeWidthIcon,SizeHeightIcon,this);
+                    g.drawImage(normal_bomb.get(i).getGIF(), normal_bomb.get(i).getX(), normal_bomb.get(i).getY(), SizeWidthIcon, SizeHeightIcon, this);
         }
         if(remote_bomb!=null){
             g.drawImage(remote_bomb.getBuffImage(),remote_bomb.getX(),remote_bomb.getY(),SizeWidthIcon,SizeHeightIcon,null);
@@ -641,7 +666,12 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         //rysowanie wszystkich eksplozji na ekran
         for (int i = 0; i < explosions.size(); i++) {
             {
-                g.drawImage(explosions.get(i).getGIF(), explosions.get(i).getX(), explosions.get(i).getY(), 3*SizeWidthIcon, 3*SizeHeightIcon, this);
+                if(PauseActive==false) {
+                    g.drawImage(explosions.get(i).getGIF(), explosions.get(i).getX(), explosions.get(i).getY(), 3 * SizeWidthIcon, 3 * SizeHeightIcon, this);
+                }
+                else{
+                    g.drawImage(explosions.get(i).getGIF(), explosions.get(i).getX(), explosions.get(i).getY(), 3 * SizeWidthIcon, 3 * SizeHeightIcon, null);
+                }
             }
         }
     }
@@ -694,10 +724,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     private void checkPlayerLifes(){
         if(Amountoflifes==0){
-            //JOptionPane.showMessageDialog(null, "Koniec gry");
             GameOver gameover = new GameOver();
             gameover.setVisible(true);
-
+            PauseActive=true;
         }
     }
 
@@ -708,14 +737,45 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static void MakeDefaultOption(){
         try{
             timethread.stop();//zatrzymanie watku licznika
-            GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
-            GetConstans.read_on_level(3);//narazie trzeci level, zawsze ma byc 1
-         //------------->ZABIC WATKI WROGOW<---------------
-            for (int i = 0; i < enemy.size(); i++) {
-                //enemy.get(i).getEnemy().stop();//(new Enemy(enemy.get(i).getEnemy())).start();
+            if(MainFrame.MakeSocket()!=null){
+                SetConnection.GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+                GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
+            }else{
+                GetConstans.read_on_level(1);//ma byc 1 zamkneicie gry=nowa gra
+                GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
             }
+            KillEnemyThreads();//zabijane watkow wrogow
+            ClearArraylists();//wywolanie nizej zdefiniowanej metody odpowiedzialnej za czyscienie buforw dynamicznych
         }catch(Exception e){
             System.out.println(e+"Blad metody panelboarda - PanelBoard, MakeDefaultOption()");
+        }
+    }
+
+    /**
+     * Metoda czyszczaca wszystki dynamiczne tablice
+     */
+
+    public static void ClearArraylists(){
+        //czyszczenie wszystkich buforow
+        enemy.clear();
+        remote_bomb=null;
+        normal_bomb.clear();
+        explosions.clear();
+        counters.clear();
+        terrains.clear();
+        items.clear();
+        field.clear();
+        TableOfEnemyThreads.clear();
+        PauseActive=false;
+        PermissionForRemoteBomb=true;
+    }
+
+    /**
+     * Metoda odpowiedzialna za niszczenie watkow wrogow po zakonczeniu rogywki lub zmiany poziomu
+     */
+    public static void KillEnemyThreads(){
+        for (int i=0; i<TableOfEnemyThreads.size();i++) {//stopowanie wszystkich watkow wroga
+            TableOfEnemyThreads.get(i).stop();
         }
     }
 }

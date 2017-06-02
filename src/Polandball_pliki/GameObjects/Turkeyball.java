@@ -26,8 +26,8 @@ public class Turkeyball extends Enemy {
         velY_=0;
         name_class_object=TurkeyBallString;
         buffImage_=createBufferedImage();
-        distance_from_elevation_walls=12/80;
-        distance_from_azimuth_walls=12/80;
+        distance_from_elevation_walls=6/80;
+        distance_from_azimuth_walls=6/80;
     }
     /**
      * metoda tworzca bufferedImage

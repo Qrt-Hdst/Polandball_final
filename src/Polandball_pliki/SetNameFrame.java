@@ -35,10 +35,16 @@ public class SetNameFrame extends JFrame implements ActionListener {
     private JButton Okey;
 
     /**
-     * zmienna, do której będzie wczytywana nazwa gracza z textfielda
+     * Zmienna, do której będzie wczytywana nazwa gracza z textfielda
      */
 
     public static String nickname;
+
+    /**
+     * Obiekt klasy LevelFrame, reprezentujacy okno gry
+     */
+
+    public static LevelFrame levelframe;
 
     /**
      * Konstruktor okna, zawierający funkcję initSetNameFrame
@@ -92,9 +98,9 @@ public class SetNameFrame extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Nieprawidłowa nazwa gracza");
                     // ^ informacja o nieprawidlowej nazwie gracza
                 }else{//jak wszystko okey to gramy
-                 LevelFrame levelframe = new LevelFrame();
-                 levelframe.setVisible(true);
-                 this.setVisible(false);
+                    levelframe = new LevelFrame();
+                    levelframe.setVisible(true);
+                    this.setVisible(false);
                 }
         }
 

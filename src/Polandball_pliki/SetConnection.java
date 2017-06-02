@@ -21,7 +21,7 @@ public class SetConnection extends JFrame implements ActionListener {
      * prywatny obiekt klasy GetConstans, wykorzystanie sparsowanych plików
      */
 
-    static public GetConstans getConstans_;//=new GetConstans();//<-----tego tu byc nie moze,
+    static public GetConstans getConstans_;
 
     /**
      * Label, zawierajacy pytanie o to, czy uzytkownik chce grac w trybie on czy off
@@ -42,11 +42,16 @@ public class SetConnection extends JFrame implements ActionListener {
     private JButton No;
 
     /**
+     * Numer obecnie wczytywanego levelu
+     */
+    public static int current_level=1;
+
+    /**
      *Bufor, do ktorego beda zapisane dane konfiguracyjne podstawowe
      * Jego pojemnosc jest dokladnie okreslona, zalezna od ilosci zmiennych konfiguracyjnych
      */
 
-    public static String[] configbufor = new String[7];
+    public static String[] configbufor = new String[14];
 
     /**
      * Bufor, do ktorego beda zapisywane rozdzielone dane konfiguracyjne poziomu - oddzielnie rozklad pol planszy i reszta
@@ -124,7 +129,7 @@ public class SetConnection extends JFrame implements ActionListener {
         }
         if(source==No) {
             GetConstans getConstans_=new GetConstans();//wczytanie grafik i podstawowych parametrow aplikacji
-            GetConstans.read_on_level(3);//wczytanie parametrow poziomu, narazie 3 level do testow
+            GetConstans.read_on_level(1);//wczytanie parametrow poziomu, narazie 3 level do testow
             //utworzenie okna menu
             EventQueue.invokeLater(() -> {
                 MainFrame mainframe = new MainFrame();
@@ -185,13 +190,20 @@ public class SetConnection extends JFrame implements ActionListener {
         TimeToExplosion = Integer.valueOf(configbufor[6]);
         //ilosc poczatkowych punktow, zawsze 0;
         Amountofpoints=0;
+        PointsForCreate = Integer.valueOf(configbufor[7]);
+        PointsForMonster = Integer.valueOf(configbufor[8]);
+        PointsForItem = Integer.valueOf(configbufor[9]);
+        PointsForChestOfGold = Integer.valueOf(configbufor[10]);
+        PointsForKey = Integer.valueOf(configbufor[11]);
+        PointsForLevel = Integer.valueOf(configbufor[12]);
+        PointsForSecond = Integer.valueOf(configbufor[13]);
     }
 
     /**
      * Metoda pobierajace dane, dotyczace konkretnego poziomu
      */
 
-    public void GetLevelConfig(Socket socket, int number_of_level){
+    public static void GetLevelConfig(Socket socket, int number_of_level){
         try {
             if (socket != null) {//sprawdzenie czy gniazdo serwera nie jest nullem(czy zostalo "cos" przypisane)
                 socket.getInputStream().skip(socket.getInputStream().available());//pominiecie odpowiedzi serwera
@@ -208,6 +220,7 @@ public class SetConnection extends JFrame implements ActionListener {
                     System.out.println("OTRZYMANO WIADOMOSC: " +answer);//wyswietlenie otrzymanej wiadomosci
                     levelbufor = answer.split("&");//podzial ciagu tekstu i zaladowanie do bufora
                     SetLevelConfig();//wywolanie metody obrabiajacej dane
+                    WhiChLevel=number_of_level;//ustawienie numeru poziomu na panelu gornym gry
                 }
                 else if(answer == "INVALID_COMMAND"){
                     System.out.println("OTRZYMANO WIADOMOSC: " +answer);
@@ -226,9 +239,9 @@ public class SetConnection extends JFrame implements ActionListener {
      * Metoda obrabiajaca otrzymane dane, przypisujaca dane do zmiennych aplikacji
      */
 
-    private void SetLevelConfig(){
+    private static void SetLevelConfig(){
         try{
-            String[] basicparametersbufor ;//= new String[9];//bufor pomocniczy na podstawowe parametry levela
+            String[] basicparametersbufor ;//bufor pomocniczy na podstawowe parametry levela
             basicparametersbufor = levelbufor[0].split(" ");//rozdzielenie parametrow i przypisanei od bufora
 
             Amountofcolumns = Integer.valueOf(basicparametersbufor[0]);
@@ -240,6 +253,7 @@ public class SetConnection extends JFrame implements ActionListener {
             Amountofhusarswings = Integer.valueOf(basicparametersbufor[6]);
             Amountoflasers = Integer.valueOf(basicparametersbufor[7]);
             Amountofkeys = Integer.valueOf(basicparametersbufor[8]);
+            LevelTime  = Integer.valueOf(basicparametersbufor[9]);
 
             String[] rowsbufor;//bufor pomocniczy do poszczegolnych wierszy planszy
             rowsbufor = levelbufor[1].split("%");//podzielenie mapy na wiersze
@@ -247,7 +261,6 @@ public class SetConnection extends JFrame implements ActionListener {
             for(int i=0;i<Amountoflines;i++) {
                 row[i] = rowsbufor[i];//przypisanie kazdego wiersza z bufora pomocniczego do bufora gry
             }
-
         }catch(Exception e){
              System.out.println(e+"Blad metody SetLevelConfig ");
         }

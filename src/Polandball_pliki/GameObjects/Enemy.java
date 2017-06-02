@@ -3,6 +3,8 @@ package Polandball_pliki.GameObjects;
 import Polandball_pliki.Collision.CollisionLivingObjectWithTerrain;
 
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.PanelBoard.PauseActive;
+
 import java.util.Random;
 
 /**
@@ -76,7 +78,12 @@ public class Enemy extends LivingObject implements Runnable {
     @Override
     public void  run(){
            try {
-               while (true) {//petla nieskonczona, caly czas sprawdzany jest możliwy kierunek ruchu
+               while (true/*PauseActive==false*/) {//petla nieskonczona, caly czas sprawdzany jest możliwy kierunek ruchu
+                   synchronized (this){//poczatek bloku synchronizujacego
+
+
+                  // System.out.println("Zyje");
+                   //System.out.println(get_velX()+" "+get_velY());
                    Thread.sleep(5);//usypianie watku na x milisekund, wszystko wyliczamy co ten czas
                    //tworzenie obiektow klasy Collision, do sprawdzania kolizji
                    boolean can_I_go_East = new CollisionLivingObjectWithTerrain(this.getEnemy(), "enemy").Collision_East();
@@ -198,6 +205,8 @@ public class Enemy extends LivingObject implements Runnable {
                            }
                            break;
                    }
+
+                   }//koniec bloku synchronizujacego
 
                }
            }catch(Exception e){

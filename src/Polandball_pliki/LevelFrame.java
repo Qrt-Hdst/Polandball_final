@@ -19,6 +19,10 @@ import static Polandball_pliki.GetConstans.*;
 public class LevelFrame extends JFrame implements WindowListener, ActionListener {
 
     /**
+     * Zmienna odliczajaca czas odswiezenia
+     */
+    public static Timer tm;
+    /**
      * kontruktor klasy LevelFrame, zawierjący funkcję initLevelFrame
      */
 
@@ -51,13 +55,21 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
         add(panelinfotwo);
         panelinfotwo.setVisible(true);
 
+        //odpalenie timera na panelboardzie
+        tm =new Timer(30,panelboard);
+        tm.start();
 
     }
-    //test
+
+    /**
+     * Metoda obslugujaca zdarzenia zakmniecia okna gry, przwracajaca ustawienia domyslne
+     * @param e
+     */
     public void windowClosing(WindowEvent e) {
-       // System.out.println("Metoda windowClosing levelframe");
         try{
-            PanelBoard.MakeDefaultOption();
+            tm.stop();//zatrzymanie timera
+            PanelBoard.MakeDefaultOption();//przywrocenie domyslnych parametrow
+            this.dispose();//zamkniecie okna
         }catch(Exception error){
             System.out.println(error+"Blad zamkniecia levelframe - klasa levelframe, metoda windowClosing");
         }
