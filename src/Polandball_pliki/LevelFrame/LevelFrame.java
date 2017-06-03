@@ -15,6 +15,12 @@ import static Polandball_pliki.GetConstans.*;
 
 public class LevelFrame extends JFrame implements WindowListener, ActionListener {
 
+    public PanelBoard panelboard;
+
+    public PanelInfoOne panelinfoone;
+
+    public PanelInfoTwo panelinfotwo;
+
     /**
      * Zmienna odliczajaca czas odswiezenia
      */
@@ -38,17 +44,17 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
         this.addWindowListener(this);
 
         //panel, który będzie naszą plansza do dodawania elementów poziomu
-        PanelBoard panelboard = new PanelBoard();
+        panelboard = new PanelBoard();
         add(panelboard);
         panelboard.setVisible(true);
 
         //panel gorny, w ktorym beda informacje dotyczace gry
-        PanelInfoOne panelinfoone = new PanelInfoOne();
+        panelinfoone = new PanelInfoOne();
         add(panelinfoone);
         panelinfoone.setVisible(true);
 
         //panel boczny, w ktorym beda pozostale informacje
-        PanelInfoTwo panelinfotwo = new PanelInfoTwo();
+        panelinfotwo = new PanelInfoTwo();
         add(panelinfotwo);
         panelinfotwo.setVisible(true);
 
@@ -86,4 +92,8 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
     }
     public void actionPerformed(ActionEvent e) {
     }
+
+    /*public void paintComponent(){
+        panelinf
+    }*/
 }
