@@ -1,8 +1,10 @@
-package Polandball_pliki;
+package Polandball_pliki.LevelFrame;
 
 /**
  * Panel gorny okna gry
  */
+
+import Polandball_pliki.SetNameFrame;
 
 import javax.swing.*;
 import java.awt.*;

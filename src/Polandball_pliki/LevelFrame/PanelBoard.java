@@ -1,4 +1,4 @@
-package Polandball_pliki;
+package Polandball_pliki.LevelFrame;
 
 /**
  * Pole gry, plansza
@@ -13,9 +13,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import java.awt.event.WindowEvent;
-import javax.swing.JOptionPane;
 
+import Polandball_pliki.*;
 import Polandball_pliki.Collision.*;
 import Polandball_pliki.Counter.Counter;
 import Polandball_pliki.Counter.CounterPlayer;
@@ -24,7 +23,6 @@ import Polandball_pliki.Counter.CounterNormalBomb;
 import Polandball_pliki.GameObjects.*;
 
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.SetConnection.current_level;
 
 
 public class PanelBoard extends JPanel implements ActionListener,KeyListener{
@@ -737,8 +735,8 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static void MakeDefaultOption(){
         try{
             timethread.stop();//zatrzymanie watku licznika
-            if(MainFrame.MakeSocket()!=null){
-                SetConnection.GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+            if(MainFrame.startPanel.MakeSocket()!=null){
+                SetConnection.GetLevelConfig(MainFrame.startPanel.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
                 GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
             }else{
                 GetConstans.read_on_level(1);//ma byc 1 zamkneicie gry=nowa gra

@@ -109,11 +109,11 @@ public class SetConnection extends JFrame implements ActionListener {
         Object source = event.getSource();
         if(source==Yes) {
            try {
-               MainFrame.ConnectToServer();//polaczenie z serwerem
-               if(MainFrame.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
-                   GetBasicConfig(MainFrame.MakeSocket());//pobranie danych konfiguracyjnych
+               MainFrame.startPanel.ConnectToServer();//polaczenie z serwerem
+               if(MainFrame.startPanel.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
+                   GetBasicConfig(MainFrame.startPanel.MakeSocket());//pobranie danych konfiguracyjnych
                    GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
-                   GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+                   GetLevelConfig(MainFrame.startPanel.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
                    MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
                    EventQueue.invokeLater(() -> { //utworzenie okna menu
                        MainFrame mainframe = new MainFrame();

@@ -1,7 +1,7 @@
 package Polandball_pliki.Counter;
 
 import Polandball_pliki.GameObjects.Polandball;
-import static Polandball_pliki.PanelBoard.PlayerExistence;
+import static Polandball_pliki.LevelFrame.PanelBoard.PlayerExistence;
 /**
  * Created by Matball on 2017-05-22.
  */

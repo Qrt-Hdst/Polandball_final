@@ -2,8 +2,8 @@ package Polandball_pliki.GameObjects;
 
 import java.awt.image.BufferedImage;
 
-import static Polandball_pliki.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.LevelFrame.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.LevelFrame.PanelBoard.SizeWidthIcon;
 
 /**
  * Created by Matball on 2017-04-16.

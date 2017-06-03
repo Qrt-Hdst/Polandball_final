@@ -5,8 +5,8 @@ import Polandball_pliki.GameObjects.LivingObject;
 import static Polandball_pliki.GetConstans.Amountofcolumns;
 import static Polandball_pliki.GetConstans.Amountoflines;
 import static Polandball_pliki.GetConstans.StatioonaryObjectTab;
-import static Polandball_pliki.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.LevelFrame.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.LevelFrame.PanelBoard.SizeWidthIcon;
 
 /**
  * Created by Matball on 2017-05-20.

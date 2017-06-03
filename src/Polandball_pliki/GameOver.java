@@ -1,17 +1,17 @@
 package Polandball_pliki;
 
+import Polandball_pliki.LevelFrame.*;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.Socket;
 
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.PanelInfoOne.PlayerName;
+import static Polandball_pliki.LevelFrame.PanelInfoOne.PlayerName;
 import static Polandball_pliki.SetNameFrame.levelframe;
 /**
  * Klasa odpowiedzialna za wyswietlenie okna konca gry
@@ -80,7 +80,7 @@ public class GameOver extends JFrame implements ActionListener{
         Object source = event.getSource();
         if(source==Okey){
             try{
-                SendScoreandName(MainFrame.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+                SendScoreandName(MainFrame.startPanel.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
                 this.dispose();//setVisible(false);
                 levelframe.dispose();//zamkniecie okna gry
                 LevelFrame.tm.stop();//zatrzymanie timera

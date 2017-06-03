@@ -1,14 +1,12 @@
 package Polandball_pliki;
 
-import static Polandball_pliki.GetConstans.*;
+import Polandball_pliki.LevelFrame.LevelFrame;
+import Polandball_pliki.LevelFrame.LevelFrame;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
-import javax.sound.sampled.Port;
 import javax.swing.*;
 
 /**

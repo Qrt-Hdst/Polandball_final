@@ -1,7 +1,10 @@
 package Polandball_pliki;
 
+import Polandball_pliki.LevelFrame.PanelInfoOne;
+import Polandball_pliki.LevelFrame.PanelInfoOne;
+
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.PanelBoard.PauseActive;
+import static Polandball_pliki.LevelFrame.PanelBoard.PauseActive;
 
 /**
  * Klasa odpowiedzialna za czas gry

@@ -3,8 +3,8 @@ package Polandball_pliki.Collision;
 import Polandball_pliki.GameObjects.Explosion;
 import Polandball_pliki.GameObjects.LivingObject;
 
-import static Polandball_pliki.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.LevelFrame.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.LevelFrame.PanelBoard.SizeWidthIcon;
 
 /**
  * Created by Matball on 2017-05-21.
