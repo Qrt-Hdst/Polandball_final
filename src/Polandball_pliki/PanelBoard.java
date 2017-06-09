@@ -40,7 +40,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public static  ArrayList<Polandball> player=new ArrayList<>();
     /**
-     * Tablica obiektow zdalnych bomb
+     * Obiekt zdalna bomba
      */
     public static Remote_Bomb remote_bomb=null;
 
@@ -151,7 +151,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else if (field.get(i).get(j).equals("NW")) {
                         enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie wroga w  pole j,i
                     } else if (field.get(i).get(j).equals("SD")) {
-                        items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
+                        //items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Klucz w polu j,i
@@ -260,7 +260,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 Player_not_take_a_item=new CollisionPlayerWithItem(player.get(0),itemInstance).getIsNotCollision();
 
                 //wykonuje sie sie kiedy player wykonal kolizje z itemem i w omawianym miejscu nie ma zadnej skrzynki
-                if(!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()]==0){
+                if(!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()]==0 && !itemInstance.getClass().equals(DoorString) ){
                     System.out.println("Zlapalem " +itemInstance.getNameClassObject());
                     Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
                     PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
@@ -292,6 +292,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                         Amountofpoints=ChangeInfoStatus(Amountofpoints,3*PointsForItem);//punty za itemek
                         PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
                     }
+                }
+                else if(!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()]==0 && itemInstance.getClass().equals(DoorString)){
+                    //tutaj jesli item jest drzwiami to zmiana grafiki na uchylone drzwi itd
                 }
             }
 
