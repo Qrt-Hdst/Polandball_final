@@ -1,4 +1,4 @@
-package Polandball_pliki.LevelFrame;
+package Polandball_pliki;
 
 /**
  * Panel boczny okna gry

@@ -61,6 +61,11 @@ public class SetConnection extends JFrame implements ActionListener {
     public static String[] levelbufor = new String[2];
 
     /**
+     * Zmienna informujaca, czy gramy online czy offline
+     */
+
+    public static boolean ServerMode;
+    /**
      * Konstruktor klasy SetConnection, zawierajacy metode createFrame()
      */
 
@@ -109,16 +114,17 @@ public class SetConnection extends JFrame implements ActionListener {
         Object source = event.getSource();
         if(source==Yes) {
            try {
-               MainFrame.startPanel.ConnectToServer();//polaczenie z serwerem
-               if(MainFrame.startPanel.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
-                   GetBasicConfig(MainFrame.startPanel.MakeSocket());//pobranie danych konfiguracyjnych
+               MainFrame.ConnectToServer();//polaczenie z serwerem
+               if(MainFrame.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
+                   GetBasicConfig(MainFrame.MakeSocket());//pobranie danych konfiguracyjnych
                    GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
-                   GetLevelConfig(MainFrame.startPanel.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+                   GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
                    MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
                    EventQueue.invokeLater(() -> { //utworzenie okna menu
                        MainFrame mainframe = new MainFrame();
                        mainframe.setVisible(true);
                    });
+                   ServerMode=true;
                    this.setVisible(false);
                }else{//jak nie sie nie udalo to komunikacik i dobranoc
                    JOptionPane.showMessageDialog(null, "Nie udało się uruchomić gry w trybie online.");
@@ -135,6 +141,7 @@ public class SetConnection extends JFrame implements ActionListener {
                 MainFrame mainframe = new MainFrame();
                 mainframe.setVisible(true);
             });
+            ServerMode=false;
             this.setVisible(false);
         }
     }

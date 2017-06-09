@@ -1,9 +1,12 @@
-package Polandball_pliki.LevelFrame;
+package Polandball_pliki;
 
+
+import sun.plugin2.message.ShowStatusMessage;
 
 import javax.swing.*;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;

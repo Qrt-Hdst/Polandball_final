@@ -3,6 +3,7 @@ package Polandball_pliki.GameObjects;
 import Polandball_pliki.Collision.CollisionLivingObjectWithTerrain;
 
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.PanelBoard.PauseActive;
 
 import java.util.Random;
 

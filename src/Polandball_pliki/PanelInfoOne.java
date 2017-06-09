@@ -1,10 +1,8 @@
-package Polandball_pliki.LevelFrame;
+package Polandball_pliki;
 
 /**
  * Panel gorny okna gry
  */
-
-import Polandball_pliki.SetNameFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -97,11 +95,8 @@ public class PanelInfoOne extends JPanel{
         PointLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(PointLabel2);
 
-        //czas, od ktorego odliczamy
-        String iloscczasu = Integer.toString((int) Math.floor(LevelTime / 60)) + ":0"
-                + Integer.toString((int) (LevelTime - (Math.floor(LevelTime / 60)) * 60));
-
-        TimeLabel2 = new JLabel(iloscczasu,JLabel.CENTER);
+        //nizej zdefinoiwana metoda SetInitialTime()- wyswietlenie czasu poczatkowego
+        TimeLabel2 = new JLabel(SetInitialTime(),JLabel.CENTER);
         TimeLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(TimeLabel2);
 
@@ -116,7 +111,26 @@ public class PanelInfoOne extends JPanel{
         NameLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
         add(NameLabel2);
 
-
     }
 
+    /**
+     * Metoda zwracajaca odpowiedni napis potrzebny do wyswietlania poczatkowego stanu zegara gry
+     */
+
+    public static String SetInitialTime(){
+
+        //czas, od ktorego odliczamy
+        String iloscczasu;
+        //System.out.println((((double)(LevelTime))/60)-(int)(Math.floor(LevelTime/60)));
+        //sprawdzenie czy czas jest podzielny przez 60 bez reszty + kilka innych sprawdzen zeby bylo dobrze wyswietlane na samym poczatku
+        if ((LevelTime >= 60 && ((((double)(LevelTime))/60)-(int)(Math.floor(LevelTime/60))) == 0) || LevelTime < 10) {
+            iloscczasu = Integer.toString((int) Math.floor(LevelTime / 60)) + ":0"
+                    + Integer.toString((int) (LevelTime - (Math.floor(LevelTime / 60)) * 60));
+            return iloscczasu;
+        }else{
+            iloscczasu = Integer.toString((int) Math.floor(LevelTime / 60)) + ":"
+                    + Integer.toString((int) (LevelTime - (Math.floor(LevelTime / 60)) * 60));
+            return iloscczasu;
+        }
+    }
 }

@@ -1,22 +1,20 @@
 package Polandball_pliki;
 
-import Polandball_pliki.LevelFrame.*;
-
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.Socket;
 
 import static Polandball_pliki.GetConstans.*;
-import static Polandball_pliki.LevelFrame.PanelInfoOne.PlayerName;
+import static Polandball_pliki.PanelInfoOne.PlayerName;
 import static Polandball_pliki.SetNameFrame.levelframe;
+import static Polandball_pliki.PanelBoard.ChangeInfoStatus;
 /**
  * Klasa odpowiedzialna za wyswietlenie okna konca gry
  */
-public class GameOver extends JFrame implements ActionListener{
+public class GameOver extends JFrame implements ActionListener, WindowListener{
 
     /**
      * Label zawierajacy informacje o koncu gry
@@ -50,6 +48,12 @@ public class GameOver extends JFrame implements ActionListener{
         this.setBackground(Color.WHITE);
         this.setSize(300,300);
         this.setLayout(null);
+        this.addWindowListener(this);
+
+        //dodanie do punktow premii za czas
+        if(LevelTime>0){
+            Amountofpoints=ChangeInfoStatus(Amountofpoints,LevelTime*PointsForSecond)+1;
+        }
 
         //label, zawierajacy informacje o koncu gry
         GameOverLabel1 = new JLabel("KONIEC GRY! ");
@@ -80,7 +84,7 @@ public class GameOver extends JFrame implements ActionListener{
         Object source = event.getSource();
         if(source==Okey){
             try{
-                SendScoreandName(MainFrame.startPanel.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+                SendScoreandName(MainFrame.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
                 this.dispose();//setVisible(false);
                 levelframe.dispose();//zamkniecie okna gry
                 LevelFrame.tm.stop();//zatrzymanie timera
@@ -89,6 +93,35 @@ public class GameOver extends JFrame implements ActionListener{
                 System.out.println(e+"Blad przycisku OK - klasa GameOver");
             }
         }
+    }
+
+    /**
+     * Metoda wykonuyjaca te same czynnosci po zamknieciu okna, co po wcisnieciu przecisku OK
+     * @param e
+     */
+    public void windowClosing(WindowEvent e) {
+        try{
+            SendScoreandName(MainFrame.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+            this.dispose();//setVisible(false);
+            levelframe.dispose();//zamkniecie okna gry
+            LevelFrame.tm.stop();//zatrzymanie timera
+            PanelBoard.MakeDefaultOption();//przywrocenie domyslnych parametrow
+        }catch(Exception error){
+            System.out.println(error+"Blad zamkniecia gameover - klasa GameOver, metoda windowClosing");
+        }
+    }
+    //metody wymagane przez interfejs, przydadza sie pozniej
+    public void windowActivated(WindowEvent e) {
+    }
+    public void windowClosed(WindowEvent e) {
+    }
+    public void windowDeactivated(WindowEvent e) {
+    }
+    public void windowDeiconified(WindowEvent e) {
+    }
+    public void windowIconified(WindowEvent e) {
+    }
+    public void windowOpened(WindowEvent e) {
     }
 
     /**

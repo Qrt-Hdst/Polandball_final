@@ -298,7 +298,6 @@ public final class GetConstans {
 
 	public GetConstans(){
 		read_on_config();
-		//read_on_level(3);
 		read_path_to_graphics();
 	}
 
@@ -356,9 +355,6 @@ public final class GetConstans {
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
 
-
-
-
 			Amountofcolumns = Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines = Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
 			Monsterspeed = Integer.parseInt(doc.getElementsByTagName("Monsterspeed").item(0).getTextContent());
@@ -396,7 +392,6 @@ public final class GetConstans {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
-
 
 			//LivingObject
 			PolandBallString = doc.getElementsByTagName("PolandBall").item(0).getTextContent();
@@ -470,8 +465,7 @@ public final class GetConstans {
 						StatioonaryObjectTab[k][j] = 0;
 					}
 				}
-				System.out.println();
-
+				//System.out.println();
 			}
 		}
 		catch(NullPointerException e) {

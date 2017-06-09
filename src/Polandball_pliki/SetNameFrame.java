@@ -1,18 +1,21 @@
 package Polandball_pliki;
 
-import Polandball_pliki.LevelFrame.LevelFrame;
-import Polandball_pliki.LevelFrame.LevelFrame;
+import static Polandball_pliki.GetConstans.*;
 
 import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JOptionPane;
+import javax.sound.sampled.Port;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
-import javax.swing.*;
+import java.awt.event.KeyEvent;
+
 
 /**
  * Okno wyboru nazwy gracza
  */
-public class SetNameFrame extends JFrame implements ActionListener {
+public class SetNameFrame extends JFrame implements ActionListener, KeyListener {
 
     /**
      * label zawierjący prośbę o podanie swojej nazwy
@@ -62,6 +65,7 @@ public class SetNameFrame extends JFrame implements ActionListener {
         this.setSize(400,300);
         this.setLayout(null);
 
+
         //pole, gdzie wspisujemy nazwę gracza, parametry tego okna nie są zawarte w pliku konfiguracyjnym
         TextField = new JTextField();
         TextField.setBounds(100,100,150,30);
@@ -78,7 +82,10 @@ public class SetNameFrame extends JFrame implements ActionListener {
         Okey.setBounds(260,100,70,30);
         add(Okey);
         Okey.addActionListener(this);
-
+        //zeby dzialal enter
+        TextField.addKeyListener(this);
+        TextField.setFocusable(true);
+        TextField.setFocusTraversalKeysEnabled(false);
     }
 
     /**
@@ -91,8 +98,8 @@ public class SetNameFrame extends JFrame implements ActionListener {
         //wczytanie nazwy gracza, zamknięcie okna, przejście do poziomu 1
         if(source==Okey){
                 nickname = TextField.getText();//wczytanie nazwy gracza z pola tekstowego
-                if(nickname.length() > 10 || nickname.indexOf(" ") != -1){
-                    //NAZWA GRACZA NIE MOZE BYC DLUZSZA NIZ 10 ZNAKOW i nie moze zawierac spacji
+                if(nickname.length() > 10 || nickname.indexOf(" ") != -1 || nickname.isEmpty()==true){
+                    //NAZWA GRACZA NIE MOZE BYC DLUZSZA NIZ 10 ZNAKOW i nie moze zawierac spacji i nie moze byc pusta
                     JOptionPane.showMessageDialog(null, "Nieprawidłowa nazwa gracza");
                     // ^ informacja o nieprawidlowej nazwie gracza
                 }else{//jak wszystko okey to gramy
@@ -105,6 +112,28 @@ public class SetNameFrame extends JFrame implements ActionListener {
     }
 
     /**
+     * Metoda obslugujaca przycisk ENTER
+     * @param event
+     */
+    @Override
+    public void keyPressed(KeyEvent event) {
+        int source = event.getKeyCode();
+        if(source == KeyEvent.VK_ENTER){
+            nickname = TextField.getText();//wczytanie nazwy gracza z pola tekstowego
+            if(nickname.length() > 10 || nickname.indexOf(" ") != -1 || nickname.isEmpty()==true){
+                //NAZWA GRACZA NIE MOZE BYC DLUZSZA NIZ 10 ZNAKOW i nie moze zawierac spacji i nie moze byc pusta
+                JOptionPane.showMessageDialog(null, "Nieprawidłowa nazwa gracza");
+                // ^ informacja o nieprawidlowej nazwie gracza
+            }else{//jak wszystko okey to gramy
+                levelframe = new LevelFrame();
+                levelframe.setVisible(true);
+                this.setVisible(false);
+            }
+        }
+
+    }
+
+    /**
      * Metoda zwracająca tekst wpisany w textfielda
      */
 
@@ -112,4 +141,22 @@ public class SetNameFrame extends JFrame implements ActionListener {
         return nickname;
     }
 
+
+    /**
+     * Metoda wymuszona przez intefejs, nieuzywana
+     * @param e
+     */
+    @Override
+    public void keyTyped(KeyEvent e){
+
+    }
+
+    /**
+     * Metoda wymuszona przez intefejs, nieuzywana
+     * @param e
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
