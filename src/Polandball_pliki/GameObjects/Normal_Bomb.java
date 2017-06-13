@@ -8,8 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import static Polandball_pliki.GetConstans.BetonString;
-import static Polandball_pliki.GetConstans.Normal_BombString;
+import static Polandball_pliki.Others.GetConstans.BetonString;
+import static Polandball_pliki.Others.GetConstans.Normal_BombString;
 
 /**
  * Created by Matball on 2017-05-09.

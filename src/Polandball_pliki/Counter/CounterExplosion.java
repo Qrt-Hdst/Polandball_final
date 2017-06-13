@@ -3,7 +3,7 @@ package Polandball_pliki.Counter;
 import Polandball_pliki.GameObjects.Explosion;
 import Polandball_pliki.GameObjects.Normal_Bomb;
 
-import static Polandball_pliki.GetConstans.TimeToExplosion;
+import static Polandball_pliki.Others.GetConstans.TimeToExplosion;
 
 /**
  * Created by Matball on 2017-05-19.
@@ -50,5 +50,4 @@ public class CounterExplosion extends Counter  {
             isStillNeed_=false;//ustawiam flage ze instancja tego licznika nie jest juz potrzebna
         }
     }
-
 }

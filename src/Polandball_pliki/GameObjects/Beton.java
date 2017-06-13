@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.BetonString;
-import static Polandball_pliki.GetConstans.PolandBallString;
+import static Polandball_pliki.Others.GetConstans.BetonString;
+import static Polandball_pliki.Others.GetConstans.PolandBallString;
 
 /**
  * Created by Matball on 2017-04-17.

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.KeyString;
+import static Polandball_pliki.Others.GetConstans.KeyString;
 
 
 public class Key extends Item {

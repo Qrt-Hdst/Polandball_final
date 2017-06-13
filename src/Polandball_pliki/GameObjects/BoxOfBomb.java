@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.BoxOfBombsString;
-import static Polandball_pliki.GetConstans.WingsOfHussarString;
+import static Polandball_pliki.Others.GetConstans.BoxOfBombsString;
+import static Polandball_pliki.Others.GetConstans.WingsOfHussarString;
 
 /**
  * Skrzynka z dodatkowymi bombami

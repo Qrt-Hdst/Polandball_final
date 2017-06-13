@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.Normal_BombString;
-import static Polandball_pliki.GetConstans.Remote_BombString;
+import static Polandball_pliki.Others.GetConstans.Normal_BombString;
+import static Polandball_pliki.Others.GetConstans.Remote_BombString;
 
 /**
  * Created by Matball on 2017-05-09.

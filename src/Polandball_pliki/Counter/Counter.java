@@ -3,7 +3,7 @@ package Polandball_pliki.Counter;
 import Polandball_pliki.GameObjects.Bomb;
 import Polandball_pliki.GameObjects.Normal_Bomb;
 
-import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.Others.GetConstans.*;
 
 /**
  * Klasa Protoplasta - liczaca czas zycia obiektow

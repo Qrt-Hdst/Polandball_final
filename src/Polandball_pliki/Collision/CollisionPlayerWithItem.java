@@ -5,8 +5,8 @@ import Polandball_pliki.GameObjects.Enemy;
 import Polandball_pliki.GameObjects.Item;
 import Polandball_pliki.GameObjects.Polandball;
 
-import static Polandball_pliki.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
  * Created by Matball on 2017-05-24.

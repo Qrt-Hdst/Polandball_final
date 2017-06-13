@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.HeartString;
-import static Polandball_pliki.GetConstans.WingsOfHussarString;
+import static Polandball_pliki.Others.GetConstans.HeartString;
+import static Polandball_pliki.Others.GetConstans.WingsOfHussarString;
 
 /**
  * Dodatkowe życia do zebrania

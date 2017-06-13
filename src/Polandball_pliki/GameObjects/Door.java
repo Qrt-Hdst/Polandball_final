@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.DoorString;
+import static Polandball_pliki.Others.GetConstans.DoorString;
 
 /**
  * Klasa obiektu typu drzwi - elementu umozliwajacego przejsc na kolejny etap

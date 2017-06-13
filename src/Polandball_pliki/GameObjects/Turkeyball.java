@@ -5,9 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.Monsterspeed;
-import static Polandball_pliki.GetConstans.NaziBallString;
-import static Polandball_pliki.GetConstans.TurkeyBallString;
+import static Polandball_pliki.Others.GetConstans.Monsterspeed;
+import static Polandball_pliki.Others.GetConstans.NaziBallString;
+import static Polandball_pliki.Others.GetConstans.TurkeyBallString;
 
 /**
  * Klasa przeciwnika typu TurkeyBall

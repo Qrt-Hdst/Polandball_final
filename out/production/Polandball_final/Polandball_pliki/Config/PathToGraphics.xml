@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<class>
+ <PolandBall>src//GameGraphics//PolandBall.png</PolandBall>
+ <NaziBall>src//GameGraphics//NaziBall.png</NaziBall>
+ <TurkeyBall>src//GameGraphics//TurkeyBall.png</TurkeyBall>
+ <SovietBall>src//GameGraphics//SovietBall.png</SovietBall>
+ <HussarBall_Left>src//GameGraphics//Hussarball_left.png</HussarBall_Left>
+ <HussarBall_Right>src//GameGraphics//Hussarball_right.png</HussarBall_Right>
+ <Skrzynka>src//GameGraphics//Skrzynka.png</Skrzynka>
+ <Beton>src//GameGraphics//Beton.png</Beton>
+ <Door>src//GameGraphics//Door.png</Door>
+ <Key>src//GameGraphics//Key.png</Key>
+ <WingsOfHussars>src//GameGraphics//Winge_of_hussars.png</WingsOfHussars>
+ <ChestOfGold>src//GameGraphics//ChestOfGold.png</ChestOfGold>
+ <BoxOfBombs>src//GameGraphics//box_of_bombs.png</BoxOfBombs>
+ <GunLaser>src//GameGraphics//Gun_laser.png</GunLaser>
+ <Heart>src//GameGraphics//Heart.png</Heart>
+ <Normal_bomb>src//GameGraphics//Normal_bomb.gif</Normal_bomb>
+ <Remote_bomb>src//GameGraphics//Remote_bomb.png</Remote_bomb>
+ <Explosion>src//GameGraphics//Explosion-animation.gif</Explosion>
+ <Background>src//GameGraphics//Commonwealth-Tangle.png</Background>
+ <BackgroundForSetconnection>src//GameGraphics//polandstrong.png</BackgroundForSetconnection>
+
+</class>
+

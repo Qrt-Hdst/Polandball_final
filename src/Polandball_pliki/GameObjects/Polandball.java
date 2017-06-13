@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.Others.GetConstans.*;
 /**
  * Klasa gracza typu Polandball
  */

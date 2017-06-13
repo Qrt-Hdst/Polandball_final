@@ -1,8 +1,7 @@
 package Polandball_pliki.Counter;
 
-import static Polandball_pliki.PanelBoard.PlayerExistence;
-import static Polandball_pliki.PanelBoard.hussars_Power;
-
+import static Polandball_pliki.Panel.PanelBoard.PlayerExistence;
+import static Polandball_pliki.Panel.PanelBoard.hussars_Power;
 /**
  * Created by Matball on 2017-06-12.
  */

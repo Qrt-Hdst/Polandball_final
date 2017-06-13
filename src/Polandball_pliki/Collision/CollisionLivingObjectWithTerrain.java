@@ -2,11 +2,11 @@ package Polandball_pliki.Collision;
 
 import Polandball_pliki.GameObjects.LivingObject;
 
-import static Polandball_pliki.GetConstans.Amountofcolumns;
-import static Polandball_pliki.GetConstans.Amountoflines;
-import static Polandball_pliki.GetConstans.StatioonaryObjectTab;
-import static Polandball_pliki.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.PanelBoard.SizeWidthIcon;
+import static Polandball_pliki.Others.GetConstans.Amountofcolumns;
+import static Polandball_pliki.Others.GetConstans.Amountoflines;
+import static Polandball_pliki.Others.GetConstans.StatioonaryObjectTab;
+import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
+import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
  * Created by Matball on 2017-05-20.
