@@ -8,9 +8,11 @@ import java.io.*;
 import java.net.Socket;
 
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.MainFrame.startPanel;
 import static Polandball_pliki.PanelInfoOne.PlayerName;
 import static Polandball_pliki.SetNameFrame.levelframe;
 import static Polandball_pliki.PanelBoard.ChangeInfoStatus;
+
 /**
  * Klasa odpowiedzialna za wyswietlenie okna konca gry
  */
@@ -52,8 +54,11 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
 
         //dodanie do punktow premii za czas
         if(LevelTime>0){
-            Amountofpoints=ChangeInfoStatus(Amountofpoints,LevelTime*PointsForSecond)+1;
+            Amountofpoints = ChangeInfoStatus(Amountofpoints,(LevelTime+1)*PointsForSecond);
         }
+        //i jeszcze wiecej punktow za zachowane itemy
+        Amountofpoints = ChangeInfoStatus(Amountofpoints, (Amountoflifes + Amountofordinarybombs +
+        Amountofremotebombs + Amountofhusarswings + Amountofkeys + Amountoflasers)*5);
 
         //label, zawierajacy informacje o koncu gry
         GameOverLabel1 = new JLabel("KONIEC GRY! ");
@@ -84,11 +89,12 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
         Object source = event.getSource();
         if(source==Okey){
             try{
-                SendScoreandName(MainFrame.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+                SendScoreandName(startPanel.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
                 this.dispose();//setVisible(false);
                 levelframe.dispose();//zamkniecie okna gry
                 LevelFrame.tm.stop();//zatrzymanie timera
-                PanelBoard.MakeDefaultOption();//przywrocenie domyslnych parametrow
+                PanelBoard.MakeDefaultOption(1);//przywrocenie domyslnych parametrow
+                Amountofpoints=0;
             } catch(Exception e){
                 System.out.println(e+"Blad przycisku OK - klasa GameOver");
             }
@@ -101,11 +107,11 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
      */
     public void windowClosing(WindowEvent e) {
         try{
-            SendScoreandName(MainFrame.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+            SendScoreandName(startPanel.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
             this.dispose();//setVisible(false);
             levelframe.dispose();//zamkniecie okna gry
             LevelFrame.tm.stop();//zatrzymanie timera
-            PanelBoard.MakeDefaultOption();//przywrocenie domyslnych parametrow
+            PanelBoard.MakeDefaultOption(1);//przywrocenie domyslnych parametrow
         }catch(Exception error){
             System.out.println(error+"Blad zamkniecia gameover - klasa GameOver, metoda windowClosing");
         }

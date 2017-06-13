@@ -6,11 +6,18 @@ import java.io.File;
 import java.io.IOException;
 
 import static Polandball_pliki.GetConstans.*;
-
 /**
  * Klasa gracza typu Polandball
  */
 public class Polandball extends LivingObject {
+    /**
+     *
+     */
+    BufferedImage leftHussar;
+    /**
+     *
+     */
+    BufferedImage rightHussar;
     /**
      * konstruktor obiektu gracza
      * @param x polozenie na osi x
@@ -24,6 +31,8 @@ public class Polandball extends LivingObject {
         velY_=0;
         name_class_object=PolandBallString;
         buffImage_=createBufferedImage();
+        leftHussar=createLeftHussar();
+        rightHussar=createRightHussar();
         distance_from_elevation_walls=3/16;
         distance_from_azimuth_walls=3/16;
     }
@@ -34,9 +43,9 @@ public class Polandball extends LivingObject {
      */
     BufferedImage createBufferedImage(){
         try {
-            File file = new File(PolandBallString);
-            BufferedImage bufferedImage= ImageIO.read(file);
-            return bufferedImage;
+                File file = new File(PolandBallString);
+                BufferedImage bufferedImage = ImageIO.read(file);
+                return bufferedImage;
         }
         catch(IOException e ){
             e.printStackTrace();
@@ -46,5 +55,43 @@ public class Polandball extends LivingObject {
         }
         return null;
     }
+
+    public BufferedImage createLeftHussar() {
+        try {
+            File file = new File(HussarBall_leftString);
+            BufferedImage image = ImageIO.read(file);
+            return image;
+        }
+        catch(IOException e ){
+            e.printStackTrace();
+            System.out.println("Blad wczytywania obiektu typu Polandball");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public BufferedImage createRightHussar() {
+        try {
+            File file = new File(HussarBall_rightString);
+            BufferedImage image  = ImageIO.read(file);
+            return image;
+        }
+        catch(IOException e ){
+            e.printStackTrace();
+            System.out.println("Blad wczytywania obiektu typu Polandball");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public BufferedImage getLeftHussar() {
+        return leftHussar;
+    }
+
+    public BufferedImage getRightHussar() {
+        return rightHussar;
+    }
+
 
 }

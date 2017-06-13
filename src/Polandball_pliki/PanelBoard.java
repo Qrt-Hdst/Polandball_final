@@ -13,23 +13,26 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import java.awt.event.WindowEvent;
-import javax.swing.JOptionPane;
 
 import Polandball_pliki.Collision.*;
-import Polandball_pliki.Counter.Counter;
-import Polandball_pliki.Counter.CounterPlayer;
-import Polandball_pliki.Counter.CounterExplosion;
-import Polandball_pliki.Counter.CounterNormalBomb;
+import Polandball_pliki.Counter.*;
 import Polandball_pliki.GameObjects.*;
 
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.MainFrame.startPanel;
 import static Polandball_pliki.SetConnection.ServerMode;
-import static Polandball_pliki.SetConnection.current_level;
+
 
 
 public class PanelBoard extends JPanel implements ActionListener,KeyListener{
-
+    /**
+     * Sprawdza czy gracz ma włączone skrzydła hussarskie
+     */
+    public static boolean hussars_Power= false;
+    /**
+     * Zmienna okreslajaca czy gracz jest w poblizu drzwi
+     */
+    public static boolean player_stay_on_door=false;
     /**
      * Tablica obiektow przeciwnikow
      */
@@ -40,7 +43,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public static  ArrayList<Polandball> player=new ArrayList<>();
     /**
-     * Obiekt zdalna bomba
+     * Tablica obiektow zdalnych bomb
      */
     public static Remote_Bomb remote_bomb=null;
 
@@ -60,17 +63,29 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static ArrayList<Counter> counters=new ArrayList<>();
 
     /**
-     *  Lista obiektow bedacych elementami terenu
+     *  Tablica obiektow bedacych elementami terenu
      */
     public static ArrayList<Terrain> terrains=new ArrayList<>();
 
+    /*
+     * Tablica do przechowywania drzwi
+     *
+
+    public static ArrayList<Item> doors=new ArrayList<>();
+    */
+    /*
+     * Tablica do przechowywania kluczy
+     *
+
+    public static ArrayList<Item> keys=new ArrayList<>();
+    */
     /**
-     *  Lista itemow (elementow do zebrania/uruchomienia interakcji przez gracza)
+     *  Tablica itemow (elementow do zebrania/uruchomienia interakcji przez gracza)
      */
     public static ArrayList<Item> items=new ArrayList<>();
 
     /**
-     * tablica znakow, na ktorej jest zapisana plansza
+     * Tablica znakow(pol), na ktorej jest zapisana plansza
      */
     public static ArrayList<ArrayList<String>> field = new ArrayList<>();
     /**
@@ -78,12 +93,12 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public static ArrayList<Thread> TableOfEnemyThreads = new ArrayList<>();
     /**
-     * tablica, do ktorej beda rozdzielane ciagi znakow z pliku konfiguracyjnego
+     * Tablica, do ktorej beda rozdzielane ciagi znakow z pliku konfiguracyjnego
      */
     public String bufor_string[];
 
     /**
-     * Zmienna mówiaca, czy player zyje
+     * Zmienna okreslajaca, czy player zyje
      */
     public static boolean PlayerExistence=false;
 
@@ -105,6 +120,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static Thread timethread;
 
     /**
+     * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
+     */
+
+    public static int SizeWidthIcon = ((int)(0.8*Boardwidth))/Amountofcolumns;
+
+    /**
+     * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
+     */
+
+    public static int SizeHeightIcon = ((int)(0.8*Boardheight))/Amountoflines;
+
+    /**
      * konstruktor panelu głównego, zawierający funkcję PanelBoard
      */
 
@@ -116,7 +143,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     private void PanelBoard() {
-        panelboardheight =(int)(0.75*Boardheight);
+        panelboardheight =(int)(0.8*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelinfooneheight = (int)(0.2*Boardheight);
         addKeyListener(this);
@@ -146,18 +173,17 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else if (field.get(i).get(j).equals("S_")) {
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie skrzynki w pole j,i
                     } else if (field.get(i).get(j).equals("NG")) {
-                        player.add(new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie olayer w polu j,i
+                        player.add(new Polandball(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie playera w polu j,i
                         PlayerExistence=true;
                     } else if (field.get(i).get(j).equals("NW")) {
                         enemy.add(lottery_of_enemies(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie wroga w  pole j,i
                     } else if (field.get(i).get(j).equals("SD")) {
-                        //items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
+                        items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Klucz w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SI")) {
-                        //kiedy ogarne itemy trzeba wrzucic funkcje do losowania itemu w tym miejscu
                         items.add(lottery_of_items(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     }
@@ -251,55 +277,64 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     /**
      * Metoda sprawdzajaca czy gracz nie zebral ktoregos elementu
      */
-    void checkPlayerHasCollectedItem(){
-        if(items.size()>0 && player.size()>0){
+    void checkPlayerHasCollectedItem() {
+        if (items.size() > 0 && player.size() > 0) {
 
-            boolean Player_not_take_a_item=false;//zmienna okreslajaca czy player schwycil item
-            for(Iterator<Item> iteratoItems = items.iterator(); iteratoItems.hasNext();) {//iteratoItems wskazuje na kolejne elementy z kolekcji items
-                Item itemInstance=iteratoItems.next();// przypisuje obiekt item na obiekt na który wskazuje iteraItems
-                Player_not_take_a_item=new CollisionPlayerWithItem(player.get(0),itemInstance).getIsNotCollision();
+            boolean Player_not_take_a_item = true;//zmienna okreslajaca czy player schwycil item
+            for (Iterator<Item> iteratoItems = items.iterator(); iteratoItems.hasNext(); ) {//iteratoItems wskazuje na kolejne elementy z kolekcji items
+                Item itemInstance = iteratoItems.next();// przypisuje obiekt item na obiekt na który wskazuje iteraItems
+                    Player_not_take_a_item = new CollisionPlayerWithItem(player.get(0), itemInstance).getIsNotCollision();
+                    //wykonuje sie sie kiedy player wykonal kolizje z itemem i w omawianym miejscu nie ma zadnej skrzynki
+                    if (!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()] == 0) {
+                        System.out.println("Zlapalem " + itemInstance.getNameClassObject());
+                        // Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
+                        // PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        if(!itemInstance.getNameClassObject().equals(DoorString)){
+                            iteratoItems.remove();//usuwam element jesli kolizja wykryla zetkniecie sie itema i gracza
+                        }
 
-                //wykonuje sie sie kiedy player wykonal kolizje z itemem i w omawianym miejscu nie ma zadnej skrzynki
-                if(!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()]==0 && !itemInstance.getClass().equals(DoorString) ){
-                    System.out.println("Zlapalem " +itemInstance.getNameClassObject());
-                    Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
-                    PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                    iteratoItems.remove();//usuwam element jesli kolizja wykryla zetkniecie sie itema i gracza
-                   //sprawdzamy, ktory itemek podnieslismy
-                    if(itemInstance.getNameClassObject().equals("src//GameGraphics//Winge_of_hussars.png")){
-                        Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings,1);//dodanie skrzydel do ekwipunku
-                        PanelInfoTwo.Iloscskrzydelhusarskich.setText(Integer.toString(Amountofhusarswings));//wyswietlenie w labelu
-                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
-                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//ChestOfGold.png")){
-                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForChestOfGold);//punty za skrzynke zlota
-                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//Gun_laser.png")){
-                        Amountoflasers = ChangeInfoStatus(Amountoflasers,1);//dodanie lasera do ekwipunku
-                        PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));//wyswietlenie w labelu
-                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
-                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//Heart.png")){
-                        Amountoflifes = ChangeInfoStatus(Amountoflifes,1);//dodanie zycia
-                        PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//wyswietlenie w labelu
-                        Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForItem);//punty za itemek
-                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
-                    }else if(itemInstance.getNameClassObject().equals("src//GameGraphics//box_of_bombs.png")){
-                        Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs,1);//dodanie zdalnej bomby
-                        PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//wyswietlenie w labelu
-                        Amountofordinarybombs = ChangeInfoStatus(Amountofordinarybombs,2);//dodanie zwyklej bomby
-                        PanelInfoTwo.Iloscbombzwyklych.setText(Integer.toString(Amountofordinarybombs));//wyswietlenie w labelu
-                        Amountofpoints=ChangeInfoStatus(Amountofpoints,3*PointsForItem);//punty za itemek
-                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        //sprawdzamy, ktory itemek podnieslismy
+                        if (itemInstance.getNameClassObject().equals("src//GameGraphics//Winge_of_hussars.png")) {
+                            Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings, 1);//dodanie skrzydel do ekwipunku
+                            PanelInfoTwo.Iloscskrzydelhusarskich.setText(Integer.toString(Amountofhusarswings));//wyswietlenie w labelu
+                            Amountofpoints = ChangeInfoStatus(Amountofpoints, PointsForItem);//punty za itemek
+                            PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        } else if (itemInstance.getNameClassObject().equals("src//GameGraphics//ChestOfGold.png")) {
+                            Amountofpoints = ChangeInfoStatus(Amountofpoints, PointsForChestOfGold);//punty za skrzynke zlota
+                            PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        } else if (itemInstance.getNameClassObject().equals("src//GameGraphics//Gun_laser.png")) {
+                            Amountoflasers = ChangeInfoStatus(Amountoflasers, 1);//dodanie lasera do ekwipunku
+                            PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));//wyswietlenie w labelu
+                            Amountofpoints = ChangeInfoStatus(Amountofpoints, PointsForItem);//punty za itemek
+                            PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        } else if (itemInstance.getNameClassObject().equals("src//GameGraphics//Heart.png")) {
+                            Amountoflifes = ChangeInfoStatus(Amountoflifes, 1);//dodanie zycia
+                            PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//wyswietlenie w labelu
+                            Amountofpoints = ChangeInfoStatus(Amountofpoints, PointsForItem);//punty za itemek
+                            PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        } else if (itemInstance.getNameClassObject().equals("src//GameGraphics//box_of_bombs.png")) {
+                            Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs, 1);//dodanie zdalnej bomby
+                            PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//wyswietlenie w labelu
+                            Amountofordinarybombs = ChangeInfoStatus(Amountofordinarybombs, 2);//dodanie zwyklej bomby
+                            PanelInfoTwo.Iloscbombzwyklych.setText(Integer.toString(Amountofordinarybombs));//wyswietlenie w labelu
+                            Amountofpoints = ChangeInfoStatus(Amountofpoints, 3 * PointsForItem);//punty za itemek
+                            PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                        } else if (itemInstance.getNameClassObject().equals("src//GameGraphics//Key.png")) {
+                            Amountofkeys = ChangeInfoStatus(Amountofkeys, 1);
+                            PanelInfoTwo.Ilosckluczy.setText(Integer.toString(Amountofkeys));//wyswietlenie w labelu
+                        } else if (itemInstance.getNameClassObject().equals(DoorString) &&  Amountofkeys>0){
+                                player_stay_on_door=true;
+                        }
+                    }
+                    else {
+                        player_stay_on_door=false;
                     }
                 }
-                else if(!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()]==0 && itemInstance.getClass().equals(DoorString)){
-                    //tutaj jesli item jest drzwiami to zmiana grafiki na uchylone drzwi itd
-                }
             }
-
         }
-    }
+    /**
+     * Metoda sprawdzają
+     */
 
     /**
      * metoda do wywołania zmiany polozenia polandballa
@@ -510,7 +545,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     /**
      * Ustawienie Polandballa w miejscu startowym po respawnie
      */
-    public void setRespawnPolandball() {
+    public static void setRespawnPolandball() {
         for (int i = 0; i < Amountoflines; i++) {
             for (int j = 0; j < Amountofcolumns; j++) {
                 if (field.get(i).get(j).equals("NG")) {
@@ -540,18 +575,21 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         int c = e.getKeyCode();
         if(PauseActive==false) { // sprawdzam czy gra nie jest w stanie pauzy
             if (player.size() > 0) {
-
+                int factor_mode=1;
+                if(hussars_Power==true){
+                    factor_mode=2;
+                }
                 if (c == KeyEvent.VK_LEFT) {
-                    player.get(0).change_velX(SpeedPlayer * (-1));
+                    player.get(0).change_velX(SpeedPlayer * -1*(factor_mode));
                     player.get(0).change_velY(0);
                 } else if (c == KeyEvent.VK_RIGHT) {
-                    player.get(0).change_velX(SpeedPlayer * (1));
+                    player.get(0).change_velX(SpeedPlayer * 1*(factor_mode));
                     player.get(0).change_velY(0);
                 } else if (c == KeyEvent.VK_DOWN) {
-                    player.get(0).change_velY(SpeedPlayer * (1));
+                    player.get(0).change_velY(SpeedPlayer * 1*(factor_mode));
                     player.get(0).change_velX(0);
                 } else if (c == KeyEvent.VK_UP) {
-                    player.get(0).change_velY(SpeedPlayer * (-1));
+                    player.get(0).change_velY(SpeedPlayer * (-1)*factor_mode);
                     player.get(0).change_velX(0);
                 }
                 //stawianie bomby
@@ -565,22 +603,41 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else {
                         System.out.println("Nie masz wiecej bomb");
                     }
-                } else if (c == KeyEvent.VK_Z && normal_bomb.size() < 3 && PermissionForRemoteBomb!=false) {
+                } else if (c == KeyEvent.VK_Z /*&& normal_bomb.size() < 3*/ && PermissionForRemoteBomb != false) {
                     System.out.println("remote " + (Amountofremotebombs > 0));
                     if (Amountofremotebombs > 0) {
                         remote_bomb = new Remote_Bomb(player.get(0).getX(), player.get(0).getY());//dodanie bomby do tablicy
                         Amountofremotebombs = ChangeInfoStatus(Amountofremotebombs, -1);//zmniejszenie ilosci bomb
                         PanelInfoTwo.Iloscbombzdalnych.setText(Integer.toString(Amountofremotebombs));//aktualizacja ilosci bomb
                         //znajdujace sie w tablicy
-                        PermissionForRemoteBomb=false;//nie mozemy postawic nastepnej zdalnej bomby
+                        PermissionForRemoteBomb = false;//nie mozemy postawic nastepnej zdalnej bomby
                     }
                 } else if (remote_bomb != null && c == KeyEvent.VK_X) {
                     createExplosion(remote_bomb); // tworze eksplozje na ekranie
                     remote_bomb = null; //zwracam referencje na obiekt null, z powrotem moge stawiac bombe
-                    PermissionForRemoteBomb=true;//po zdetonowaniu zdalnej bomby mozemy postawic nastepna
-                } else if (c == KeyEvent.VK_P){
-                    PauseActive=true;
+                    PermissionForRemoteBomb = true;//po zdetonowaniu zdalnej bomby mozemy postawic nastepna
+                } else if (c == KeyEvent.VK_P) {
+                    PauseActive = true;
 
+                } else if (c == KeyEvent.VK_E) {
+                    if (player_stay_on_door == true && Amountofkeys > 0) {
+                        PauseActive = true;//zatrzymanie gry
+                        NextLevelInfo nextlevelinfo = new NextLevelInfo();
+                        nextlevelinfo.setVisible(true);
+                    } else if (player_stay_on_door == true && Amountofkeys == 0) {
+                        System.out.println("Brak kluczy do otworzenia drzwi");
+                    } else if (player_stay_on_door == false && Amountofkeys == 1) {
+                        System.out.println("Brak drzwi które mozna otworzyc");
+                    }
+                }
+                else if(c == KeyEvent.VK_W) {
+                    if (Amountofhusarswings > 0 && hussars_Power == false) {
+                        hussars_Power = true;
+                        Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings, -1);
+                        PanelInfoTwo.Iloscskrzydelhusarskich.setText(Integer.toString(Amountofhusarswings));//aktualizacja ilosci bomb
+                        System.out.println("Hussarball, Active!");
+                        counters.add(new CounterHussarWings());
+                    }
                 }
             }
         }
@@ -611,17 +668,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }
     }
 
-    /**
-     * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
-     */
-
-    public static int SizeWidthIcon = ((int)(0.8*Boardwidth))/Amountofcolumns;
-
-    /**
-     * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
-     */
-
-    public static int SizeHeightIcon = ((int)(0.75*Boardheight))/Amountoflines;
 
     /**
      * funkcja rysująca mape poziomu
@@ -631,7 +677,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void paint(Graphics g){
         //System.out.println("Size of players "+ player.size());
         g.setColor(Color.black);
-        g.fillRect(0,0,(int)(0.8*Boardwidth),(int)(0.75*Boardheight)); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
+        g.fillRect(0,0,(int)(0.8*Boardwidth),(int)(0.8*Boardheight)); // rysuje czarny kwadrat bedacy tlem dla naszych grafik
         drawItem(g); //rysuje itemy na planszy
         drawBomb(g); //rysuje bomby na planszy
         drawPlayerObject(g);//rysuje playera
@@ -644,9 +690,17 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na ktorej jest namalowywana obiekty
      */
     public void drawItem(Graphics g){
-        for(int i=0;i<items.size();i++){
-            g.drawImage(items.get(i).getBuffImage(),items.get(i).getX(),items.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        for(int i=0;i<items.size();i++) {
+            g.drawImage(items.get(i).getBuffImage(), items.get(i).getX(), items.get(i).getY(), SizeWidthIcon, SizeHeightIcon, null);
         }
+        /*//rysowanie drzwi
+        for(int i =0;i<doors.size();i++){
+            g.drawImage(doors.get(i).getBuffImage(), doors.get(i).getX(), doors.get(i).getY(), SizeWidthIcon, SizeHeightIcon, null);
+        }
+        //rysowanie kluczy
+        for(int i =0;i<keys.size();i++){
+            g.drawImage(keys.get(i).getBuffImage(), keys.get(i).getX(), keys.get(i).getY(), SizeWidthIcon, SizeHeightIcon, null);
+        }*/
     }
     /**
      * funkcja rysujaca bomby na grafice
@@ -687,7 +741,17 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void drawPlayerObject(Graphics g) {
         //System.out.println("Size of players "+ player.size());
         if(player.size()>0) {
-            g.drawImage(player.get(0).getBuffImage(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
+            if(hussars_Power==false) {
+                g.drawImage(player.get(0).getBuffImage(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
+            }else if(hussars_Power==true) {
+                if(player.get(0).get_velX()>0) {
+                    g.drawImage(player.get(0).getRightHussar(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
+                }else if(player.get(0).get_velX()<0){
+                    g.drawImage(player.get(0).getLeftHussar(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
+                }else {
+                    g.drawImage(player.get(0).getRightHussar(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
+                }
+            }
         }
     }
     /**
@@ -697,7 +761,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
     public void drawEnemyObject(Graphics g){
         for(int i=0;i<enemy.size();i++){
-                g.drawImage(enemy.get(i).getBuffImage(), enemy.get(i).getX(), enemy.get(i).getY(), SizeWidthIcon, SizeHeightIcon, null);
+                g.drawImage(enemy.get(i).getBuffImage(), enemy.get(i).getX(), enemy.get(i).getY(), SizeWidthIcon, SizeHeightIcon,  null);
 
         }
     }
@@ -738,16 +802,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * Metoda przywracajaca ustawienia sprzed rozpoczecia rozgrywki
      */
 
-    public static void MakeDefaultOption(){
+    public static void MakeDefaultOption(int level){
         try{
             timethread.stop();//zatrzymanie watku licznika
-            if(MainFrame.MakeSocket()!=null && ServerMode==true){
-                SetConnection.GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+            if(startPanel.MakeSocket()!=null && ServerMode==true){
+                SetConnection.GetLevelConfig(startPanel.MakeSocket(), level);//pobranie danych pierwszego poziomu na poczatku gry
                 GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
             }else{
-                GetConstans.read_on_level(1);//ma byc 1 zamkneicie gry=nowa gra
+                GetConstans.read_on_level(level);//wczytanie konkretnego poziomu
                 GetConstans.MakeBoardObstacleTable();//zaladowanie jeszcze raz tablicy kolizji
             }
+            SizeHeightIcon = (int)((0.8*(double)Boardheight))/Amountoflines;//ustawienie pożadanych rozmiarów pól
+            SizeWidthIcon = ((int)(0.8*(double)Boardwidth))/Amountofcolumns;
             KillEnemyThreads();//zabijane watkow wrogow
             ClearArraylists();//wywolanie nizej zdefiniowanej metody odpowiedzialnej za czyscienie buforw dynamicznych
         }catch(Exception e){
@@ -762,6 +828,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static void ClearArraylists(){
         //czyszczenie wszystkich buforow
         enemy.clear();
+        player.clear();
         remote_bomb=null;
         normal_bomb.clear();
         explosions.clear();
@@ -772,6 +839,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         TableOfEnemyThreads.clear();
         PauseActive=false;
         PermissionForRemoteBomb=true;
+        hussars_Power=false;
     }
 
     /**

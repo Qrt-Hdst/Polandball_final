@@ -4,35 +4,66 @@ package Polandball_pliki;
  * Panel gorny okna gry
  */
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import javax.swing.*;
 import java.awt.*;
 import static Polandball_pliki.GetConstans.*;
 
 public class PanelInfoOne extends JPanel{
+    /**
+     * Przycisk rozpoczynający nową grę
+     */
+
+    public ButtonLabel NewGame;
+    /**
+     * Label odpowiedzialny za zycia
+     */
+
+    public static ButtonLabel LifeLabel1;
+    /**
+     * Label odpowiedzialny za punkty
+     */
+    public static ButtonLabel PointLabel1;
+    /**
+     * Label odpowiedzialny za czas
+     */
+    public static ButtonLabel TimeLabel1;
+    /**
+     * label odpowiedzialny za poziom
+     */
+    public static ButtonLabel LevelLabel1;
+    /**
+     * Label odpowiedzialny za nazwe gracza
+     */
+    public static ButtonLabel NameLabel1;
 
     /**
      * Label odpowiedzialny za wyswietlanie ilosci zyc
      */
-    public static JLabel LifeLabel2;
+    public static ButtonLabel LifeLabel2;
 
     /**
      * Label odpowiedzialny za wyswietlanie punktow
      */
 
-    public static JLabel PointLabel2;
+    public static ButtonLabel PointLabel2;
 
     /**
      * Label odpowiedzialny za pokazywanie, ile pozostalo czasu
      */
 
-    public static  JLabel TimeLabel2;
+    public static ButtonLabel TimeLabel2;
 
     /**
      * Label odpowiedzialny za wyswietlanie aktualnego poziomu
      */
 
-    public static JLabel LevelLabel2;
-
+    public static ButtonLabel LevelLabel2;
+    /**
+     * Label odpowiedzialny za wyswietlenie nazwy gracza
+     */
+    public static ButtonLabel NameLabel2;
     /**
      * Zmienna przechowujaca nazwe gracza
      */
@@ -52,63 +83,64 @@ public class PanelInfoOne extends JPanel{
     private void PanelInfoOne(){
 
         panelinfooneheight = (int)(0.2*Boardheight);
-        this.setSize(Boardwidth,panelinfooneheight);
+
+        Dimension size = new Dimension(Boardwidth,  panelinfooneheight);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+        setSize(size);
+
         this.setLocation(0,0);
         this.setBackground(Color.GRAY);
-        this.setLayout(new GridLayout(2,5));//ustawienie siatki, aby pustawiac labele
+        this.setLayout(null);//new GridLayout(2,5));//ustawienie siatki, aby pustawiac labele
 
         /****************************************************/
          //labele panela górnego, zawierające informaje o rozgrywce
         /****************************************************/
 
-        JLabel LifeLabel1 = new JLabel("Ilość żyć:",JLabel.CENTER);
-        LifeLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
-        add(LifeLabel1);
+        NewGame = new ButtonLabel("Nowa Gra");
+        //NewGame.setFont(new Font("Serif", Font.PLAIN, 20));
+        this.add(NewGame);
 
-        JLabel PointLabel1 = new JLabel("Ilość punktów:",JLabel.CENTER);
-        PointLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
+        LifeLabel1 = new ButtonLabel("Ilość żyć:");
+        this.add(LifeLabel1);
+
+
+        PointLabel1 = new ButtonLabel("Ilość punktów:");
         add(PointLabel1);
 
-        JLabel TimeLabel1 = new JLabel("Czas:",JLabel.CENTER);
-        TimeLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
+        TimeLabel1 = new ButtonLabel("Czas:");
         add(TimeLabel1);
 
-        JLabel LevelLabel1 = new JLabel("Poziom:",JLabel.CENTER);
-        LevelLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
+        LevelLabel1 = new ButtonLabel("Poziom:");
         add(LevelLabel1);
 
-        JLabel NameLabel1 = new JLabel("Nick:",JLabel.CENTER);
-        NameLabel1.setFont(new Font("Serif", Font.PLAIN, 30));
+        NameLabel1 = new ButtonLabel("Nick:");
         add(NameLabel1);
 
         //ilosc zyc zawarta w pliku konfiguracyjnym
         String ilosczyc =Integer.toString(Amountoflifes);
 
-        LifeLabel2 = new JLabel(ilosczyc,JLabel.CENTER);
-        LifeLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
+        LifeLabel2 = new ButtonLabel(ilosczyc);
         add(LifeLabel2);
 
         //ilosc punktow, zawsze 0, konwersja
-        String iloscpunktow = Integer.toString(Amountofpoints=0);
+        String iloscpunktow = Integer.toString(Amountofpoints);
 
-        PointLabel2 = new JLabel(iloscpunktow,JLabel.CENTER);
-        PointLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
+        PointLabel2 = new ButtonLabel(iloscpunktow);
         add(PointLabel2);
 
         //nizej zdefinoiwana metoda SetInitialTime()- wyswietlenie czasu poczatkowego
-        TimeLabel2 = new JLabel(SetInitialTime(),JLabel.CENTER);
-        TimeLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
+        TimeLabel2 = new ButtonLabel(SetInitialTime());
         add(TimeLabel2);
 
-        LevelLabel2 = new JLabel(Integer.toString(WhiChLevel),JLabel.CENTER);
-        LevelLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
+        LevelLabel2 = new ButtonLabel(Integer.toString(WhiChLevel));
         add(LevelLabel2);
 
         //wyswietlenie nazwy gracza wczytanej w okienku wyboru nicku w odpowiednim labelu
         PlayerName = SetNameFrame.GetName();
 
-        JLabel NameLabel2 = new JLabel(PlayerName,JLabel.CENTER);
-        NameLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
+        NameLabel2 = new ButtonLabel(PlayerName);
         add(NameLabel2);
 
     }
@@ -118,7 +150,6 @@ public class PanelInfoOne extends JPanel{
      */
 
     public static String SetInitialTime(){
-
         //czas, od ktorego odliczamy
         String iloscczasu;
         //System.out.println((((double)(LevelTime))/60)-(int)(Math.floor(LevelTime/60)));
@@ -132,5 +163,24 @@ public class PanelInfoOne extends JPanel{
                     + Integer.toString((int) (LevelTime - (Math.floor(LevelTime / 60)) * 60));
             return iloscczasu;
         }
+    }
+
+    public void paintComponent(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(0,0,getWidth(),(int)((double)getHeight()));
+        //g.setColor(Color.CYAN);
+        LifeLabel1.setBounds(0,0,(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        PointLabel1.setBounds((int)((double)getWidth()*0.2),0,(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        TimeLabel1.setBounds((int)((double)getWidth()*0.4),0,(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        LevelLabel1.setBounds((int)((double)getWidth()*0.6),0,(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        NameLabel1.setBounds((int)((double)getWidth()*0.8),0,(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+
+        LifeLabel2.setBounds(0,(int)((double)getHeight()*0.5),(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        PointLabel2.setBounds((int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5),(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        TimeLabel2.setBounds((int)((double)getWidth()*0.4),(int)((double)getHeight()*0.5),(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        LevelLabel2.setBounds((int)((double)getWidth()*0.6),(int)((double)getHeight()*0.5),(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+        NameLabel2.setBounds((int)((double)getWidth()*0.8),(int)((double)getHeight()*0.5),(int)((double)getWidth()*0.2),(int)((double)getHeight()*0.5));
+
+        //NewGame.setBounds(        getWidth()/3,getHeight()/7,getWidth()/3,50);
     }
 }

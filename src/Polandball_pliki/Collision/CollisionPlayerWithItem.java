@@ -138,8 +138,8 @@ public class CollisionPlayerWithItem extends Collision {
             //sprawdzam czy player nachodzi na enemy na osi y
             if (
                      ( Player_point_south > Item_point_north   &&
-                     Player_point_south < Item_point_south )
-                     ||
+                         Player_point_south < Item_point_south )
+                      ||
                      ( Player_point_north < Item_point_south  &&
                       Player_point_north > Item_point_north)
                 )

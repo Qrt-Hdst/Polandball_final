@@ -11,6 +11,7 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 
 import static Polandball_pliki.GetConstans.*;
+import static Polandball_pliki.MainFrame.startPanel;
 
 /**
  * Klasa, tworzaca okno wyboru, czy chcemy korzystac z danych serwera czy nie
@@ -66,6 +67,12 @@ public class SetConnection extends JFrame implements ActionListener {
 
     public static boolean ServerMode;
     /**
+     * Flaga informujaca, moze byc zaladowany nastepny poziom
+     */
+
+    public static boolean LoadLevel;
+
+    /**
      * Konstruktor klasy SetConnection, zawierajacy metode createFrame()
      */
 
@@ -114,11 +121,11 @@ public class SetConnection extends JFrame implements ActionListener {
         Object source = event.getSource();
         if(source==Yes) {
            try {
-               MainFrame.ConnectToServer();//polaczenie z serwerem
-               if(MainFrame.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
-                   GetBasicConfig(MainFrame.MakeSocket());//pobranie danych konfiguracyjnych
+               startPanel.ConnectToServer();//polaczenie z serwerem
+               if(startPanel.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
+                   GetBasicConfig(startPanel.MakeSocket());//pobranie danych konfiguracyjnych
                    GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
-                   GetLevelConfig(MainFrame.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
+                   GetLevelConfig(startPanel.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
                    MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
                    EventQueue.invokeLater(() -> { //utworzenie okna menu
                        MainFrame mainframe = new MainFrame();
@@ -223,14 +230,22 @@ public class SetConnection extends JFrame implements ActionListener {
                 InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
                 BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));
                 String answer = buildreader.readLine();//przypisanie do stringa odczytanej wiadomosci
-                if (answer != "INVALID_COMMAND") {//sprawdzenie czy serwer zrozumial zadanie
+                answer.trim();//wyczyszczenie z bialych znakow
+
+                if(answer.equals("INVALID_COMMAND")){
+                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);
+                    LoadLevel=false;//nie mozna zaladowac poziomu
+                }else if (answer.equals("LEVEL_NOT_FOUND")) {
+                    System.out.println("OTRZYMANO WIADOMOSC: " + answer);
+                    LoadLevel =false;//nie mozna zaladowac poziomu
+                    GameOver gameover = new GameOver();
+                    gameover.setVisible(true);
+                }else if (!answer.equals("INVALID_COMMAND" ) && !answer.equals("LEVEL_NOT_FOUND")) {//sprawdzenie czy serwer zrozumial zadanie
+                    LoadLevel = true;//mozna zaladowac poziom
                     System.out.println("OTRZYMANO WIADOMOSC: " +answer);//wyswietlenie otrzymanej wiadomosci
                     levelbufor = answer.split("&");//podzial ciagu tekstu i zaladowanie do bufora
                     SetLevelConfig();//wywolanie metody obrabiajacej dane
                     WhiChLevel=number_of_level;//ustawienie numeru poziomu na panelu gornym gry
-                }
-                else if(answer == "INVALID_COMMAND"){
-                    System.out.println("OTRZYMANO WIADOMOSC: " +answer);
                 }
             }
             else{

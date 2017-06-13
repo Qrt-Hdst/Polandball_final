@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import static Polandball_pliki.PanelBoard.PauseActive;
 
 
 /**
@@ -226,6 +227,14 @@ public final class GetConstans {
 	 */
 	public static String SovietBallString;
 	/**
+	 * Sciezka do grafiki HussarBall_left
+	 */
+	public static String HussarBall_leftString;
+	/**
+	 * Sciezka do grafiki HussarBall_right
+	 */
+	public static String HussarBall_rightString;
+	/**
 	 * Sciezka do pola Skrzynka
 	 */
 	public static String SkrzynkaString;
@@ -292,13 +301,23 @@ public final class GetConstans {
 	 */
 
 	public static int WhiChLevel;
+
+	/**
+	 * Zmienna informujaca o tym, ze przeszlismy ostatni poziom
+	 */
+
+	public static boolean LastLevel=false;
 	/**
 	 * Konstruktor klasy GetConstans, wczytywanie danych startowych z plikow
 	 **/
 
 	public GetConstans(){
-		read_on_config();
-		read_path_to_graphics();
+		try {
+			read_on_config();
+			read_path_to_graphics();
+		}catch(NullPointerException e){
+			System.out.println("Cos nie gra");
+		}
 	}
 
 	/**
@@ -334,6 +353,7 @@ public final class GetConstans {
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();
+
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -347,6 +367,7 @@ public final class GetConstans {
 
 	public static void read_on_level(int level){
 		try {
+			LastLevel=false;//zakladamy zawsze ze sa jeszcze jakies poziomy
 			WhiChLevel = level;// zmeinna globalne, mowiaca ktory aktualny level jest zaladowany
 			String path_to_level=create_path_to_level(level);
 			File file = new File(path_to_level);
@@ -354,6 +375,7 @@ public final class GetConstans {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);
 			doc.getDocumentElement().normalize();
+
 
 			Amountofcolumns = Integer.parseInt(doc.getElementsByTagName("Amountofcolumns").item(0).getTextContent());
 			Amountoflines = Integer.parseInt(doc.getElementsByTagName("Amountoflines").item(0).getTextContent());
@@ -374,7 +396,12 @@ public final class GetConstans {
 			MakeBoardObstacleTable();
 		}
 		catch(FileNotFoundException e){
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Nie znaleziono następnego poziomu\n");
+			PauseActive=true;//zatrzymanie gry
+			GameOver gameover = new GameOver();//wywolanie okna końca gry
+			gameover.setVisible(true);
+			LastLevel=true;
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -398,6 +425,8 @@ public final class GetConstans {
 			TurkeyBallString = doc.getElementsByTagName("TurkeyBall").item(0).getTextContent();
 			SovietBallString = doc.getElementsByTagName("SovietBall").item(0).getTextContent();
 			NaziBallString = doc.getElementsByTagName("NaziBall").item(0).getTextContent();
+			HussarBall_leftString = doc.getElementsByTagName("HussarBall_Left").item(0).getTextContent();
+			HussarBall_rightString = doc.getElementsByTagName("HussarBall_Right").item(0).getTextContent();
 			//Tereny
 			SkrzynkaString = doc.getElementsByTagName("Skrzynka").item(0).getTextContent();
 			BetonString = doc.getElementsByTagName("Beton").item(0).getTextContent();
@@ -422,7 +451,9 @@ public final class GetConstans {
 		} catch (Exception e) {
 			System.out.println("Blad wczytania grafik");
 			e.printStackTrace();
-		}
+		}/*catch (NullPointerException e){
+			System.out.println("Cos nie pykło - błąd typu NullPointerException");
+		}*/
 	}
 
 	/**

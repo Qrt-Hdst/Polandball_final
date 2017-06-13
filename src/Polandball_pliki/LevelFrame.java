@@ -1,12 +1,8 @@
 package Polandball_pliki;
 
 
-import sun.plugin2.message.ShowStatusMessage;
-
 import javax.swing.*;
-
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
@@ -17,6 +13,8 @@ import static Polandball_pliki.GetConstans.*;
  */
 
 public class LevelFrame extends JFrame implements WindowListener, ActionListener {
+
+    public MainPanel mainPanel;
 
     /**
      * Zmienna odliczajaca czas odswiezenia
@@ -35,28 +33,14 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
      */
 
     private void initLevelFrame() {
-        // zamkniecie okna gry nie powoduje
-        this.setSize(Boardwidth, Boardheight);
-        this.setLayout(null);
+
+        mainPanel=new MainPanel();
+        this.getContentPane().add(mainPanel);
+        this.pack();
+        this.setVisible(true);
         this.addWindowListener(this);
 
-        //panel, który będzie naszą plansza do dodawania elementów poziomu
-        PanelBoard panelboard = new PanelBoard();
-        add(panelboard);
-        panelboard.setVisible(true);
-
-        //panel gorny, w ktorym beda informacje dotyczace gry
-        PanelInfoOne panelinfoone = new PanelInfoOne();
-        add(panelinfoone);
-        panelinfoone.setVisible(true);
-
-        //panel boczny, w ktorym beda pozostale informacje
-        PanelInfoTwo panelinfotwo = new PanelInfoTwo();
-        add(panelinfotwo);
-        panelinfotwo.setVisible(true);
-
-        //odpalenie timera na panelboardzie
-        tm =new Timer(30,panelboard);
+        tm =new Timer(30,mainPanel.panelboard);
         tm.start();
 
     }
@@ -68,8 +52,9 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
     public void windowClosing(WindowEvent e) {
         try{
             tm.stop();//zatrzymanie timera
-            PanelBoard.MakeDefaultOption();//przywrocenie domyslnych parametrow
+            PanelBoard.MakeDefaultOption(1);//przywrocenie domyslnych parametrow
             this.dispose();//zamkniecie okna
+            Amountofpoints=0;
         }catch(Exception error){
             System.out.println(error+"Blad zamkniecia levelframe - klasa levelframe, metoda windowClosing");
         }
@@ -89,4 +74,5 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
     }
     public void actionPerformed(ActionEvent e) {
     }
+
 }

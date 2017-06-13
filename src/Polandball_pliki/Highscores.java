@@ -63,7 +63,7 @@ public class Highscores {
         }
 
         }catch (IOException e) {
-            System.out.println("Dane nie mogły zostać pobrane z serwera zostać pobrane z serwera lub wystapil inny blad");
+            System.out.println("Dane nie mogły zostać pobrane z serwera lub wystapil inny blad");
             System.out.println(e);
         }
         return results;

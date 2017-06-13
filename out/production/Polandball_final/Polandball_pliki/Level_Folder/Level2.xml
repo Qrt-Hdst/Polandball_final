@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <class>
-<LEVEL1>
+<LEVEL2>
  <Amountofcolumns>6</Amountofcolumns>
  <Amountoflines>6</Amountoflines>
  <Monsterspeed>3</Monsterspeed>
@@ -12,13 +12,13 @@
  <Amountofkeys>0</Amountofkeys>
  <LevelTime>240</LevelTime>
 
- <row>N_ NG SI NW SI SI</row>
- <row>SI SI SI SI SI SI</row>
+ <row>N_ NG SI NW SD SI</row>
+ <row>SI SD SI SI SI SI</row>
  <row>SI SI SI SI SI SI</row>
  <row>SI SI SI SI SI SI</row>
  <row>SI SI SI SI SI SI</row>
  <row>SK S_ S_ S_ S_ SD</row>
 
 
-</LEVEL1>
+</LEVEL2>
 </class>

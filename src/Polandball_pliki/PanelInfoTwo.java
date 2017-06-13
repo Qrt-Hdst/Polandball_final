@@ -35,6 +35,12 @@ public class PanelInfoTwo extends JPanel{
     public static JLabel Ilosclaserow;
 
     /**
+     * Label odpowiedzialny za wyswietlanie ilosci kluczy
+     */
+
+    public static JLabel Ilosckluczy;
+
+    /**
      * kontruktor panelu drugiego, zawierajacy funkcję PanelInfoTwo
      */
 
@@ -46,10 +52,9 @@ public class PanelInfoTwo extends JPanel{
 
     private void PanelInfoTwo()
     {
-       // panelboardheight =(int)(0.75*Boardheight);
         panelboardwidth =(int)(0.8*Boardwidth);
         panelinfooneheight = (int)(0.2*Boardheight);
-        panelinfotwoheight =(int)(0.75*Boardheight);
+        panelinfotwoheight =(int)(0.8*Boardheight);
         panelinfotwowidth = (int)(0.2*Boardwidth);
         this.setSize(panelinfotwowidth,panelinfotwoheight);
         this.setLocation(panelboardwidth,panelinfooneheight);
@@ -107,9 +112,9 @@ public class PanelInfoTwo extends JPanel{
         //ilość zawarta w pliku konfiguracyjnym ( ->parametr do cheatowania ;)<- )
         String ilosckluczy =Integer.toString(Amountofkeys);
 
-        JLabel Amountofkeys = new JLabel(ilosckluczy,JLabel.CENTER);
-        Amountofkeys.setFont(new Font("Serif", Font.PLAIN, 30));
-        add(Amountofkeys);
+        Ilosckluczy = new JLabel(ilosckluczy,JLabel.CENTER);
+        Ilosckluczy.setFont(new Font("Serif", Font.PLAIN, 30));
+        add(Ilosckluczy);
 
     }
 }
