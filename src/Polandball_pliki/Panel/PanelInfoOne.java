@@ -129,7 +129,7 @@ public class PanelInfoOne extends JPanel{
         add(LevelLabel2);
 
         //wyswietlenie nazwy gracza wczytanej w okienku wyboru nicku w odpowiednim labelu
-        PlayerName = SetNameFrame.GetName();
+        PlayerName = SetNameFramePanel.GetName();
 
         NameLabel2 = new ButtonLabel(PlayerName);
         add(NameLabel2);

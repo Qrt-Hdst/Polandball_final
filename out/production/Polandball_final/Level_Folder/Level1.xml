@@ -3,13 +3,13 @@
 <LEVEL1>
  <Amountofcolumns>15</Amountofcolumns>
  <Amountoflines>15</Amountoflines>
- <Monsterspeed>1</Monsterspeed>
+ <Monsterspeed>3</Monsterspeed>
  <Amountoflifes>11</Amountoflifes>
  <Amountofordinarybombs>10</Amountofordinarybombs>
  <Amountofremotebombs>15</Amountofremotebombs>
  <Amountofhusarswings>3</Amountofhusarswings>
  <Amountoflasers>0</Amountoflasers>
- <Amountofkeys>1</Amountofkeys>
+ <Amountofkeys>0</Amountofkeys>
  <LevelTime>10000</LevelTime>
 
  <row>N_ NG N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_</row>

@@ -1,5 +1,6 @@
 package Polandball_pliki.Others;
 
+import Polandball_pliki.Frame.GameOver;
 import Polandball_pliki.Panel.PanelInfoOne;
 
 

@@ -1,5 +1,6 @@
 package Polandball_pliki.Others;
 
+import Polandball_pliki.Frame.GameOver;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -52,12 +53,6 @@ public final class GetConstans {
 	 */
 
 	public static int HighscoresFrameSize;
-
-	/**
-	 * Szybkosc gracza
-	 */
-
-	public static int SpeedPlayer;
 
 	/**
 	 * Zmienna zawierajaca ilosc sekund, po ktorym wybuchnie bomba
@@ -344,7 +339,6 @@ public final class GetConstans {
 			MainFrameheight=Integer.parseInt(doc.getElementsByTagName("MainFrameheight").item(0).getTextContent());
 			MainFramewidth=Integer.parseInt(doc.getElementsByTagName("MainFramewidth").item(0).getTextContent());
 			HighscoresFrameSize=Integer.parseInt(doc.getElementsByTagName("HighscoresFrameSize").item(0).getTextContent());
-			SpeedPlayer = Integer.parseInt(doc.getElementsByTagName("SpeedPlayer").item(0).getTextContent());
 			TimeToExplosion = Integer.parseInt(doc.getElementsByTagName("TimeToExplosion").item(0).getTextContent());
 			//ilosc poczatkowych punktow, zawsze 0
 			Amountofpoints=0;

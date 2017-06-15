@@ -280,7 +280,6 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             System.out.println("Blad kolizji -poludnie");
             System.out.println(e);
         }
-
         return isNotCollision;
     }
 }

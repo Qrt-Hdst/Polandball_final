@@ -37,6 +37,7 @@ public class MainFrame extends JFrame  {
         startPanel =new StartPanel(new ImageIcon(BackgroundString).getImage());
         this.getContentPane().add(startPanel);
         this.pack();
+        this.setLocationRelativeTo(null);//ustawienie ramki na srodku
         this.setVisible(true);
     }
 }

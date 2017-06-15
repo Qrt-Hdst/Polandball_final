@@ -17,10 +17,9 @@ import java.util.Random;
 import Polandball_pliki.Collision.*;
 import Polandball_pliki.Counter.*;
 import Polandball_pliki.Frame.NextLevelInfo;
-import Polandball_pliki.Frame.SetConnection;
 import Polandball_pliki.GameObjects.*;
 
-import Polandball_pliki.Others.GameOver;
+import Polandball_pliki.Frame.GameOver;
 import Polandball_pliki.Others.GameTime;
 import Polandball_pliki.Others.GetConstans;
 
@@ -114,19 +113,52 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static Thread timethread;
 
     /**
-     * szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
+     * Szerokosc obiektu graficznego, zalezna od szerokosci panela i ilosci kolumn
      */
 
     public static int SizeWidthIcon = ((int)(0.8*Boardwidth))/Amountofcolumns;
 
     /**
-     * wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
+     * Wysokosc obiektu graficznego, zalezna od wysokosci panela i ilosci wierszy
      */
 
     public static int SizeHeightIcon = ((int)(0.8*Boardheight))/Amountoflines;
 
     /**
-     * konstruktor panelu głównego, zawierający funkcję PanelBoard
+     * Zmienna przechowujaca szerokosc pojedynczego pola planszy
+     */
+
+    public static double SizeWidthIconDouble = (0.8*Boardwidth)/(double)((Amountofcolumns));
+
+    /**
+     * Zmienna przechowujaca wysokosc pojedynczego pola planszy
+     */
+
+    public static double SizeHeightIconDouble = (0.8*Boardheight)/((double)(Amountoflines));
+    /**
+     * Zmienna przechowujaca kopie szerokosci pojedynczego pola planszy w typie double
+     */
+
+    public static double SizeWidthIconCopyDouble;
+
+    /**
+     * Zmienna przechowujaca kopie wysokosci pojedynczego pola planszy w typie double
+     */
+
+    public static double SizeHeightIconCopyDouble;
+
+    /**
+     * Zmienna okreslajaca predkosc gracza, zalezna od rozmiarow planszy i pol
+     */
+
+    public static int SpeedPlayer = setSpeedPlayer();
+
+    /**
+     * Zmienna okreslaja, czy nastapila zmiana rozmiarow planszy gry
+     */
+    public static boolean IsSizeOfPanelBoardChanged;
+    /**
+     * Konstruktor panelu głównego, zawierający funkcję PanelBoard
      */
 
     public PanelBoard(){PanelBoard();}
@@ -220,7 +252,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
 
 
     /**
-     * Funkcja losujaca typ potwora
+     * Metoda losujaca typ potwora
      */
     public Enemy lottery_of_enemies(int position_enemyX,int position_enemyY){
         Enemy enemy_;//instancja klasy enemy do ktorej w zaleznosci od losu przypisze konkretny enemyballa
@@ -314,12 +346,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 }
             }
         }
-    /**
-     * Metoda sprawdzają
-     */
 
     /**
-     * metoda do wywołania zmiany polozenia polandballa
+     * Metoda do wywołania zmiany polozenia polandballa
      */
 
     void movePlayer() {
@@ -562,16 +591,16 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     factor_mode=2;
                 }
                 if (c == KeyEvent.VK_LEFT) {
-                    player.get(0).change_velX(SpeedPlayer * -1*(factor_mode));
+                    player.get(0).change_velX(setSpeedPlayer() * -1*(factor_mode));
                     player.get(0).change_velY(0);
                 } else if (c == KeyEvent.VK_RIGHT) {
-                    player.get(0).change_velX(SpeedPlayer * 1*(factor_mode));
+                    player.get(0).change_velX(setSpeedPlayer() * 1*(factor_mode));
                     player.get(0).change_velY(0);
                 } else if (c == KeyEvent.VK_DOWN) {
-                    player.get(0).change_velY(SpeedPlayer * 1*(factor_mode));
+                    player.get(0).change_velY(setSpeedPlayer() * 1*(factor_mode));
                     player.get(0).change_velX(0);
                 } else if (c == KeyEvent.VK_UP) {
-                    player.get(0).change_velY(SpeedPlayer * (-1)*factor_mode);
+                    player.get(0).change_velY(setSpeedPlayer() * (-1)*factor_mode);
                     player.get(0).change_velX(0);
                 }
                 //stawianie bomby
@@ -616,7 +645,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     if (Amountofhusarswings > 0 && hussars_Power == false) {
                         hussars_Power = true;
                         Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings, -1);
-                        PanelInfoTwo.Iloscskrzydelhusarskich.setText(Integer.toString(Amountofhusarswings));//aktualizacja ilosci bomb
+                        PanelInfoTwo.Iloscskrzydelhusarskich.setText(Integer.toString(Amountofhusarswings));//aktualizacja ilosci skrzydel
                         System.out.println("Hussarball, Active!");
                         counters.add(new CounterHussarWings());
                     }
@@ -657,8 +686,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     public void paint(Graphics g){
-        SizeWidthIcon = (getWidth()/Amountofcolumns);//skalowanie szerokosci elementow
-        SizeHeightIcon =(getHeight()/Amountoflines);//skalowanie wysokosci elementow
+        setSpeedPlayer();//ustwienie odpowiedniej predkosci gracza
+        changeSizeIcons();//zmiana rozmiarow pol i kopiowanei staryh
+        changeTerrainPosition(SizeWidthIconDouble, SizeHeightIconDouble);//zmiana pozycji obietkow stacjonarnych
+        changeItemPosition(SizeWidthIconDouble, SizeHeightIconDouble);//zmiana pozycji itemow
+        changePlayerPosition(SizeWidthIconDouble, SizeHeightIconDouble);
         g.setColor(Color.black);
         g.fillRect(0,0,getWidth(),getHeight());// rysuje czarny kwadrat bedacy tlem dla naszych grafik
         drawItem(g); //rysuje itemy na planszy
@@ -714,7 +746,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na która jest namalowywana ombiekty
      */
     public void drawPlayerObject(Graphics g) {
-        //System.out.println("Size of players "+ player.size());
         if(player.size()>0) {
             if(hussars_Power==false) {
                 g.drawImage(player.get(0).getBuffImage(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
@@ -752,6 +783,95 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }
     }
 
+
+    /**
+     * Metoda zmieniaja pozycje obiektow stacjonarnych
+     * @param nowaszerokoscicony - szerokosc pola/obiektu po zmianie szerokosci ramki
+     * @param nowawysokoscicony - wysokosc pola/obiektu po zmianie wysokosci ramki
+     */
+
+    public void changeTerrainPosition(double nowaszerokoscicony, double nowawysokoscicony){
+        for(int i=0; i<terrains.size(); i++){
+            if(nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+                terrains.get(i).changeX((int) (Math.ceil(terrains.get(i).getX()/SizeWidthIconDouble) *nowaszerokoscicony));
+                terrains.get(i).changeY((int) (Math.ceil(terrains.get(i).getY()/SizeHeightIconDouble) * nowawysokoscicony ));
+            }else if( nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony  < SizeHeightIconCopyDouble){
+                terrains.get(i).changeX((int) (terrains.get(i).getColumnX() * nowaszerokoscicony));
+                terrains.get(i).changeY((int) (terrains.get(i).getRowY()*nowawysokoscicony ));
+            }
+        }
+    }
+
+    /**
+     * Metoda zmieniajaca pozycje itemow
+     * @param nowaszerokoscicony - szerokosc obiektu po zmianie szerokosci ramki
+     * @param nowawysokoscicony - wysokosc obiektu po zmianie wyskosci ramki
+     */
+    public void changeItemPosition(double nowaszerokoscicony, double nowawysokoscicony){
+        for(int i=0; i<items.size(); i++){
+            if(nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+                items.get(i).changeX((int) (Math.ceil(items.get(i).getX()/SizeWidthIconDouble) *nowaszerokoscicony));
+                items.get(i).changeY((int) (Math.ceil(items.get(i).getY()/SizeHeightIconDouble) * nowawysokoscicony ));
+            }else if( nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony  < SizeHeightIconCopyDouble){
+                items.get(i).changeX((int) (items.get(i).getColumnX() * nowaszerokoscicony));
+                items.get(i).changeY((int) (items.get(i).getRowY()*nowawysokoscicony ));
+            }
+        }
+    }
+
+    /**
+     * Metoda zmieniajaca pozycje gracza
+     * @param nowaszerokoscicony - szerokosc gracza po zmianie szerokosci ramki
+     * @param nowawysokoscicony - wysokosc gracza po zmianie wyskosci ramki
+     */
+    public void changePlayerPosition(double nowaszerokoscicony, double nowawysokoscicony){
+
+        if(IsSizeOfPanelBoardChanged == true) {
+           /* if (nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+                player.get(0).changeX((int) (Math.ceil(player.get(0).getX() / SizeWidthIconDouble) * nowaszerokoscicony));
+                player.get(0).changeY((int) (Math.ceil(player.get(0).getY() / SizeHeightIconDouble) * nowawysokoscicony));
+            } else if (nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony < SizeHeightIconCopyDouble) {
+                player.get(0).changeX((int) (player.get(0).getColumnX() * nowaszerokoscicony));
+                player.get(0).changeY((int) (player.get(0).getRowY() * nowawysokoscicony));
+            }
+           System.out.println("JESTEM W METODZIE CHANGEPLAYERPOSITION");
+           if (nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+                player.get(0).changeX((int) ((((double)(player.get(0).getX())) * nowaszerokoscicony)/SizeWidthIconCopyDouble));
+                player.get(0).changeY((int) ((((double)(player.get(0).getY())) * nowawysokoscicony)/SizeHeightIconCopyDouble));
+            } else if (nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony < SizeHeightIconCopyDouble) {
+               player.get(0).changeX((int) (Math.ceil((((double)(player.get(0).getX())) * nowaszerokoscicony)/SizeWidthIconCopyDouble)));
+               player.get(0).changeY((int) (Math.ceil((((double)(player.get(0).getY())) * nowawysokoscicony)/SizeHeightIconCopyDouble)));
+          }*/
+          //  if(nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+         //       player.get(0).changeX(((int) (((((double)(player.get(0).getX())) - Math.ceil(player.get(0).getX()/SizeWidthIconDouble))/SizeWidthIconDouble) *nowaszerokoscicony))+SizeWidthIcon);
+         //       player.get(0).changeY(((int) (((((double)(player.get(0).getY())) - Math.ceil(player.get(0).getY()/SizeHeightIconDouble))/SizeHeightIconDouble) *nowawysokoscicony))+SizeHeightIcon);
+          //  }else if( nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony  < SizeHeightIconCopyDouble){
+               // player.get(0).changeX(((int) (((((double)(player.get(0).getX())) - (player.get(0).getColumnX())*SizeWidthIconCopyDouble)/SizeWidthIconDouble) *nowaszerokoscicony))+(SizeWidthIcon*player.get(0).getColumnX()));
+              //  player.get(0).changeY(((int) (((((double)(player.get(0).getY())) - (player.get(0).getRowY())*SizeHeightIconCopyDouble)/SizeHeightIconDouble) *nowawysokoscicony))+(SizeHeightIcon*player.get(0).getRowY()));
+          //}
+           // System.out.println(player.get(0).getColumnX() +"  kolumn/wiersz    " + player.get(0).getRowY() );
+           /* int wiersz=0;
+            int kolumna=0;
+            if(nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+                wiersz = (int) (Math.floor((double) (player.get(0).getX()) / SizeWidthIconCopyDouble));
+                kolumna = (int) (Math.floor((player.get(0).getY()) / SizeHeightIconCopyDouble));
+            }else if( nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony  < SizeHeightIconCopyDouble) {
+                wiersz = (int) (Math.floor((double) (player.get(0).getX()) / SizeWidthIconCopyDouble));
+                kolumna = (int) (Math.floor((player.get(0).getY()) / SizeHeightIconCopyDouble));
+            }
+            System.out.println(kolumna +"        efgeg      "+wiersz);
+            player.get(0).changeX((int)((((player.get(0).getX()-(wiersz*SizeWidthIconCopyDouble))/((SizeWidthIconCopyDouble)))*SizeWidthIconDouble)+(wiersz*SizeWidthIconDouble)));
+            player.get(0).changeY((int)((((player.get(0).getY()-(kolumna*SizeHeightIconCopyDouble))/((SizeHeightIconCopyDouble)))*SizeHeightIconDouble)+(kolumna*SizeHeightIconDouble)));
+       */
+            if(nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
+                player.get(0).changeX((int) (Math.ceil(player.get(0).getX()/SizeWidthIconDouble) *nowaszerokoscicony));
+                player.get(0).changeY((int) (Math.ceil(player.get(0).getY()/SizeHeightIconDouble) * nowawysokoscicony ));
+            }else if( nowaszerokoscicony < SizeWidthIconCopyDouble || nowawysokoscicony  < SizeHeightIconCopyDouble){
+                player.get(0).changeX((int) (player.get(0).getColumnX() * nowaszerokoscicony));
+                player.get(0).changeY((int) (player.get(0).getRowY()*nowawysokoscicony ));
+            }
+        }
+    }
     /**
      * Metoda zmieniajaca okreslony parametr
      * @param whattochange informuje jaka rzecz chcemy zmienic
@@ -824,5 +944,38 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         for (int i=0; i<TableOfEnemyThreads.size();i++) {//stopowanie wszystkich watkow wroga
             TableOfEnemyThreads.get(i).stop();
         }
+    }
+
+
+    /**
+     * Metoda zmieniajaca parametry pol i kopiujaca stare parametry pola
+     */
+
+    public void changeSizeIcons(){
+        SizeWidthIconCopyDouble = SizeWidthIconDouble;//kopiowanie szerokosci pola
+        SizeHeightIconCopyDouble = SizeHeightIconDouble;//kopiowanie wyskosci pola
+        SizeWidthIconDouble = ((double)(getWidth())/(double)(Amountofcolumns));//skalowanie szerokosci elementow, nowa wartosc
+        SizeHeightIconDouble =((double)(getHeight())/(double)(Amountoflines));//skalowanie wysokosci elementow, nowa wartosc
+        SizeWidthIcon = (int)((SizeWidthIconDouble));
+        SizeHeightIcon = (int)((SizeHeightIconDouble));
+        if(SizeWidthIconCopyDouble != SizeWidthIconDouble || SizeHeightIconCopyDouble != SizeHeightIconDouble){
+            IsSizeOfPanelBoardChanged = true;
+        }else{
+            IsSizeOfPanelBoardChanged = false;
+        }
+    }
+
+    /**
+     * Metoda obliczaja predkosc gracza
+     * @return SpeedPlayer - predkosc gracza
+     */
+
+    public static int setSpeedPlayer(){
+        //patrzymy, ktora wielkosc - szerokosc czy wysoksoc icony jest mniejsza - wybieramy mniejsza
+        //kazde 10 pikseli rozmiaru icony to 1 pksel predkosc, zaokraglane w dol
+        int mniejszyrozmiar;
+        mniejszyrozmiar = Math.min(SizeWidthIcon,SizeHeightIcon);
+        SpeedPlayer = (int)(Math.floor((mniejszyrozmiar/10)));
+        return SpeedPlayer;
     }
 }

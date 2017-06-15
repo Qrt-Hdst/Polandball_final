@@ -112,5 +112,4 @@ public class GameObject  {
         return this.getY()/SizeHeightIcon;
     }
 
-
 }

@@ -44,6 +44,10 @@ public class StartPanel extends JPanel implements ActionListener {
     public JButton Ending;
 
     /**
+     * Obiekt klasy SetNameFrame, tworzenie okna wyboru nazwy gracza
+     */
+    public static SetNameFrame setnameframe;
+    /**
      * Gniazdo serwera
      */
 
@@ -115,7 +119,7 @@ public class StartPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         Object source = event.getSource();//bierzemy buttony, które nasłuchują na zdarzenie
         if(source==NewGame) {//przejście do okna wyboru nicku postaci
-            SetNameFrame setnameframe = new SetNameFrame();
+            setnameframe = new SetNameFrame();
             setnameframe.setVisible(true);
         }
         else if(source==Highscores){

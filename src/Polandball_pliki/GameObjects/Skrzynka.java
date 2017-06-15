@@ -20,6 +20,7 @@ public class Skrzynka extends Terrain {
         super();
         x_=x;
         y_=y;
+
         name_class_object=SkrzynkaString;
         buffImage_=createBufferedImage();
     }

@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.awt.event.ActionListener;
 
 import static Polandball_pliki.Panel.SetConnectionPanel.LoadLevel;
-import static Polandball_pliki.Frame.SetNameFrame.levelframe;
+import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
 import static Polandball_pliki.Others.GetConstans.*;
 import static Polandball_pliki.Others.GetConstans.*;
 import static Polandball_pliki.Panel.PanelBoard.ChangeInfoStatus;
@@ -83,6 +83,7 @@ public class NextLevelInfo extends JFrame implements ActionListener, WindowListe
         this.setBackground(Color.WHITE);
         this.setSize(600, 200);
         this.setLayout(null);
+        this.setLocationRelativeTo(null);//ustawienie ramki na srodku
         this.addWindowListener(this);
 
 

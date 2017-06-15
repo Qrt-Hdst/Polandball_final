@@ -15,7 +15,7 @@ import static Polandball_pliki.Others.GetConstans.*;
  * Okno gry, zawierające plansze konkretnego poziomu, informacje o stanie rozgrywki
  */
 
-public class LevelFrame extends JFrame implements WindowListener, ActionListener {
+public class LevelFrame extends JDialog implements WindowListener, ActionListener {
 
     /**
      * Zmienna typu mainpanel, gdzie przechowywane sa wszystkie panele gry
@@ -40,9 +40,11 @@ public class LevelFrame extends JFrame implements WindowListener, ActionListener
 
     private void initLevelFrame() {
 
+
         mainPanel=new MainPanel();
         this.getContentPane().add(mainPanel);
         this.pack();
+        this.setLocationRelativeTo(null);//ustawienie ramki na srodku
         this.setVisible(true);
         this.addWindowListener(this);
 

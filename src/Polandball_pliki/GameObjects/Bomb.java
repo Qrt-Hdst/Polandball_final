@@ -6,7 +6,7 @@ package Polandball_pliki.GameObjects;
 
 import java.awt.*;
 
-import static Polandball_pliki.Others.GetConstans.BetonString;
+import static Polandball_pliki.GetConstans.BetonString;
 
 /**
  * klasa rodzic dla wszystkich rodzajow bomb

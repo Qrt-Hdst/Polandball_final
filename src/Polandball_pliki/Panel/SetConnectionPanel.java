@@ -1,8 +1,7 @@
 package Polandball_pliki.Panel;
 
 import Polandball_pliki.Frame.MainFrame;
-import Polandball_pliki.Others.ButtonLabel;
-import Polandball_pliki.Others.GameOver;
+import Polandball_pliki.Frame.GameOver;
 import Polandball_pliki.Others.GetConstans;
 
 import javax.swing.*;
@@ -37,7 +36,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
      * ButtonLabel, zawierajacy pytanie o to, czy uzytkownik chce grac w trybie on czy off
      */
 
-    public ButtonLabel Question;
+    public JButton Question;
 
     /**
      * Przycisk zatwierdzajacy polaczenie z serwerm
@@ -56,7 +55,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
      * Jego pojemnosc jest dokladnie okreslona, zalezna od ilosci zmiennych konfiguracyjnych
      */
 
-    public static String[] configbufor = new String[14];
+    public static String[] configbufor = new String[13];
 
     /**
      * Bufor, do ktorego beda zapisywane rozdzielone dane konfiguracyjne poziomu - oddzielnie rozklad pol planszy i reszta
@@ -83,13 +82,19 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
     public SetConnectionPanel(Image img){
         image=img;
         //okno wyboru, czy chcemy korzystac z uslug serwera czy nie + odpowiednie parametry dla okna
-        Dimension size = new Dimension(800, 300);
+        Dimension size = new Dimension(900, 400);
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setSize(size);
         //label z pytaniem, zeby bylo wiadomo, o co chodzi
-        Question = new ButtonLabel("Czy chcesz rozpocząć rozgrywkę w trybie online?");
+        Question = new JButton("Czy chcesz rozpocząć rozgrywkę w trybie online?");
+        Question.setFont(new Font("Italic", Font.PLAIN, 40));
+        Question.setFocusPainted(false);
+        Question.setMargin(new Insets(0, 0, 0, 0));
+        Question.setContentAreaFilled(false);
+        Question.setBorderPainted(false);
+        Question.setOpaque(false);
         add(Question);
 
         //przycisk do zatwierdzenia
@@ -118,7 +123,6 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
                 startPanel.ConnectToServer();//polaczenie z serwerem
                 if(startPanel.MakeSocket()!=null) {//jeesli udalo sie nawiazac polaczenie to pobieramy dane
                     GetBasicConfig(startPanel.MakeSocket());//pobranie danych konfiguracyjnych
-                    GetConstans.read_path_to_graphics();//wczytywanie grafik z folderu gry
                     GetLevelConfig(startPanel.MakeSocket(), 1);//pobranie danych pierwszego poziomu na poczatku gry
                     MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
                     EventQueue.invokeLater(() -> { //utworzenie okna menu
@@ -137,8 +141,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
         if(source==No) {
             GetConstans getConstans_=new GetConstans();//wczytanie grafik i podstawowych parametrow aplikacji
             GetConstans.read_on_level(1);//wczytanie parametrow poziomu, narazie 3 level do testow
-            //utworzenie okna menu
-            EventQueue.invokeLater(() -> {
+            EventQueue.invokeLater(() -> {//utworzenie okna menu
                 MainFrame mainframe = new MainFrame();
                 mainframe.setVisible(true);
             });
@@ -194,17 +197,16 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
         MainFrameheight = Integer.valueOf(configbufor[2]);
         MainFramewidth = Integer.valueOf(configbufor[3]);
         HighscoresFrameSize = Integer.valueOf(configbufor[4]);
-        SpeedPlayer = Integer.valueOf(configbufor[5]);
-        TimeToExplosion = Integer.valueOf(configbufor[6]);
+        TimeToExplosion = Integer.valueOf(configbufor[5]);
         //ilosc poczatkowych punktow, zawsze 0;
         Amountofpoints=0;
-        PointsForCreate = Integer.valueOf(configbufor[7]);
-        PointsForMonster = Integer.valueOf(configbufor[8]);
-        PointsForItem = Integer.valueOf(configbufor[9]);
-        PointsForChestOfGold = Integer.valueOf(configbufor[10]);
-        PointsForKey = Integer.valueOf(configbufor[11]);
-        PointsForLevel = Integer.valueOf(configbufor[12]);
-        PointsForSecond = Integer.valueOf(configbufor[13]);
+        PointsForCreate = Integer.valueOf(configbufor[6]);
+        PointsForMonster = Integer.valueOf(configbufor[7]);
+        PointsForItem = Integer.valueOf(configbufor[8]);
+        PointsForChestOfGold = Integer.valueOf(configbufor[9]);
+        PointsForKey = Integer.valueOf(configbufor[10]);
+        PointsForLevel = Integer.valueOf(configbufor[11]);
+        PointsForSecond = Integer.valueOf(configbufor[12]);
     }
 
     /**
@@ -286,9 +288,6 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
      * @param g
      */
     public void paintComponent(Graphics g) {
-
-      //  g.setColor(Color.BLUE);
-        //g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         Question.setBounds(0,getHeight()/5,getWidth(),getHeight()/6);
         Yes.setBounds(getWidth()/12,(getHeight())/2,getWidth()/3,getHeight()/6);

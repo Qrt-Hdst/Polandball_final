@@ -1,6 +1,5 @@
-package Polandball_pliki.Others;
+package Polandball_pliki.Frame;
 
-import Polandball_pliki.Frame.LevelFrame;
 import Polandball_pliki.Panel.PanelBoard;
 
 import javax.swing.*;
@@ -12,7 +11,7 @@ import java.net.Socket;
 
 
 import static Polandball_pliki.Frame.MainFrame.startPanel;
-import static Polandball_pliki.Frame.SetNameFrame.levelframe;
+import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
 import static Polandball_pliki.Others.GetConstans.*;
 import static Polandball_pliki.Panel.PanelBoard.ChangeInfoStatus;
 import static Polandball_pliki.Panel.PanelInfoOne.PlayerName;
@@ -54,7 +53,8 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
 
         this.setBackground(Color.WHITE);
         this.setSize(300,300);
-        this.setLayout(null);
+        this.setLayout(new GridLayout(3,1));
+        this.setLocationRelativeTo(null);//ustawienie ramki na srodku
         this.addWindowListener(this);
 
         //dodanie do punktow premii za czas
@@ -66,13 +66,13 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
         Amountofremotebombs + Amountofhusarswings + Amountofkeys + Amountoflasers)*5);
 
         //label, zawierajacy informacje o koncu gry
-        GameOverLabel1 = new JLabel("KONIEC GRY! ");
+        GameOverLabel1 = new JLabel("KONIEC GRY! ",JLabel.CENTER);
         GameOverLabel1.setBounds(50,50,300,50);
         GameOverLabel1.setFont(new Font("Serif", Font.PLAIN, 25));
         add(GameOverLabel1);
 
         //label, zawierajacy informacje o uzyskanym wyniku
-        GameOverLabel2 = new JLabel("Twój wynik: " +Integer.toString(Amountofpoints));
+        GameOverLabel2 = new JLabel("Twój wynik: " +Integer.toString(Amountofpoints),JLabel.CENTER);
         GameOverLabel2.setBounds(50,100,300,50);
         GameOverLabel2.setFont(new Font("Serif", Font.PLAIN, 25));
         add(GameOverLabel2);

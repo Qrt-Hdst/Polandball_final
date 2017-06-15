@@ -5,7 +5,6 @@
  <MainFrameheight>600</MainFrameheight>
  <MainFramewidth>700</MainFramewidth>
  <HighscoresFrameSize>700</HighscoresFrameSize>
- <SpeedPlayer>5</SpeedPlayer>
  <TimeToExplosion>3</TimeToExplosion>
 
  <PointsForCreate>10</PointsForCreate>

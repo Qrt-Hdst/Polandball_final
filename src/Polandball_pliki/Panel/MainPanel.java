@@ -32,6 +32,7 @@ public class MainPanel extends JPanel {
      * Kontruktor klasy MainPanel, tworzenie okna gry
      */
     public MainPanel() {
+
         Dimension size = new Dimension(Boardwidth, Boardheight);
         setPreferredSize(size);
         setMinimumSize(size);
