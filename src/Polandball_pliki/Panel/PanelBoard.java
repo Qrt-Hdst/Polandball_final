@@ -22,22 +22,23 @@ import Polandball_pliki.GameObjects.*;
 import Polandball_pliki.Frame.GameOver;
 import Polandball_pliki.Others.GameTime;
 import Polandball_pliki.Others.GetConstans;
+import com.sun.glass.ui.Size;
 
 import static Polandball_pliki.Others.GetConstans.*;
 import static Polandball_pliki.Frame.MainFrame.startPanel;
 import static Polandball_pliki.Panel.SetConnectionPanel.ServerMode;
-
+import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
 
 
 public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     /**
      * Sprawdza czy gracz ma włączone skrzydła hussarskie
      */
-    public static boolean hussars_Power= false;
+    public static boolean hussars_Power = false;
     /**
      * Zmienna okreslajaca czy gracz jest w poblizu drzwi
      */
-    public static boolean player_stay_on_door=false;
+    public static boolean player_stay_on_door = false;
     /**
      * Tablica obiektow przeciwnikow
      */
@@ -78,7 +79,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public static ArrayList<Item> items=new ArrayList<>();
 
     /**
-     * Tablica znakow(pol), na ktorej jest zapisana plansza
+     * Tablica znakow (pol), na ktorej jest zapisana plansza
      */
     public static ArrayList<ArrayList<String>> field = new ArrayList<>();
     /**
@@ -95,6 +96,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public static boolean PlayerExistence=false;
 
+    /**
+     * La
+     */
+    public static boolean LaserExistence=false;
+
 
     /**
      * Zmienna okreslajaca, czy gra znajduje sie w stanie pauzy
@@ -106,6 +112,11 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
 
     public static boolean PermissionForRemoteBomb=true;
+
+    /**
+     * zmienna okreslajaca kierunek rozchodzenia się lasera  0 - polnoc, 1 - poludnie, 2 - wschod, 3 -zachod
+     */
+    public int directionOfLaser;
 
     /**
      * Watek zegara gry
@@ -157,6 +168,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * Zmienna okreslaja, czy nastapila zmiana rozmiarow planszy gry
      */
     public static boolean IsSizeOfPanelBoardChanged;
+
     /**
      * Konstruktor panelu głównego, zawierający funkcję PanelBoard
      */
@@ -204,9 +216,18 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else if (field.get(i).get(j).equals("SD")) {
                         items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                    } else if (field.get(i).get(j).equals("_D")) {
+                        items.add(new Door(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Drzwi w polu j,i
+                      //  terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                    } else if (field.get(i).get(j).equals("_K")) {
+                        items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Klucz w polu j,i
+                      //  terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SK")) {
                         items.add(new Key(SizeWidthIcon*(j),SizeHeightIcon*(i)));//dodanie itemu-Klucz w polu j,i
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
+                    } else if (field.get(i).get(j).equals("_I")) {
+                        items.add(lottery_of_items(SizeWidthIcon*(j),SizeHeightIcon*(i)));
+                      //  terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
                     } else if (field.get(i).get(j).equals("SI")) {
                         items.add(lottery_of_items(SizeWidthIcon*(j),SizeHeightIcon*(i)));
                         terrains.add(new Skrzynka(SizeWidthIcon*(j),SizeHeightIcon*(i)));//zakrywam item skrzynka
@@ -220,6 +241,71 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         timethread.start();//uruchomienie watku zegara
     }
 
+    /**
+     * Metoda sprawdzajaca czy komórka [x][y] jest wolna
+     * @return zwraca true jesli w komorce nie znjaduje sie zadna skrzynka lub beton
+     */
+    public static boolean CellIsFree(int yyy,int xxx){
+        if(StatioonaryObjectTab[yyy][xxx]=="N_" || StatioonaryObjectTab[yyy][xxx]=="_K"
+             || StatioonaryObjectTab[yyy][xxx]=="_I" || StatioonaryObjectTab[yyy][xxx]=="_D"
+                || StatioonaryObjectTab[yyy][xxx]=="NG" || StatioonaryObjectTab[yyy][xxx]=="NW"
+                )
+            {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Metoda sprawdzajaca czy w komórce [x][y] znajduje się beton
+     * @return zwraca true jesli w komorce nie znjaduje sie  beton
+     */
+    public static boolean BetonIsNotHere(int yyy,int xxx){
+        if(StatioonaryObjectTab[yyy][xxx]=="B_" )
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    /**
+     * Metoda modyfikujące tablicy obketów nieruchomych po jakichś wydarzeniach
+     * @param xxx
+     * @param yyy
+     */
+
+    public void DestroySkrzynkaOnCell(int yyy,int xxx){
+            if(StatioonaryObjectTab[yyy][xxx] == "S_"){
+                System.out.println("1StatioonaryObjectTab"+yyy+" "+xxx+" "+"S_");
+                StatioonaryObjectTab[yyy][xxx]="N_";
+                System.out.println("2StatioonaryObjectTab"+yyy+" "+xxx+" "+"N_");
+            } else if(StatioonaryObjectTab[yyy][xxx]=="SD"){
+                System.out.println("1StatioonaryObjectTab"+yyy+" "+xxx+" "+"SD");
+                StatioonaryObjectTab[yyy][xxx]="_D";
+                System.out.println("2StatioonaryObjectTab"+yyy+" "+xxx+" "+"_D");
+            } else if(StatioonaryObjectTab[yyy][xxx]=="SK"){
+                System.out.println("1StatioonaryObjectTab"+yyy+" "+xxx+" "+"SK");
+                StatioonaryObjectTab[yyy][xxx]="_K";
+                System.out.println("2StatioonaryObjectTab"+yyy+" "+xxx+" "+"_K");
+            } else if(StatioonaryObjectTab[yyy][xxx]=="SI"){
+                System.out.println("1StatioonaryObjectTab"+yyy+" "+xxx+" "+"SI");
+                StatioonaryObjectTab[yyy][xxx]="_I";
+                System.out.println("2StatioonaryObjectTab"+yyy+" "+xxx+" "+"_I");
+            }
+    }
+
+
+    public void RemoveItemFromStaTable(int row,int column){
+        if(StatioonaryObjectTab[row][column]=="_I"){
+            StatioonaryObjectTab[row][column]="N_";
+        } else if(StatioonaryObjectTab[row][column]=="_K"){
+            StatioonaryObjectTab[row][column]="N_";
+        }
+    }
 
     /**
      *Funkcja losujaca item, jaki ma sie pojawic pod skrzynka w danym miejscu
@@ -272,6 +358,58 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     }
 
     /**
+     * Metoda okreslajaca zasieg lasera
+     * @param direction - kierunek propagacji 0 - polnoc, 1 - poludnie, 2 - wschod, 3 -zachod
+     */
+    public int rangeOfLaser(int direction){
+        int positionX=player.get(0).getX();
+        int positionY=player.get(0).getY();
+        boolean ICheckNextCell=true;
+        int i=0;
+        if(direction==0){
+            ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_North();
+            while(ICheckNextCell){
+                i++;
+                positionY=positionY-SizeHeightIcon;
+                ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_North();
+            }
+            return i;
+        }
+        else if(direction==1){
+            positionY=positionY+SizeHeightIcon;
+            ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_South();
+            while(ICheckNextCell){
+                i++;
+                positionY=positionY+SizeHeightIcon;
+                ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_South();
+            }
+            return i;
+        }
+        else if(direction==2){
+            positionX=positionX+SizeWidthIcon;
+            ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_East();
+            while(ICheckNextCell){
+                i++;
+                positionX=positionX+SizeWidthIcon;
+                ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_East();
+            }
+            return i;
+        }
+        else if(direction==3){
+            ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_West();
+            while(ICheckNextCell){
+                i++;
+                positionX=positionX-SizeWidthIcon;
+                ICheckNextCell=new CollisionPlayerWithLaser(positionY,positionX).Collision_West();
+            }
+            return i;
+        }
+        return i;
+    }
+
+
+
+    /**
      * metoda wywolywana przy wywołaniu jakiejś akcji (np. przesuniecia obiektu z punktu a do b)
      * @param e parametr przchowujacy informacje na temat zmian w programie
      */
@@ -282,6 +420,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             checkPlayerHasCollectedItem();//metoda sprawdzajaca czy gracz zebrał którys item
             checkNormalBombStatus();//sprawdzanie na bieżąco czy bomba nie ma juz wybuchnąć
             checkExplosionStatus();//sprawdzanie czy przypadkiem eksplozja nie powinna sie juz skonczyc
+            checkDestroyOfLaser(); // sprawdzenia objektow czy nie sa na drodze lasera
             checkRespawnPlayer(); // sprawdzanie czy w razie gdyby player zginal nie nastapil czas jego respawnu
             checkCounter();//funkcja sprawdzajaca stan licznik w grze
             repaint();//odmalowywanie gracza po kazdym wykrytym zdarzeniu
@@ -300,12 +439,12 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 Item itemInstance = iteratoItems.next();// przypisuje obiekt item na obiekt na który wskazuje iteraItems
                     Player_not_take_a_item = new CollisionPlayerWithItem(player.get(0), itemInstance).getIsNotCollision();
                     //wykonuje sie sie kiedy player wykonal kolizje z itemem i w omawianym miejscu nie ma zadnej skrzynki
-                    if (!Player_not_take_a_item && StatioonaryObjectTab[itemInstance.getRowY()][itemInstance.getColumnX()] == 0) {
+                    if (!Player_not_take_a_item && CellIsFree(itemInstance.getRowY(),itemInstance.getColumnX())) {
                         System.out.println("Zlapalem " + itemInstance.getNameClassObject());
                         if(!itemInstance.getNameClassObject().equals(DoorString)){
+                            RemoveItemFromStaTable(itemInstance.getRowY(),itemInstance.getColumnX());//zmieniam wartosc w tablicy stworzonej w GetConstan apropo pol w ktore mogą wejsc living object
                             iteratoItems.remove();//usuwam element jesli kolizja wykryla zetkniecie sie itema i gracza
                         }
-
                         //sprawdzamy, ktory itemek podnieslismy
                         if (itemInstance.getNameClassObject().equals("src//GameGraphics//Winge_of_hussars.png")) {
                             Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings, 1);//dodanie skrzydel do ekwipunku
@@ -368,18 +507,32 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     boolean checkPotentialCollisionWithEnemy(){
         boolean isNotCollision=true;
-        for(Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext();){
-            Enemy enemy1=iteratoEnemy.next();
-            isNotCollision=new CollisionPlayerWithEnemy(player.get(0),enemy1).getIsNotCollision();
-            if(isNotCollision==false){
-                PlayerExistence=false;
-                counters.add(new CounterPlayer(player.get(0)));
-                player.remove(0); //usuwa playera z mapy
-                Amountoflifes=ChangeInfoStatus(Amountoflifes,-1);//zmniejszenie zyc o 1
-                PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//aktualizacja wyswietlenia ilosci zyc
-                checkPlayerLifes();//metoda sprawdzajaca czy graczowi nei skonczyly sie zycia
-                System.out.println(Amountoflifes);
-                return isNotCollision;
+        int i=0;
+        if(LaserExistence==false) {
+            for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {
+                Enemy enemy1 = iteratoEnemy.next();
+                isNotCollision = new CollisionPlayerWithEnemy(player.get(0), enemy1).getIsNotCollision();
+                if (isNotCollision == false) {
+                    PlayerExistence = false;
+                    counters.add(new CounterPlayer(player.get(0)));
+                    if (hussars_Power == false) {
+                        player.remove(0);
+                    } //usuwa playera z mapy
+                    else if (hussars_Power == true)/// w trybie hussarskim to nasz Dzielny Polandball niszczy wrogów !
+                    {
+                        TableOfEnemyThreads.get(i).stop();
+                        TableOfEnemyThreads.remove(i);
+                        iteratoEnemy.remove();//usuwa enemy wskazywany przez iterator
+                        Amountofpoints = ChangeInfoStatus(Amountofpoints, PointsForMonster);//punty za zabicie potwora
+                        PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                    }
+                    Amountoflifes = ChangeInfoStatus(Amountoflifes, -1);//zmniejszenie zyc o 1
+                    PanelInfoOne.LifeLabel2.setText(Integer.toString(Amountoflifes));//aktualizacja wyswietlenia ilosci zyc
+                    checkPlayerLifes();//metoda sprawdzajaca czy graczowi nei skonczyly sie zycia
+                    System.out.println(Amountoflifes);
+                    return isNotCollision;
+                }
+                i++;
             }
         }
         return isNotCollision;
@@ -454,7 +607,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param bomb  bomba ktora wybucha i zostawia eksplozje
      */
     private void createExplosion(Bomb bomb){
-
         explosions.add(new Explosion(bomb.getX()-SizeWidthIcon,bomb.getY()-SizeHeightIcon));//dodaje do tablicy obiekt typu eksplozja
         // UWAGAbedzie wymiarow 3 na 3 wiec przesuwam go o jedna kolumne na zachod i o wiersz na polnoc
         checkTerrainToDestroyByExplosion();//wywoluje funkcje sprawdzajaca czy w wyniku ekplozji nie powinno sie zniszczyc jakiejs skrzynki
@@ -473,7 +625,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             if (ter.getNameClassObject().equals(SkrzynkaString)) {//jesli element skrzynka zwroci parametr name_class_object taki sam jak SkrzynkaString, to wykona sie if
                 notDestroy = new CollisionExplosionWithSkrzynki( ter, explosions.get(explosions.size() - 1) ).getIsNotCollision();//sprawdzam czy ta konkretne skrzynke moze zniszczyc eksplozja
                 if (!notDestroy) {//jesli eksplozja pokazuje ze mamy zniszczyc obiekt wykonuje sie if
-                    StatioonaryObjectTab[ter.getRowY()][ter.getColumnX()]=0;//zmieniam wartosc w tablicy stworzonej w GetConstan apropo pol w ktore mogą wejsc living object
+                    DestroySkrzynkaOnCell(ter.getRowY(),ter.getColumnX());//zmieniam wartosc w tablicy stworzonej w GetConstan apropo pol w ktore mogą wejsc living object
                     iteratoTerrain.remove();//usun obiekt wskazywany przez iterator ( a wlasciwie to pozbadz sie wszelkich wskaznikow na niego wskazujacych )
                     Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForCreate);//punkty za skrzynki
                     PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//aktualizacja wyswietlenia punktow
@@ -494,6 +646,76 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         }
         checkPlayerToDestroy();//sprawdza czy player nie zginie w wyniku wybuchu eksplozji
         checkEnemyToDestroy();//sprawdza czy ktorys z potwoorow nie zginie w wyniku eksplozji
+    }
+
+    public void checkTerrainToDestroyByLaser(){
+
+        boolean notDestroy=true;//zmienna przechowujaca informacje czy aby napewno dochodzi do jakiegoś zniszczenia obiektu
+        int xLaser=0;
+        int yLaser=0;
+        int heightLaser=0;
+        int widthLaser=0;
+
+
+        if (directionOfLaser == 0) {
+            xLaser=player.get(0).getX()+SizeWidthIcon/4;
+            yLaser=player.get(0).getY() - (SizeHeightIcon * rangeOfLaser(0));
+            widthLaser=SizeWidthIcon / 2;
+            heightLaser=SizeHeightIcon * rangeOfLaser(0);
+        } else if (directionOfLaser == 1) {
+            xLaser=player.get(0).getX()+SizeWidthIcon/4;
+            yLaser=player.get(0).getY() + SizeHeightIcon;
+            widthLaser=SizeWidthIcon / 2;
+            heightLaser=SizeHeightIcon * rangeOfLaser(1);
+        } else if (directionOfLaser == 2) {
+            xLaser=player.get(0).getX() + SizeWidthIcon;
+            yLaser=player.get(0).getY()+SizeHeightIcon/4;
+            widthLaser=rangeOfLaser(2) * SizeWidthIcon;
+            heightLaser=SizeHeightIcon / 2;
+        } else if (directionOfLaser == 3) {
+            xLaser=player.get(0).getX() - SizeWidthIcon * rangeOfLaser(3);
+            yLaser=player.get(0).getY()+SizeHeightIcon/4;
+            widthLaser=rangeOfLaser(3) * SizeWidthIcon;
+            heightLaser=SizeHeightIcon / 2;
+        }
+        System.out.println(xLaser+","+yLaser+","+heightLaser+","+widthLaser);
+        for(Iterator<Terrain> iteratoTerrain =terrains.iterator();iteratoTerrain.hasNext();) {// dokonuje iteracji po calym zbiorze terrain za pomoca iteratorow, 1) tworze iterator 2) ustawiam go na pierwszy element tej kolejkcji
+            Terrain ter = iteratoTerrain.next();//tworze instancje obiektu w petli na podstawie obiektu na ktory wskazuje iterator
+            if (ter.getNameClassObject().equals(SkrzynkaString)) {//jesli element skrzynka zwroci parametr name_class_object taki sam jak SkrzynkaString, to wykona sie if
+                notDestroy=new CollisionPlayerWithLaser(xLaser,yLaser,heightLaser,widthLaser,ter).getIsNotCollision();
+                // notDestroy = new CollisionExplosionWithSkrzynki( ter, explosions.get(explosions.size() - 1) ).getIsNotCollision();//sprawdzam czy ta konkretne skrzynke moze zniszczyc eksplozja
+                if (!notDestroy) {//jesli eksplozja pokazuje ze mamy zniszczyc obiekt wykonuje sie if
+                    DestroySkrzynkaOnCell(ter.getRowY(),ter.getColumnX());//zmieniam wartosc w tablicy stworzonej w GetConstan apropo pol w ktore mogą wejsc living object
+                    iteratoTerrain.remove();//usun obiekt wskazywany przez iterator ( a wlasciwie to pozbadz sie wszelkich wskaznikow na niego wskazujacych )
+                    Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForCreate);//punkty za skrzynki
+                    PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//aktualizacja wyswietlenia punktow
+                }
+            }
+        }
+
+        boolean notDestroyEnemy=true;
+
+            int i=0;
+            for (Iterator<Enemy> iteratoEnemy = enemy.iterator(); iteratoEnemy.hasNext(); ) {//iteruje po kolekcji enemy 1) tworze iterator dla kolekcji enemy 2) przypisuje go do do pierwszego elementu kolekcji enemy
+                Enemy enemInstance = iteratoEnemy.next();//tworze instancje obiektu typu enemy na podstawie obiektu na ktory wskazuje w danej chwili iterator
+                notDestroyEnemy=new CollisionPlayerWithLaser(xLaser,yLaser,heightLaser,widthLaser,enemInstance).getIsNotCollision();
+                if (!notDestroyEnemy) {//jesli w wyniku obliczen wyszlo ze potwor ucierpi w wyniku eksplozji
+                    TableOfEnemyThreads.get(i).stop();
+                    TableOfEnemyThreads.remove(i);
+                    iteratoEnemy.remove();//usuwa enemy wskazywany przez iterator
+                    Amountofpoints=ChangeInfoStatus(Amountofpoints,PointsForMonster);//punty za zabicie potwora
+                    PanelInfoOne.PointLabel2.setText(Integer.toString(Amountofpoints));//wyswietlenie w labelu
+                }
+                i++;
+            }
+    }
+    /**
+     * Metoda sprawdza i usuwamy obiekty nie betonowe na drodze lasera
+     */
+    public void checkDestroyOfLaser(){
+        if(LaserExistence==true) {
+            checkTerrainToDestroyByLaser();
+        }
     }
 
     /**
@@ -577,6 +799,31 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             }
         }
     }
+
+    /**
+     * Metoda odpowiadajaca za strzal z broni laserowej
+     */
+    void LaserShoot(){
+
+        int vx=player.get(0).get_velX();
+        int vy=player.get(0).get_velY();
+
+        if(vx>0){
+            FindEndLaser();
+        }
+    }
+
+    /**
+     * Metoda odpowiadajaca za znalezienie punktu koncowego lasera
+     */
+    void FindEndLaser(){
+        int xx=player.get(0).getX()+SizeWidthIcon;
+        int yy=player.get(0).getY()+SizeHeightIcon;
+        double row=(double)yy/SizeHeightIcon;
+        double column=(double)xx/ SizeWidthIcon;
+
+    }
+
     /**
      * metoda reagujaca na nacisniecie klawisza
      * @param e wydarzenie przechowujace informacje na temat wcisnietego klawisza
@@ -590,16 +837,16 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                 if(hussars_Power==true){
                     factor_mode=2;
                 }
-                if (c == KeyEvent.VK_LEFT) {
+                if (c == KeyEvent.VK_LEFT && LaserExistence==false) {
                     player.get(0).change_velX(setSpeedPlayer() * -1*(factor_mode));
                     player.get(0).change_velY(0);
-                } else if (c == KeyEvent.VK_RIGHT) {
+                } else if (c == KeyEvent.VK_RIGHT && LaserExistence==false) {
                     player.get(0).change_velX(setSpeedPlayer() * 1*(factor_mode));
                     player.get(0).change_velY(0);
-                } else if (c == KeyEvent.VK_DOWN) {
+                } else if (c == KeyEvent.VK_DOWN && LaserExistence==false) {
                     player.get(0).change_velY(setSpeedPlayer() * 1*(factor_mode));
                     player.get(0).change_velX(0);
-                } else if (c == KeyEvent.VK_UP) {
+                } else if (c == KeyEvent.VK_UP && LaserExistence==false) {
                     player.get(0).change_velY(setSpeedPlayer() * (-1)*factor_mode);
                     player.get(0).change_velX(0);
                 }
@@ -627,9 +874,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     createExplosion(remote_bomb); // tworze eksplozje na ekranie
                     remote_bomb = null; //zwracam referencje na obiekt null, z powrotem moge stawiac bombe
                     PermissionForRemoteBomb = true;//po zdetonowaniu zdalnej bomby mozemy postawic nastepna
-                } else if (c == KeyEvent.VK_P) {
-                    PauseActive = true;
-
                 } else if (c == KeyEvent.VK_E) {
                     if (player_stay_on_door == true && Amountofkeys > 0) {
                         PauseActive = true;//zatrzymanie gry
@@ -640,8 +884,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     } else if (player_stay_on_door == false && Amountofkeys == 1) {
                         System.out.println("Brak drzwi które mozna otworzyc");
                     }
-                }
-                else if(c == KeyEvent.VK_W) {
+                } else if(c == KeyEvent.VK_W) {
                     if (Amountofhusarswings > 0 && hussars_Power == false) {
                         hussars_Power = true;
                         Amountofhusarswings = ChangeInfoStatus(Amountofhusarswings, -1);
@@ -649,11 +892,53 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                         System.out.println("Hussarball, Active!");
                         counters.add(new CounterHussarWings());
                     }
+                } else if(c == KeyEvent.VK_1){ //laser
+                    if(Amountoflasers>0){
+                        Amountoflasers=ChangeInfoStatus(Amountoflasers,-1);
+                        PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));
+                        directionOfLaser=0;
+                        LaserExistence=true;
+                        counters.add(new CounterLaser());
+                    }
                 }
+                else if(c == KeyEvent.VK_2) { //laser
+                    if (Amountoflasers > 0) {
+                        Amountoflasers = ChangeInfoStatus(Amountoflasers, -1);
+                        PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));
+                        directionOfLaser = 1;
+                        LaserExistence = true;
+                        counters.add(new CounterLaser());
+                    }
+                }
+                else if(c == KeyEvent.VK_3) { //laser
+                    if (Amountoflasers > 0) {
+                        Amountoflasers = ChangeInfoStatus(Amountoflasers, -1);
+                        PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));
+                        directionOfLaser = 2;
+                        LaserExistence = true;
+                        counters.add(new CounterLaser());
+                    }
+                }
+                else if(c == KeyEvent.VK_4) { //laser
+                    if (Amountoflasers > 0) {
+                        Amountoflasers = ChangeInfoStatus(Amountoflasers, -1);
+                        PanelInfoTwo.Ilosclaserow.setText(Integer.toString(Amountoflasers));
+                        directionOfLaser = 3;
+                        LaserExistence = true;
+                        counters.add(new CounterLaser());
+                    }
+                }
+
+            }
+            if (c == KeyEvent.VK_P) {
+                PauseActive = true;
+                levelframe.setResizable(true);
+
             }
         }
         else if( c==KeyEvent.VK_P ) {
             PauseActive=false;
+            levelframe.setResizable(false);
         }
 
     }
@@ -691,6 +976,9 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         changeTerrainPosition(SizeWidthIconDouble, SizeHeightIconDouble);//zmiana pozycji obietkow stacjonarnych
         changeItemPosition(SizeWidthIconDouble, SizeHeightIconDouble);//zmiana pozycji itemow
         changePlayerPosition(SizeWidthIconDouble, SizeHeightIconDouble);
+
+
+
         g.setColor(Color.black);
         g.fillRect(0,0,getWidth(),getHeight());// rysuje czarny kwadrat bedacy tlem dla naszych grafik
         drawItem(g); //rysuje itemy na planszy
@@ -699,6 +987,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         drawEnemyObject(g);//rysuje wrogow
         drawTerrain(g);//rysuje elementy terenu - skrzynki, beton itd
         drawExplosion(g);//rysuje eksplozje
+        drawLaser(g);//rysuje laser
     }
     /**
      * funkcja rysujaca itemy na grafice
@@ -719,7 +1008,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
                     g.drawImage(normal_bomb.get(i).getGIF(), normal_bomb.get(i).getX(), normal_bomb.get(i).getY(), SizeWidthIcon, SizeHeightIcon, this);
         }
         if(remote_bomb!=null){
-            g.drawImage(remote_bomb.getBuffImage(),remote_bomb.getX(),remote_bomb.getY(),SizeWidthIcon,SizeHeightIcon,null);
+                    g.drawImage(remote_bomb.getBuffImage(),remote_bomb.getX(),remote_bomb.getY(),SizeWidthIcon,SizeHeightIcon,null);
         }
     }
 
@@ -746,7 +1035,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      * @param g grafika na która jest namalowywana ombiekty
      */
     public void drawPlayerObject(Graphics g) {
-        if(player.size()>0) {
+        if(player.size()>0 && PlayerExistence==true) {
             if(hussars_Power==false) {
                 g.drawImage(player.get(0).getBuffImage(), player.get(0).getX(), player.get(0).getY(), SizeWidthIcon, SizeHeightIcon, null);
             }else if(hussars_Power==true) {
@@ -768,7 +1057,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void drawEnemyObject(Graphics g){
         for(int i=0;i<enemy.size();i++){
                 g.drawImage(enemy.get(i).getBuffImage(), enemy.get(i).getX(), enemy.get(i).getY(), SizeWidthIcon, SizeHeightIcon,  null);
-
         }
     }
 
@@ -780,6 +1068,25 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
     public void drawTerrain(Graphics g){
         for(int i=0;i<terrains.size();i++) {
             g.drawImage(terrains.get(i).getBuffImage(),terrains.get(i).getX(),terrains.get(i).getY(),SizeWidthIcon,SizeHeightIcon,null);
+        }
+    }
+    /**
+     * funkcja rysujaca obiekty terenowe
+     * @param g grafika na której są namalowywane obiekty
+     */
+
+    public void drawLaser(Graphics g){
+        if(LaserExistence==true && PlayerExistence==true) {
+            g.setColor(Color.YELLOW);
+            if (directionOfLaser == 0) {
+                g.fillRect(player.get(0).getX()+SizeWidthIcon/4, player.get(0).getY() - (SizeHeightIcon * rangeOfLaser(0)), SizeWidthIcon / 2, SizeHeightIcon * rangeOfLaser(0));
+            } else if (directionOfLaser == 1) {
+                g.fillRect(player.get(0).getX()+SizeWidthIcon/4, player.get(0).getY() + SizeHeightIcon, SizeWidthIcon / 2, SizeHeightIcon * rangeOfLaser(1));
+            } else if (directionOfLaser == 2) {
+                g.fillRect(player.get(0).getX() + SizeWidthIcon, player.get(0).getY()+SizeHeightIcon/4, rangeOfLaser(2) * SizeWidthIcon, SizeHeightIcon / 2);
+            } else if (directionOfLaser == 3) {
+                g.fillRect(player.get(0).getX() - SizeWidthIcon * rangeOfLaser(3), player.get(0).getY()+SizeHeightIcon/4, rangeOfLaser(3) * SizeWidthIcon, SizeHeightIcon / 2);
+            }
         }
     }
 
@@ -801,7 +1108,6 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             }
         }
     }
-
     /**
      * Metoda zmieniajaca pozycje itemow
      * @param nowaszerokoscicony - szerokosc obiektu po zmianie szerokosci ramki
@@ -826,7 +1132,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
      */
     public void changePlayerPosition(double nowaszerokoscicony, double nowawysokoscicony){
 
-        if(IsSizeOfPanelBoardChanged == true) {
+        if(IsSizeOfPanelBoardChanged == true && PlayerExistence==true) {
            /* if (nowaszerokoscicony > SizeWidthIconCopyDouble || nowawysokoscicony > SizeHeightIconCopyDouble) {
                 player.get(0).changeX((int) (Math.ceil(player.get(0).getX() / SizeWidthIconDouble) * nowaszerokoscicony));
                 player.get(0).changeY((int) (Math.ceil(player.get(0).getY() / SizeHeightIconDouble) * nowawysokoscicony));
@@ -935,6 +1241,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
         PauseActive=false;
         PermissionForRemoteBomb=true;
         hussars_Power=false;
+        LaserExistence=false;
     }
 
     /**
@@ -964,6 +1271,7 @@ public class PanelBoard extends JPanel implements ActionListener,KeyListener{
             IsSizeOfPanelBoardChanged = false;
         }
     }
+
 
     /**
      * Metoda obliczaja predkosc gracza

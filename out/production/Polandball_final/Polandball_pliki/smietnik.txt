@@ -1,0 +1,144 @@
+/*
+    public Terrain getSkrzynka(int number_of_skrzynka){
+        try {
+            int num_ = 0;
+            for (int i = 0; i < terrains.size(); i++) {
+                if (terrains.get(i) instanceof Skrzynka) {
+                    if (num_ == number_of_skrzynka) {
+                        return terrains.get(i);
+                    } else {
+                        num_++;
+                    }
+                }
+            }
+
+        }catch(NullPointerException e){
+            System.out.println("Cos nie pyklo");
+            return null;
+        }
+        return null;
+    }
+    public Item getDoor(){
+        try{
+            int num_=0;
+            for(int i=0;i<items.size();i++){
+                if(items.get(i) instanceof Door){
+                    return items.get(i);
+                }
+            }
+        }catch(NullPointerException e){
+            System.out.println("Cos nie pyklo");
+            return null;
+        }
+        return null;
+    }
+    public Item getKey(){
+        try{
+            int num_=0;
+            for(int i=0;i<items.size();i++){
+                if(items.get(i) instanceof Key){
+                    return items.get(i);
+                }
+            }
+        }catch(NullPointerException e){
+            System.out.println("Cos nie pyklo");
+            return null;
+        }
+        return null;
+    }
+    public Item getItem(int number){
+        try{
+            int num_=0;
+            for(int i=0;i<items.size();i++){
+                if(!(items.get(i) instanceof Key) && !(items.get(i) instanceof Door)){
+                    if(number==num_){return items.get(i);}
+                    else{num_++;}
+                }
+            }
+        }catch(NullPointerException e){
+            System.out.println("Cos nie pyklo");
+            return null;
+        }
+        return null;
+    }
+
+    public Terrain getBeton(int number_of_beton){
+        try {
+            int num_ = 0;
+            for (int i = 0; i < terrains.size(); i++) {
+                if (terrains.get(i) instanceof Beton) {
+                    if (num_ == number_of_beton) {
+                        return terrains.get(i);
+                    } else {
+                        num_++;
+                    }
+                }
+            }
+
+        }catch(NullPointerException e){
+            System.out.println("Cos nie pyklo");
+            return null;
+        }
+        return null;
+    }
+
+    private void reSetStationaryObject() {
+        int iteratoItem=0;
+        int iteratoSkrzynka=0;
+        int iteratoBeton=0;
+        for(int i=0;i<Amountoflines;i++){
+            for(int j=0;j<Amountofcolumns;j++){
+                if(StatioonaryObjectTab[i][j].equals("N_" )){
+
+                }else if(StatioonaryObjectTab[i][j].equals("S_" )){
+                    Terrain skrzynka =getSkrzynka(iteratoSkrzynka);
+                    skrzynka.changeX(SizeWidthIcon*i);
+                    skrzynka.changeY(SizeHeightIcon*j);
+                    iteratoSkrzynka++;
+                }else if(StatioonaryObjectTab[i][j].equals("SD")){
+                    Terrain skrzynka =getSkrzynka(iteratoSkrzynka);
+                    skrzynka.changeX(SizeWidthIcon*i);
+                    skrzynka.changeY(SizeHeightIcon*j);
+                    iteratoSkrzynka++;
+                    Item door_ =getDoor();
+                    door_.changeX(SizeWidthIcon*i);
+                    door_.changeY(SizeHeightIcon*j);
+                }else if(StatioonaryObjectTab[i][j].equals("SK")){
+                    Terrain skrzynka =getSkrzynka(iteratoSkrzynka);
+                    skrzynka.changeX(SizeWidthIcon*i);
+                    skrzynka.changeY(SizeHeightIcon*j);
+                    iteratoSkrzynka++;
+                    Item key_ =getKey();
+                    key_.changeX(SizeWidthIcon*i);
+                    key_.changeY(SizeHeightIcon*j);
+                }else if(StatioonaryObjectTab[i][j].equals("SI")){
+                    Terrain skrzynka =getSkrzynka(iteratoSkrzynka);
+                    skrzynka.changeX(SizeWidthIcon*i);
+                    skrzynka.changeY(SizeHeightIcon*j);
+                    iteratoSkrzynka++;
+                    Item item_ =getItem(iteratoItem);
+                    item_.changeX(SizeWidthIcon*i);
+                    item_.changeY(SizeHeightIcon*j);
+                    iteratoItem++;
+                }else if(StatioonaryObjectTab[i][j].equals("B_")){
+                    Terrain beton = getBeton(iteratoBeton);
+                    beton.changeX(SizeWidthIcon*i);
+                    beton.changeY(SizeHeightIcon*j);
+                    iteratoBeton++;
+                }else if(StatioonaryObjectTab[i][j].equals("_D")){
+                    Item door_ =getDoor();
+                    door_.changeX(SizeWidthIcon*i);
+                    door_.changeY(SizeHeightIcon*j);
+                }else if(StatioonaryObjectTab[i][j].equals("_K")){
+                    Item key_ =getKey();
+                    key_.changeX(SizeWidthIcon*i);
+                    key_.changeY(SizeHeightIcon*j);
+                }else if(StatioonaryObjectTab[i][j].equals("_I")){
+                    Item item_ =getItem(iteratoItem);
+                    item_.changeX(SizeWidthIcon*i);
+                    item_.changeY(SizeHeightIcon*j);
+                    iteratoItem++;
+                }
+            }
+        }
+    }*/

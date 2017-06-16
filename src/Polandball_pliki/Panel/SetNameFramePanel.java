@@ -112,7 +112,7 @@ public class SetNameFramePanel extends JPanel implements ActionListener, KeyList
             }else{//jak wszystko okey to gramy
                 levelframe = new LevelFrame();
                 levelframe.setVisible(true);
-                this.setVisible(false);
+                //this.setVisible(false);
                 setnameframe.setVisible(false);
             }
         }

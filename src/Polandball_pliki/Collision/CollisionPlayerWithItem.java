@@ -51,6 +51,11 @@ public class CollisionPlayerWithItem extends Collision {
      */
     int Item_point_south;
 
+    /**
+     * Kontruktor Kolizji Player-Item
+     * @param player
+     * @param item - z którym sprawdzamy czy zajdzie kolizja
+     */
     public CollisionPlayerWithItem(Polandball player, Item item){
         super();
 
@@ -114,7 +119,7 @@ public class CollisionPlayerWithItem extends Collision {
         //kolizja  player|item
 
         //sprawdzam czy player nachodzi na enemy na osi x
-       if( Player_point_east > Item_point_west && Player_point_east<Item_point_east ) {
+      /* if( Player_point_east > Item_point_west && Player_point_east<Item_point_east ) {
             //sprawdzam czy player nachodzi na enemy na osi y
             if(
                     ( Player_point_south > Item_point_north   &&
@@ -148,7 +153,7 @@ public class CollisionPlayerWithItem extends Collision {
                     isNotCollision = false;// zwraca ze zaszla kolizja  z czego wynika że obiekt typu item powinien zostac zlikwidowany
                 }
 
-        }
+        }*/
 
 
         //kolizja z polnocna czescia player            player
@@ -156,7 +161,7 @@ public class CollisionPlayerWithItem extends Collision {
         //                                              item
 
         //sprawdzam czy obiekt player na chodzi na enemy na osi x
-        else if( Player_point_south > Item_point_north && Player_point_south<Item_point_south ) {
+        if( Player_point_south > Item_point_north && Player_point_south<Item_point_south ) {
             //sprawdzam czy obiekt player na chodzi na enemy na osi y
             if(
                     (Player_point_east > Item_point_west && Player_point_east < Item_point_east )

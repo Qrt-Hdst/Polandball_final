@@ -1,9 +1,6 @@
 package Polandball_pliki.Counter;
 
 import Polandball_pliki.GameObjects.Explosion;
-import Polandball_pliki.GameObjects.Normal_Bomb;
-
-import static Polandball_pliki.GetConstans.TimeToExplosion;
 
 /**
  * Created by Matball on 2017-05-19.

@@ -296,7 +296,7 @@ public final class GetConstans {
 	 * dwuwymaiora tablica, reprezentujaca wystepowanie przeszkody
 	 */
 
-	public static int StatioonaryObjectTab[][];
+	public static String StatioonaryObjectTab[][];
 
 	/**
 	 * Zmienna informujaca, ktory poziom zostal zaladowany
@@ -479,25 +479,45 @@ public final class GetConstans {
 	public static void MakeBoardObstacleTable(){
 		try {
 			//tablica potrzebna do kolizji
-			StatioonaryObjectTab = new int[Amountoflines][Amountofcolumns];
+			StatioonaryObjectTab = new String[Amountoflines][Amountofcolumns];
 			//wypelnienie stacjonarnej tablicy zerami lub jedynkami
 			for (int k = 0; k < Amountoflines; k++) {
 				String bufor[] = row[k].split(" ");
 				for (int j = 0; j < Amountofcolumns; j++) {
+
 					//tworzy 1 tam gdzie jest skrzynka/beton/skrzynka z drzwiami//skrzynka z kluczem// skrzynka z  innymi itemem
-					if (bufor[j].equals("S_") || bufor[j].equals("B_")) {
-						StatioonaryObjectTab[k][j] = 1;
-					} else if (bufor[j].equals("SD") || bufor[j].equals("SK") || bufor[j].equals("SI")) {
-						StatioonaryObjectTab[k][j] = 1;
+					if (bufor[j].equals("S_") ) {
+						StatioonaryObjectTab[k][j] = "S_";
+					} else if ( bufor[j].equals("B_")) {
+						StatioonaryObjectTab[k][j] = "B_";
+					} else if (bufor[j].equals("SD") ) {
+						StatioonaryObjectTab[k][j] = "SD";
+					} else if (bufor[j].equals("SK")) {
+						StatioonaryObjectTab[k][j] = "SK";
+					} else if (bufor[j].equals("SI")) {
+						StatioonaryObjectTab[k][j] = "SI";
 					} else {
-						StatioonaryObjectTab[k][j] = 0;
+						StatioonaryObjectTab[k][j] = "N_";
 					}
+					//System.out.print(StatioonaryObjectTab[k][j]+" ");
 				}
+				//System.out.println();
 			}
+			DisplayStationaryObject();
 		}
 		catch(NullPointerException e) {
 			System.out.println("W metodzie MakeBoardObstaclesTable wystapil blad typu NullPointerException");
 		}
 	}
 
+	public static void DisplayStationaryObject(){
+		System.out.println("Dziendobry");
+		for(int i=0;i<Amountoflines;i++){
+			for(int j=0;j<Amountofcolumns;j++){
+				System.out.print(StatioonaryObjectTab[i][j]+" ");
+			}
+			System.out.println();
+		}
+
+	}
 }

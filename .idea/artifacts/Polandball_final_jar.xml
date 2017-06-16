@@ -2,9 +2,6 @@
   <artifact type="jar" name="Polandball_final:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Polandball_final_jar</output-path>
     <root id="archive" name="Polandball_final.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="Polandball_final" />
     </root>
   </artifact>

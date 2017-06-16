@@ -93,5 +93,4 @@ public class Polandball extends LivingObject {
         return rightHussar;
     }
 
-
 }

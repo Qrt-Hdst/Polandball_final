@@ -5,6 +5,7 @@ import Polandball_pliki.Panel.MainPanel;
 import Polandball_pliki.Panel.PanelBoard;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -47,7 +48,8 @@ public class LevelFrame extends JDialog implements WindowListener, ActionListene
         this.setLocationRelativeTo(null);//ustawienie ramki na srodku
         this.setVisible(true);
         this.addWindowListener(this);
-
+        this.setMinimumSize(new Dimension(350, 350));
+        this.setResizable(false);
         tm =new Timer(30,mainPanel.panelboard);
         tm.start();
 

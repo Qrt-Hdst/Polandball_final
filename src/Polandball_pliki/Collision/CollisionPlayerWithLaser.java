@@ -1,23 +1,19 @@
 package Polandball_pliki.Collision;
 
-import Polandball_pliki.GameObjects.LivingObject;
+import Polandball_pliki.GameObjects.GameObject;
+import Polandball_pliki.GameObjects.Terrain;
 
 import static Polandball_pliki.Others.GetConstans.Amountofcolumns;
 import static Polandball_pliki.Others.GetConstans.Amountoflines;
-import static Polandball_pliki.Others.GetConstans.StatioonaryObjectTab;
-import static Polandball_pliki.Panel.PanelBoard.CellIsFree;
+import static Polandball_pliki.Panel.PanelBoard.BetonIsNotHere;
 import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
-/**
- * Created by Matball on 2017-05-20.
- */
 
 /**
- * Klasa typu kolizja rostrzygajaca czy obiekt typu living object moze przejsc przez dana komorke
- * (o ile nie ma tam zadnej skrzynki/betonu
+ * Created by Matball on 2017-06-16.
  */
-public class CollisionLivingObjectWithTerrain extends Collision {
+public class CollisionPlayerWithLaser extends Collision{
 
     /**
      * Wiersz w typie double, w ktorym znajduje sie dany livingobject
@@ -44,64 +40,56 @@ public class CollisionLivingObjectWithTerrain extends Collision {
     int column_livingobject_west;
 
 
+    public CollisionPlayerWithLaser(int xLaser,int yLaser,int heightLaser,int widthLaser,GameObject gameObject){
+        super();
+        System.out.println(((xLaser+widthLaser)<gameObject.getX())+" 1");
+        System.out.println((xLaser>(gameObject.getX()+SizeWidthIcon))+" 2");
+        System.out.println(((yLaser+heightLaser)<gameObject.getY())+" 3");
+        System.out.println( (yLaser >(gameObject.getY())+SizeHeightIcon)+" 4");
+        if(
 
-    /**
-     * Metoda stwierdzajaca, czy zachodzi kolizja
-     */
-    //metoda przyjmuje jak argument gracza lub wroga - jesli sprawdamy kolizje dla gracza to kind_of_living_obejct
-    //nalezy ustawic na "player" jak wrog to "enemy"
-    //wykorzystanie metod sprawdzajacyh konkretny kierunek ruchu, kazda z tych metod, gdy nie wykryje kolizji wg.
-    //podanych warunkow ustawia kolozje na true ------>mozna zmienic<------
-    public CollisionLivingObjectWithTerrain(LivingObject livingobject, String kind_of_living_object) {
+
+                (xLaser+widthLaser)<gameObject.getX()
+                ||
+                xLaser>(gameObject.getX()+SizeWidthIcon)
+                ||
+                (yLaser+heightLaser)<gameObject.getY()
+                ||
+                yLaser >(gameObject.getY()+SizeHeightIcon))
+        {
+            isNotCollision=true;
+        }
+        else {
+            isNotCollision=false;
+        }
+
+    }
+
+    public CollisionPlayerWithLaser(int positionY,int positionX) {
         super(); //wywoluje konstruktor klasy rodzica
 
         //wiersz w double, w ktorym znajduje sie dany livingobject
-        double_row_livingobject = (double) livingobject.getY() / (double) SizeHeightIcon;
+        double_row_livingobject = (double) positionY / (double) SizeHeightIcon;
         //kolumna w double, w ktorej znajduje sie dany livingobject
-        double_column_livingobject = (double) livingobject.getX() / (double) SizeWidthIcon;
+        double_column_livingobject = (double) positionX / (double) SizeWidthIcon;
         //zaokraglenie numeru wiersza w dol
         row_livingobject_north = (int) Math.floor(double_row_livingobject);
         //zaokraglenie kolumny w dol
         column_livingobject_west = (int) Math.floor(double_column_livingobject);
 
 
-        //musimy sprawdzic, czy chcemy sprawdzac kolizje dla playera, bo mozemy sterowac graczem, nadawac mu predkosc
-        //a wrogom nie
-        if (kind_of_living_object == "player") {
-            //sprawdzamy czy obiekt porusza sie w prawo > (wschod)
-            if (livingobject.get_velX() > 0) {
-                Collision_East();
-            }
-            //sprawdzamy czy obiekt porusza sie w lewo < (zachod)
-            else if (livingobject.get_velX() < 0) {
-                Collision_West();
-            }
-            //sprawdzamy czy obiekt porusza sie w w gore ^ (polnoc)
-            else if (livingobject.get_velY() < 0) {
-                Collision_North();
-
-            }
-            //sprawdzamy czy obiekt porusza sie w dol V (poludnie)
-            else if (livingobject.get_velY() > 0) {
-                Collision_South();
-            }//jesli predkosc gracza 0 wyskauje komunikat o braku ruchu(predkosci)
-            else if(livingobject.get_velY()==0){///---->problem dla enemy<------
-                //System.out.println("Predkosc gracza 0");
-            }
-        }
     }
 
-    //sprawdzanie kolizji w prawo >
     public boolean Collision_East(){
         try {
             //sprawdzanie czy wyszlismy poza prawa scianke
             if (double_column_livingobject >= (double) (Amountofcolumns - 1)) {
-               // System.out.println("H");
+                // System.out.println("H");
                 isNotCollision = false;
             }
             //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko gornej krawedzi wiersza
             else if (double_row_livingobject < ((double) row_livingobject_north + 0.15)) {
-                if (CellIsFree(row_livingobject_north,column_livingobject_west+1)) {
+                if (BetonIsNotHere(row_livingobject_north,column_livingobject_west+1)) {
                     //System.out.println("a");
                     isNotCollision = true;
                 } else {
@@ -112,7 +100,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko dolnej krawedzi wiersza
             else if (double_row_livingobject > ((double) row_livingobject_north + 0.85)) {
                 //System.out.println(3);
-                if (CellIsFree(row_livingobject_north+1,column_livingobject_west+1)) {
+                if (BetonIsNotHere(row_livingobject_north+1,column_livingobject_west+1)) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -122,8 +110,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             else if (double_row_livingobject > ((double) row_livingobject_north + 0.15) &&
                     double_row_livingobject < ((double) row_livingobject_north + 0.85)) {
                 //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
-                if ((CellIsFree(row_livingobject_north,column_livingobject_west+1))&&
-                        (CellIsFree(row_livingobject_north+1,column_livingobject_west+1))) {
+                if ((BetonIsNotHere(row_livingobject_north,column_livingobject_west+1))&&
+                        (BetonIsNotHere(row_livingobject_north+1,column_livingobject_west+1))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -150,7 +138,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko gornej krawedzi wiersza
             else if (double_row_livingobject < ((double) row_livingobject_north + 0.15)) {
                 //System.out.println(2);
-                if ((CellIsFree(row_livingobject_north,column_livingobject_west))) {
+                if ((BetonIsNotHere(row_livingobject_north,column_livingobject_west))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -159,7 +147,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja y-wa obiektu, czy znajduje sie wystarczajaco blisko dolnej krawedzi wiersza
             else if (double_row_livingobject > ((double) row_livingobject_north + 0.85)) {
                 //System.out.println(3);
-                if ((CellIsFree(row_livingobject_north+1,column_livingobject_west))) {
+                if ((BetonIsNotHere(row_livingobject_north+1,column_livingobject_west))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -169,8 +157,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             else if (double_row_livingobject > ((double) row_livingobject_north + 0.15) &&
                     double_row_livingobject < ((double) row_livingobject_north + 0.85)) {
                 //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
-                if ((CellIsFree(row_livingobject_north,column_livingobject_west))&&
-                        (CellIsFree(row_livingobject_north+1,column_livingobject_west))) {
+                if ((BetonIsNotHere(row_livingobject_north,column_livingobject_west))&&
+                        (BetonIsNotHere(row_livingobject_north+1,column_livingobject_west))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -196,7 +184,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko lewej krawedzi kolumny
             else if (double_column_livingobject < ((double) column_livingobject_west + 0.15)) {
                 //System.out.println(2);
-                if ((CellIsFree(row_livingobject_north,column_livingobject_west))) {
+                if ((BetonIsNotHere(row_livingobject_north,column_livingobject_west))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -205,7 +193,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko prawej krawedzi kolumny
             else if (double_column_livingobject > ((double) column_livingobject_west + 0.85)) {
                 //System.out.println(3);
-                if ((CellIsFree(row_livingobject_north,column_livingobject_west+1))) {
+                if ((BetonIsNotHere(row_livingobject_north,column_livingobject_west+1))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -215,8 +203,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             else if (double_column_livingobject > ((double) column_livingobject_west + 0.15) &&
                     double_column_livingobject < ((double)column_livingobject_west + 0.85)) {
                 //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
-                if ((CellIsFree(row_livingobject_north,column_livingobject_west)) &&
-                        (CellIsFree(row_livingobject_north,column_livingobject_west+1))) {
+                if ((BetonIsNotHere(row_livingobject_north,column_livingobject_west)) &&
+                        (BetonIsNotHere(row_livingobject_north,column_livingobject_west+1))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -243,7 +231,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko lewej krawedzi kolumny
             else if (double_column_livingobject < ((double) column_livingobject_west + 0.15)) {
                 //System.out.println(2);
-                if ((CellIsFree(row_livingobject_north+1,column_livingobject_west))) {
+                if ((BetonIsNotHere(row_livingobject_north+1,column_livingobject_west))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -252,7 +240,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             //sprawdzamy pozycja x-wa obiektu, czy znajduje sie wystarczajaco blisko prawej krawedzi kolumny
             else if (double_column_livingobject > ((double) column_livingobject_west + 0.85)) {
                 //System.out.println(3);
-                if ((CellIsFree(row_livingobject_north+1,column_livingobject_west+1))) {
+                if ((BetonIsNotHere(row_livingobject_north+1,column_livingobject_west+1))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -262,8 +250,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             else if (double_column_livingobject > ((double) column_livingobject_west + 0.15) &&
                     double_column_livingobject < ((double) column_livingobject_west + 0.85)) {
                 //System.out.println(4+" "+row_player_north+" "+" "+column_player_west);
-                if ((CellIsFree(row_livingobject_north+1,column_livingobject_west)) &&
-                        (CellIsFree(row_livingobject_north+1,column_livingobject_west+1))) {
+                if ((BetonIsNotHere(row_livingobject_north+1,column_livingobject_west)) &&
+                        (BetonIsNotHere(row_livingobject_north+1,column_livingobject_west+1))) {
                     isNotCollision = true;
                 } else {
                     isNotCollision = false;
@@ -279,4 +267,6 @@ public class CollisionLivingObjectWithTerrain extends Collision {
         }
         return isNotCollision;
     }
+
+
 }

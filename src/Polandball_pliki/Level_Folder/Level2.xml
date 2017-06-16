@@ -12,12 +12,12 @@
  <Amountofkeys>1</Amountofkeys>
  <LevelTime>240</LevelTime>
 
- <row>N_ NG SI NW SD SI</row>
- <row>SI SD SI SI SI SI</row>
- <row>SI SI SI SI SI SI</row>
- <row>SI SI SI SI SI SI</row>
- <row>SI SI SI SI SI SI</row>
- <row>SK S_ S_ S_ S_ SD</row>
+ <row>N_ NG SI _W SI SI</row>
+ <row>N_ N_ N_ N_ N_ N_</row>
+ <row>N_ N_ _I N_ N_ N_</row>
+ <row>N_ N_ N_ N_ N_ N_</row>
+ <row>N_ N_ _I N_ N_ N_</row>
+ <row>SK N_ N_ N_ N_ SD</row>
 
 
 </LEVEL2>
