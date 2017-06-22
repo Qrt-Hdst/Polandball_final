@@ -1,5 +1,7 @@
 package Polandball_pliki.GameObjects;
 
+import Polandball_pliki.Others.GetConstans;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,11 +10,11 @@ import java.io.IOException;
 import static Polandball_pliki.Others.GetConstans.DoorString;
 
 /**
- * Klasa obiektu typu drzwi - elementu umozliwajacego przejsc na kolejny etap
+ * Klasa reprezentujaca drzwi do nastepnego poziomu
  */
 public class Door extends Item {
     /**
-     * konstruktor obiektu drzwi
+     * Konstruktor klasy Door
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -21,25 +23,7 @@ public class Door extends Item {
         x_=x;
         y_=y;
         name_class_object=DoorString;
-        buffImage_=createBufferedImage();
+        buffImage_= GetConstans.DoorBuff;
     }
 
-    /**
-     * metoda udostepniająca obiektowi grafike
-     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
-     */
-    BufferedImage createBufferedImage(){
-        try {
-            File file = new File(DoorString);
-            BufferedImage bufferedImage= ImageIO.read(file);
-            return bufferedImage;
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu typu drzwi");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

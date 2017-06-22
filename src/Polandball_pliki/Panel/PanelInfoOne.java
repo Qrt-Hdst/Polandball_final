@@ -1,17 +1,14 @@
 package Polandball_pliki.Panel;
 
-/**
- * Panel gorny okna gry
- */
 
 import Polandball_pliki.Others.ButtonLabel;
-import Polandball_pliki.Frame.SetNameFrame;
-
 
 import javax.swing.*;
 import java.awt.*;
 import static Polandball_pliki.Others.GetConstans.*;
-
+/**
+ * Klasa reprezentujaca panel gorny okna gry
+ */
 
 public class PanelInfoOne extends JPanel{
 

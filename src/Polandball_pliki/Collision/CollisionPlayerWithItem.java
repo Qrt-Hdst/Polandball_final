@@ -1,7 +1,5 @@
 package Polandball_pliki.Collision;
 
-
-import Polandball_pliki.GameObjects.Enemy;
 import Polandball_pliki.GameObjects.Item;
 import Polandball_pliki.GameObjects.Polandball;
 
@@ -9,52 +7,45 @@ import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
- * Created by Matball on 2017-05-24.
- */
-
-/**
- * Kolizja player z itemem
+ * Klasa sprawdzajaca, czy nastapla kolizja gracza z przedmiotem
  */
 public class CollisionPlayerWithItem extends Collision {
-
     /**
-     * Max zachodni punkt eksplozji
+     * Maksymalny zachodni punkt gracza
      */
     int Player_point_west;
     /**
-     * Max wschodni punkt eksplozji
+     * Maksymalny wschodni punkt gracza
      */
     int Player_point_east;
     /**
-     * Max polnocny punkt eksplozji
+     * Maksymalny polnocny punkt gracza
      */
     int Player_point_north;
     /**
-     * Max poludniowy punkt eksplozji
+     * Maksymalny poludniowy punkt gracza
      */
     int Player_point_south;
-
     /**
-     * Max zachodni punkt liingObject
+     * Maksymalny zachodni punkt Item
      */
     int Item_point_west;
     /**
-     * Max wschodni punkt liingObject
+     * Maksymalny wschodni punkt Item
      */
     int Item_point_east;
     /**
-     * Max polnocne punkt liingObject
+     * Maksymalny polnocny punkt Item
      */
     int Item_point_north;
     /**
-     * Max poludniowe punkt liingObject
+     * Maksymalny poludniowy punkt Item
      */
     int Item_point_south;
-
     /**
-     * Kontruktor Kolizji Player-Item
-     * @param player
-     * @param item - z którym sprawdzamy czy zajdzie kolizja
+     * Konstruktor sprawdzajacy, czy zachodzi kolizja obiektu typu Item z graczem
+     * @param player - obiekt typu Polandball
+     * @param item - obiekt typu Item
      */
     public CollisionPlayerWithItem(Polandball player, Item item){
         super();
@@ -66,7 +57,7 @@ public class CollisionPlayerWithItem extends Collision {
         // 2)odejmuje ilosc pikseli odzwierciedlajaca fakt ze kula jest mniejsza niz kwadrat który jest jego obramowka
         // , specyficznie dobrany dla kazdego roza player
         // UWAGA ostatni człon może pójść do wymiany, służy do ograniczenia oefektow dzialania eksplozji na brzegach
-        Player_point_west=player.getX()+(int)Math.floor((double)SizeWidthIcon  * player.getDistance_from_azimuth_walls() );//przydzielam zachodni punkt livingObject
+        Player_point_west=player.getX()+(int)Math.floor((double)SizeWidthIcon  * 5*player.getDistance_from_azimuth_walls() );//przydzielam zachodni punkt livingObject
         //przydzielam wschodni punkt player
         // 1)pobieram polozenie lewego gornego rogu player
         // 2)Dodaje szerokosc jednej komorki

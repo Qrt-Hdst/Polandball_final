@@ -1,26 +1,23 @@
 package Polandball_pliki.Frame;
 
-import Polandball_pliki.Panel.StartPanel;
-
-import static Polandball_pliki.Others.GetConstans.*;
-
 import javax.swing.*;
 
+import Polandball_pliki.Panel.StartPanel;
+import static Polandball_pliki.Others.GetConstans.*;
 
 /**
- * Okno główne, wyświetlane podczas uruchomienia gry
+ * Okno glowne, wyświetlane podczas uruchomienia gry
  */
 public class MainFrame extends JFrame  {
 
     /**
-     * Tło  okna ( skalowalne )
+     * Obiekt typu startPanel, zawierajacy wyglad okna glownego
      */
 
     public static StartPanel startPanel;
 
-
     /**
-     * Konstruktor okna głównego, zawierający funkcję initMainFrame
+     * Konstruktor okna glownego, zawierający metode initMainFrame()
      */
 
     public MainFrame() {
@@ -28,11 +25,10 @@ public class MainFrame extends JFrame  {
     }
 
     /**
-     * funkcja zawierająca parametry i komponenty okna głównego
+     * MetodA zawierająca parametry i komponenty okna glownego
      */
 
     private void initMainFrame() {
-
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         startPanel =new StartPanel(new ImageIcon(BackgroundString).getImage());
         this.getContentPane().add(startPanel);

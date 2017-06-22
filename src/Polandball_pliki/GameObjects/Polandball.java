@@ -7,19 +7,19 @@ import java.io.IOException;
 
 import static Polandball_pliki.Others.GetConstans.*;
 /**
- * Klasa gracza typu Polandball
+ * Klasa reprezentujaca gracza
  */
 public class Polandball extends LivingObject {
     /**
-     *
+     * Zmienna przechowujaca grafike lewych skrzydel husarskich
      */
-    BufferedImage leftHussar;
+    public BufferedImage leftHussar;
     /**
-     *
+     * Zmienna przechowujaca grafike prawych skrzydel husarskich
      */
-    BufferedImage rightHussar;
+    public BufferedImage rightHussar;
     /**
-     * konstruktor obiektu gracza
+     * Konstruktor klasy Polandball
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -30,67 +30,25 @@ public class Polandball extends LivingObject {
         velX_=0;
         velY_=0;
         name_class_object=PolandBallString;
-        buffImage_=createBufferedImage();
-        leftHussar=createLeftHussar();
-        rightHussar=createRightHussar();
+        buffImage_=PolandBallBuff;
+        leftHussar=LeftWingHussarballBuff;
+        rightHussar=RightWingHussarballBuff;
         distance_from_elevation_walls=3/16;
         distance_from_azimuth_walls=3/16;
     }
 
     /**
-     * metoda udostepniająca obiektowi grafike
-     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
+     * Metoda zwracajaca grafike lewych skrzydel husarskich podczas trybu husarza
+     * @return
      */
-    BufferedImage createBufferedImage(){
-        try {
-                File file = new File(PolandBallString);
-                BufferedImage bufferedImage = ImageIO.read(file);
-                return bufferedImage;
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu typu Polandball");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public BufferedImage createLeftHussar() {
-        try {
-            File file = new File(HussarBall_leftString);
-            BufferedImage image = ImageIO.read(file);
-            return image;
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu typu Polandball");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    public BufferedImage createRightHussar() {
-        try {
-            File file = new File(HussarBall_rightString);
-            BufferedImage image  = ImageIO.read(file);
-            return image;
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu typu Polandball");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public BufferedImage getLeftHussar() {
         return leftHussar;
     }
-
+    /**
+     * Metoda zwracajaca grafike prawych skrzydel husarskich podczas trybu husarza
+     * @return
+     */
     public BufferedImage getRightHussar() {
         return rightHussar;
     }
-
 }

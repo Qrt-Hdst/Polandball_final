@@ -1,5 +1,7 @@
 package Polandball_pliki.GameObjects;
 
+import Polandball_pliki.Others.GetConstans;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,13 +11,13 @@ import static Polandball_pliki.Others.GetConstans.ChestOfGoldString;
 import static Polandball_pliki.Others.GetConstans.WingsOfHussarString;
 
 /**
- * skrzynia ze złotem do zebrania
+ * Klasa reprezentujaca skrzynke ze zlotem
  */
 
 public class ChestOfGold extends Item {
 
     /**
-     * konstruktor obiektu klucz
+     * Konstruktor klasy ChestOfGold
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -24,25 +26,7 @@ public class ChestOfGold extends Item {
         x_=x;
         y_=y;
         name_class_object=ChestOfGoldString;
-        buffImage_=createBufferedImage();
+        buffImage_= GetConstans.ChestOfGoldBuff;
     }
 
-    /**
-     * metoda udostepniająca obiektowi grafike
-     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
-     */
-    BufferedImage createBufferedImage(){
-        try {
-            File file = new File(ChestOfGoldString);
-            BufferedImage bufferedImage= ImageIO.read(file);
-            return bufferedImage;
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu typu skrzynia ze złotem");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

@@ -5,16 +5,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Polandball_pliki.Others.GetConstans.Monsterspeed;
-import static Polandball_pliki.Others.GetConstans.NaziBallString;
-import static Polandball_pliki.Others.GetConstans.SovietBallString;
+import static Polandball_pliki.Others.GetConstans.*;
 
 /**
- * Klasa przeciwnika typu SovietBall
+ * Klasa reprezentujaca wroga typu Sovietball
  */
 public class Sovietball extends Enemy {
     /**
-     * konstruktor obiektu Sovietball
+     * Konstruktor klasy Sovietball
      * @param x obecne polozenie obiektu na osi x
      * @param y obecne polozenie obiektu na osi y
      */
@@ -25,28 +23,9 @@ public class Sovietball extends Enemy {
         velX_=0;//Monsterspeed;
         velY_=0;//Monsterspeed;
         name_class_object=SovietBallString;
-        buffImage_=createBufferedImage();
+        buffImage_=SovietBallBuff;
         distance_from_elevation_walls=1/32;
         distance_from_azimuth_walls=1/32;
-    }
-
-    /**
-     * metoda udostepniająca obiektowi grafike
-     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
-     */
-    BufferedImage createBufferedImage(){
-        try {
-            File file = new File(SovietBallString);
-            BufferedImage bufferedImage= ImageIO.read(file);
-            return bufferedImage;
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-            System.out.println("Blad wczytywania obiektu sovietball");
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

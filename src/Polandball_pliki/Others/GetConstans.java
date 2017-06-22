@@ -1,27 +1,93 @@
 package Polandball_pliki.Others;
 
 import Polandball_pliki.Frame.GameOver;
+import Polandball_pliki.GameObjects.Polandball;
 import org.w3c.dom.Document;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-
+import java.io.IOException;
+import java.nio.BufferOverflowException;
 
 import static Polandball_pliki.Panel.PanelBoard.PauseActive;
-
-
 /**
- * Parametry pierwszego poziomu
- **/
+ * <p>Klasa odpowiedzialna za parsowanie pliku serwera z podstawowymi parametrami aplikacji</p>
+ * <p>Przykladowa zawartosc pliku config.xml, pokazujaca kolejnosc parsowania i przypisywania do bufora</p>
+ * <p>Nalezy stosowac notacje xml, jak w przykladowych plikach konfiguracyjnych</p>
+ *
+ <p>Boardheight 700 Boardheight - Wysokosc ramki okna gry</p>
+ <p>Boardwidth 1400 Boardwidth - Szerokosc ramki okna gry</p>
+ <p>MainFrameheight 200 MainFrameheight - Wysoksc ramki okna glownego</p>
+ <p>MainFramewidth 200 MainFramewidth - Szerokosc ramki okna glownego</p>
+ <p>HighscoresFrameSize 500 HighscoresFrameSize - Rozmiar ramki okna listy najlepszych wynikow - okno kwadratowe</p>
+ <p>TimeToExplosion 1 TimeToExplosion  - Czas, po jakim wybucha bomba zwykla</p>
 
+ <p>PointsForCreate 20 PointsForCreate - Ilosc punktow za zniszczenie skrzynek</p>
+ <p>PointsForMonster 100 PointsForMonster  - Ilosc punktow za zabicie potwora</p>
+ <p>PointsForItem 10 PointsForItem  - Ilosc punktow zapodniesie itemku</p>
+ <p>PointsForChestOfGold 1000 PointsForChestOfGold  - Ilosc punktow za podniesie skrzynki zlota</p>
+ <p>PointsForKey 50 PointsForKey  - Ilosc punktow za podniesienie klucza</p>
+ <p>PointsForLevel 500 PointsForLevel  - Ilosc punktow za przejscie poziomu</p>
+ <p>PointsForSecond 3 PointsForSecond  - Ilosc punktow za kazda sekunde, jesli ukonczymy poziom przed czasem</p>
+
+ * <p>Przykladowa zawartosc pliku z parametrami poziomu, pokazuja kolejnosc parsowania i przypisania do bufora</p>
+ * <p>Ilosc kolumn/wierszy musi sie zgadzac z iloscia row-ow oraz liczba pol, jaka zawiera kazdy row</p>
+ * <p>Nalezy stosowac notacje xml, jak w przykladowych plikach konfiguracyjnych</p>
+
+ <p>Amountofcolumns 20 Amountofcolumns  - Ilosc kolumn planszy gry</p>
+ <p> Amountoflines 20 Amountoflines - Ilosc wierszy planszy gry</p>
+ <p>Monsterspeed 3 Monsterspeed   - Predkosc potwora na danym poziomie</p>
+ <p>Amountoflifes 2 Amountoflifes   - Ilosc zyc na danym poziomie</p>
+ <p>Amountofordinarybombs 50 Amountofordinarybombs   - Ilosc bomb zwyklych na danym poziomie</p>
+ <p>Amountofremotebombs 50 Amountofremotebombs   - Ilosc bomb zdalnych na danym poziomie</p>
+ <p>Amountofhusarswings 1 Amountofhusarswings  - Ilosc skrzydel husarskich na danym poziomie</p>
+ <p>Amountoflasers 1 Amountoflasers  - Ilosc laserow na danym poziomie</p>
+ <p>Amountofkeys 1 Amountofkeys - Ilosc kluczy na danym poziomie, zalecane ustawienie tej wartosc na 0</p>
+ <p>LevelTime 760 LevelTime   - Czas danego poziomie</p>
+
+
+ <p>Ponizszy kod zawiera uklad poszczegolnych pol na danym poziomie, oznaczenia:</p>
+ <p>N_ - puste pole</p>
+ <p>B_ - beton, nieznisczalna przeszkoda</p>
+ <p>S_ - skrzynka, przeszkoda, ktora mozna zniszczyc</p>
+ <p>NG - pozycja startowa gracza</p>
+ <p>NW_ - pozycja startowa wroga</p>
+ <p>SD - skrzynka, pod ktora kryja sie drzwi</p>
+ <p>SI - skrzynka, pod ktora kyje sie item, rodzaje itemow sa zawarte w dokumentacji klienta gry</p>
+ <p>SK - skrzynka, pod znajduje sie klucz do drzwi</p>
+
+ <p>row N_ NG N_ N_ N_ NW NW N_ N_ N_ N_ NW N_ N_ N_ S_ S_ S_ N_ NW row</p>
+ <p>row N_ N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ SI S_ N_ N_ NW N_ N_ row</p>
+ <p>row N_ B_ B_ B_ S_ S_ SI S_ SI B_ S_ S_ S_ s_ S_ SI S_ B_ S_ S_ row</p>
+ <p>row N_ N_ N_ N_ N_ N_ N_ N_ N_ N_ S_ S_ S_ S_ S_ N_ S_ S_ S_ S_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ N_ N_ N_ N_ S_ SI S_ S_ S_ S_ S_ B_ S_ S_ row</p>
+ <p>row NW N_ N_ S_ S_ S_ N_ N_ N_ N_ N_ NW N_ N_ N_ N_ S_ S_ S_ S_ row</p>
+ <p>row N_ N_ N_ B_ S_ S_ N_ N_ N_ B_ B_ B_ B_ S_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ S_ S_ B_ SI S_ N_ N_ N_ N_ S_ S_ S_ s_ SI S_ S_ B_ S_ S_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ N_ N_ S_ S_ S_ S_ S_ S_ N_ N_ NW N_ N_ N_ N_ N_ NW N_ N_ row</p>
+ <p>row NW N_ N_ B_ S_ S_ S_ S_ S_ B_ B_ B_ B_ B_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ S_ S_ B_ S_ S_ S_ S_ S_ B_ S_ S_ S_ s_ S_ N_ N_ N_ B_ B_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ S_ N_ N_ N_ B_ B_ row</p>
+ <p>row NW N_ N_ S_ S_ S_ N_ N_ N_ N_ N_ NW N_ N_ N_ N_ S_ S_ S_ S_ row</p>
+ <p>row N_ N_ N_ B_ S_ S_ N_ N_ N_ B_ B_ B_ B_ S_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ S_ S_ B_ S_ S_ N_ N_ N_ N_ S_ S_ S_ s_ S_ S_ S_ B_ S_ S_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ S_ S_ S_ SI S_ SI S_ S_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ S_ S_ S_ SI S_ S_ S_ S_ S_ S_ S_ B_ B_ B_ row</p>
+ <p>row N_ S_ S_ S_ S_ S_ S_ S_ S_ B_ S_ S_ S_ S_ B_ S_ S_ S_ S_ SD row</p>
+ */
 
 public final class GetConstans {
 
 	/**
 	 * Sciezka do pliku konfiguracyjnego
-	 **/
+	 */
 	public static final String Config = "src\\Polandball_pliki\\Config\\config.xml"; //poprawiłem ścieszke
 
 	/**
@@ -140,25 +206,25 @@ public final class GetConstans {
 	public static int Amountofordinarybombs;
 
 	/**
-	* ilosc bomb zdalnych
+	* Ilosc bomb zdalnych
 	 */
 
 	public static int Amountofremotebombs;
 
 	/**
-	 * ilosc skrzydel husarskich
+	 * Ilosc skrzydel husarskich
 	 */
 
 	public static int Amountofhusarswings;
 
 	/**
-	 * ilosc lasrów
+	 * Ilosc lasrów
 	 */
 
 	public static int Amountoflasers;
 
 	/**
-	 * ilosc bomb zdalnych
+	 * Ilosc bomb zdalnych
 	 */
 
 	public static int Amountofkeys;
@@ -231,11 +297,11 @@ public final class GetConstans {
 	 */
 	public static String HussarBall_rightString;
 	/**
-	 * Sciezka do pola Skrzynka
+	 * Sciezka do grafiki Skrzynka
 	 */
 	public static String SkrzynkaString;
 	/**
-	 * Sciezka do pola Beton
+	 * Sciezka do grafiki Beton
 	 */
 	public static String BetonString;
 	/**
@@ -293,10 +359,100 @@ public final class GetConstans {
 	public static String BackgroundForSetConnectionString;
 
 	/**
-	 * dwuwymaiora tablica, reprezentujaca wystepowanie przeszkody
+	 * Dwuwymaiora tablica, reprezentujaca wystepowanie przeszkody
 	 */
 
 	public static String StatioonaryObjectTab[][];
+
+
+	/**
+	 * Grafika przechowujaca Beton
+	 */
+	public static BufferedImage BetonBuff;
+	/**
+	 * Grafika przechowujaca Pudło Bomb
+	 */
+	public static BufferedImage BoxOfBombBuff;
+	/**
+	 * Grafika przechowujaca Skrzynia zlota
+	 */
+	public static BufferedImage ChestOfGoldBuff;
+	/**
+	 * Grafika przechowujaca Drzwi
+	 */
+	public static BufferedImage DoorBuff;
+	/**
+	 * Grafika przechowujaca Laser Sprawiedliwosci
+	 */
+	public static BufferedImage GunLaserBuff;
+	/**
+	 * Grafika przechowujaca Serce
+	 */
+	public static BufferedImage HeartBuff;
+	/**
+	 * Grafika przechowujaca Klucz
+	 */
+	public static BufferedImage KeyBuff;
+	/**
+	 * Grafika przechowujaca Naziball
+	 */
+	public static BufferedImage NaziBallBuff;
+
+	/**
+	 * Grafika przechowujaca Polandball
+	 */
+	public static BufferedImage PolandBallBuff;
+	/**
+	 * Grafika przechowujaca bomby odpalania bomb
+	 */
+	public static BufferedImage Remote_BombBuff;
+	/**
+	 * Grafika przechowujaca Skrzynka
+	 */
+	public static BufferedImage SkrzynkaBuff;
+	/**
+	 * Grafika przechowujaca Sovietball
+	 */
+	public static BufferedImage SovietBallBuff;
+	/**
+	 * Grafika przechowujaca TurkeyBall
+	 */
+	public static BufferedImage TurkeyBallBuff;
+	/**
+	 * Grafika przechowujaca Skrzydla husarskie
+	 */
+	public static BufferedImage WingsOfHussarBuff;
+	/**
+	 * Grafika przechowujaca Hussarballa skierowanego w lewo
+	 */
+	public static BufferedImage LeftWingHussarballBuff;
+	/**
+	 * Grafika przechowujaca Hussarballa skierowanego w prawo
+	 */
+	public static BufferedImage RightWingHussarballBuff;
+
+
+	/**
+	 * Grafika przechowujaca grafike Background
+	 */
+	public static BufferedImage BackgroundBuffImage;
+
+	/**
+	 * Grafika przechowujaca grafike BackgroundForSetConnectionString
+	 */
+
+	public static BufferedImage BackgroundForSetConnectionBuffImage;
+
+
+
+	/**
+	 * Image przechowujaca Eksplozje
+	 */
+	public static Image Explosion;
+	/**
+	 * Image przechowujaca zwykle bomby
+	 */
+	public static Image Normal_Bomb;
 
 	/**
 	 * Zmienna informujaca, ktory poziom zostal zaladowany
@@ -317,13 +473,14 @@ public final class GetConstans {
 		try {
 			read_on_config();
 			read_path_to_graphics();
+			read_all_graphics();
 		}catch(NullPointerException e){
-			System.out.println("Cos nie gra");
+			System.out.println("Blad w parsowaniu danych");
 		}
 	}
 
 	/**
-	 * Wczytanie stałych z pliku configuracyjnego
+	 * Metoda wczytyujaca parametry z pliku configuracyjnego
 	 */
 
 	public static void read_on_config(){
@@ -392,9 +549,10 @@ public final class GetConstans {
 			row = new String[Amountoflines];
 			for (int i = 0; i < Amountoflines; i++) {
 				row[i] = doc.getElementsByTagName("row").item(i).getTextContent();
+				//System.out.println(i+"  "+Amountoflines+row[i]);
 			}
 			//wywolanie metody tworzacej statyczna tablicy do wykrywania kolzji
-			MakeBoardObstacleTable();
+			//MakeBoardObstacleTable();
 		}
 		catch(FileNotFoundException e){
 			//e.printStackTrace();
@@ -453,14 +611,60 @@ public final class GetConstans {
 		} catch (Exception e) {
 			System.out.println("Blad wczytania grafik");
 			e.printStackTrace();
-		}/*catch (NullPointerException e){
-			System.out.println("Cos nie pykło - błąd typu NullPointerException");
-		}*/
+		}
+	}
+
+	public void read_all_graphics(){
+		PolandBallBuff=read_graphics(PolandBallString);
+		TurkeyBallBuff=read_graphics(TurkeyBallString);
+		NaziBallBuff=read_graphics(NaziBallString);
+		SovietBallBuff=read_graphics(SovietBallString);
+		LeftWingHussarballBuff=read_graphics(HussarBall_leftString);
+		RightWingHussarballBuff=read_graphics(HussarBall_rightString);
+		SkrzynkaBuff=read_graphics(SkrzynkaString);
+		BetonBuff=read_graphics(BetonString);
+		KeyBuff=read_graphics(KeyString);
+		WingsOfHussarBuff=read_graphics(WingsOfHussarString);
+		BoxOfBombBuff=read_graphics(BoxOfBombsString);
+		GunLaserBuff=read_graphics(GunLaserString);
+		HeartBuff=read_graphics(HeartString);
+		ChestOfGoldBuff=read_graphics(ChestOfGoldString);
+		Normal_Bomb=read_graphics(Normal_BombString,"toolkit");
+		Remote_BombBuff=read_graphics(Remote_BombString);
+		DoorBuff=read_graphics(DoorString);
+		Explosion=read_graphics(ExplosionString,"toolkit");
+		BackgroundBuffImage=read_graphics(BackgroundString);
+		BackgroundForSetConnectionBuffImage=read_graphics(BackgroundForSetConnectionString);
+
+	}
+
+	public BufferedImage read_graphics(String path_to_graphic){
+		try {
+			File file = new File(path_to_graphic);
+			BufferedImage bufferedImage= ImageIO.read(file);
+			return bufferedImage;
+		}
+		catch(IOException e ) {
+			//e.printStackTrace();
+			System.out.println("Blad wczytywania obiektu typu "+ path_to_graphic);
+		}
+		return null;
+	}
+
+	public Image read_graphics(String path_to_graphic,String toolkit){
+			try{
+				Image image_= Toolkit.getDefaultToolkit().createImage(path_to_graphic);
+				return image_;
+			}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Blad wczytywania obiektu typu eksplozja");
+			}
+			return null;
 	}
 
 	/**
 	 * Metoda tworzaca sciezke do poziomu
-	 * @param level
+	 * @param level - numer poziomu uzyty w tworzonej sciezki
 	 * @return path - sciezka do konkretnego levela
 	 */
 
@@ -480,11 +684,9 @@ public final class GetConstans {
 		try {
 			//tablica potrzebna do kolizji
 			StatioonaryObjectTab = new String[Amountoflines][Amountofcolumns];
-			//wypelnienie stacjonarnej tablicy zerami lub jedynkami
 			for (int k = 0; k < Amountoflines; k++) {
 				String bufor[] = row[k].split(" ");
 				for (int j = 0; j < Amountofcolumns; j++) {
-
 					//tworzy 1 tam gdzie jest skrzynka/beton/skrzynka z drzwiami//skrzynka z kluczem// skrzynka z  innymi itemem
 					if (bufor[j].equals("S_") ) {
 						StatioonaryObjectTab[k][j] = "S_";
@@ -499,19 +701,19 @@ public final class GetConstans {
 					} else {
 						StatioonaryObjectTab[k][j] = "N_";
 					}
-					//System.out.print(StatioonaryObjectTab[k][j]+" ");
 				}
-				//System.out.println();
 			}
-			DisplayStationaryObject();
+			//DisplayStationaryObject();
 		}
 		catch(NullPointerException e) {
 			System.out.println("W metodzie MakeBoardObstaclesTable wystapil blad typu NullPointerException");
 		}
 	}
 
+	/**
+	 * Metoda wyswietlajaca stan tablicy Stacjonarnych obiektów
+	 */
 	public static void DisplayStationaryObject(){
-		System.out.println("Dziendobry");
 		for(int i=0;i<Amountoflines;i++){
 			for(int j=0;j<Amountofcolumns;j++){
 				System.out.print(StatioonaryObjectTab[i][j]+" ");

@@ -1,11 +1,11 @@
 package Polandball_pliki.GameObjects;
 
 /**
- * klasa rodzic dla wszystkich przedmiotow do zebrania/interakcji
+ * Klasa rodzic dla wszystkich przedmiotow do zebrania/interakcji
  */
 public class Item extends StationaryObject {
     /**
-     * konstruktor obiektu przedmiot
+     * Konstruktor klasy Item
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -16,9 +16,8 @@ public class Item extends StationaryObject {
         buffImage_=null;
         name_class_object=null;
     }
-
     /**
-     * konstruktor bezparametrowy
+     * Konstruktor bezparametrowy klasy Item
      */
     public Item(){
         super();

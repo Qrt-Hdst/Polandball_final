@@ -6,44 +6,28 @@ import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
- * Created by Matball on 2017-04-16.
- */
-
-/**
- * Klasa-rodzic wszystkich obiektow na planszy
+ * Klasa rodzic dla wszystkich obiektow na planszy
  */
 public class GameObject  {
     /**
-     * zmienna okreslajaca nazwe typu obiektu
+     * Zmienna okreslajaca nazwe typu obiektu
      */
-    String name_class_object;
+    public String name_class_object;
     /**
-     * pozycja górnej krawedzi obiektu na x
+     * Pozycja x-owa obiektu
      */
     int x_;
     /**
-     * pozycja dolnej krawedzi obiektu na y
+     * Pozycja y-oka obiektu
      */
     int y_;
-
     /**
-     * grafika w ktorej przechowujemy obiekt
+     * Zmienna przechowujaca grafike obiektu
      */
-    BufferedImage buffImage_;
+    public BufferedImage buffImage_;
 
     /**
-     * konstruktor obiektu
-     * @param x obecne polozenie obiektu na osi x
-     * @param y obecne polozenie obiektu na osi y
-     */
-    public GameObject(int x,int y){
-        x_=x;
-        y_=y;
-        buffImage_=null;
-    }
-
-    /**
-     * konstruktor bezparametrowy
+     * Konstruktor bezparametrowy klasy GameObject
      */
     public GameObject(){
         x_=0;
@@ -52,64 +36,58 @@ public class GameObject  {
     }
 
     /**
-     * funkcja zwracająca wartość na x
-     * @return x_ - polozenie na osi
+     * Metoda zwracajaca polozenie na osi x obiektu
+     * @return x_
      */
     public int getX(){
         return x_;
     }
     /**
-     * funkcja zwracająca wartość na y
-     * @return y_ - polozenie na osi
+     * Metoda zwracajaca polozenie na osi y obiektu
+     * @return y_
      */
     public int getY(){
         return y_;
     }
     /**
-     * funkcja zwracająca grafike przechowywaną przez obiekt
-     * @return buffImage_ - grafika obiektu
+     * Metoda zwracająca grafike przechowywaną przez obiekt
+     * @return buffImage_
      */
     public BufferedImage getBuffImage(){
         return buffImage_;
     }
     /**
-     * zmienia pozycje obiektu na osi x
-     * @param x nowe pozycja na osi x
+     * Metoda zmieniajca pozycje obiektu na osi x
+     * @param x - nowa pozycja obiektu na osi x
      */
-
     public void changeX(int x){
         x_=x;
     }
 
     /**
-     * Zmienia pozycje obiektu na osi Y
-     * @param y nowa wartość pozycji
+     * Metoda zmieniajaca pozycje na osi y
+     * @param y nowa pozycja obiektu na osi y
      */
     public void changeY(int y){
         y_=y;
     }
 
-
     /**
-     * Podaje scieszke do grafiki jakiej uzytow klasie
+     * Metoda zwrcajaca scieszke do grafiki jakiej uzyto w klasie
      */
     public String getNameClassObject(){return name_class_object;}
 
-
-    //UWAGA podejrzewam ze beda problemy przy skalowaniu
     /**
-     * Zwraca kolumne lewego gornego punktu
+     * Metoda zwracajaca kolumne, w jakiej znajduje sie obiekt
      */
     public int getColumnX(){
         return this.getX()/SizeWidthIcon;
     }
 
-    //UWAGA podejrzewam ze beda problemy przy skalowaniu
     /**
-     * Zwraca wiersz lewego gornego punktu
+     * Metoda zwracajaca kwiersz, w jakim znajduje sie obiekt
      */
     public int getRowY(){
         return this.getY()/SizeHeightIcon;
     }
-
 }

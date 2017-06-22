@@ -8,12 +8,12 @@ import static Polandball_pliki.Others.GetConstans.HighscoresFrameSize;
 
 
 /**
- * Klasa odpowiadaja za za pobranie z serwera najlepszych wynikow, sparsowanie pobranego pliku i wyswieltenie go
+ * Klasa odpowiadaja za pobranie z serwera najlepszych wynikow, sparsowanie pobranego pliku i wyswieltenie go
  */
 public class Highscores {
 
     /**
-     * zmienna serversocket, do ktorej przypisane jest gniazdo serwera
+     * Zmienna serversocket, do ktorej przypisane jest gniazdo serwera
      */
 
     public static Socket serversocket;
@@ -25,14 +25,18 @@ public class Highscores {
     public static String[] results = new String[10];
 
     /**
+     * Flaga informujaca o pustej liscie najlepszych wynikow
+     */
+    public static boolean emptyhighscorelist=false;
+    /**
      * Konstruktor klasy Highscores
      */
 
     public Highscores(){}
 
     /**
-     * metoda pobieraja z serwera liste najlepszych wynikow i zapisaja ja do swojego pliku highscores.xml
-     * @param socket
+     * Metoda pobierajaca z serwera liste najlepszych wynikow
+     * @param socket - gniazdo klienta
      */
 
     public static String[] GetHighscores (Socket socket) {
@@ -47,15 +51,21 @@ public class Highscores {
                 InputStream inputstream = socket.getInputStream();//odebranie wiadomosci od serwera
                 BufferedReader buildreader = new BufferedReader(new InputStreamReader(inputstream));
                 String answer = buildreader.readLine();//przypisanie do stringa odczytanej wiadomosci
-                if (answer != "INVALID_COMMAND") {//sprawdzenie czy serwer zrozumial zadanie
+                answer.trim();
+            if(answer.equals("")){//sprawdzenie czy otrzymana wiadomosc nie jest pusta
+                    emptyhighscorelist =true;
+                }
+                else if (!answer.equals("INVALID_COMMAND")) {//sprawdzenie czy serwer zrozumial zadanie
                     System.out.println("OTRZYMANO WIADOMOSC: " +answer);//wyswietlenie otrzymanej wiadomosci
                     //znak " / " oddziela kazdy wynik rogrywki i nick od reszty
                     //znak " _ " oddziela dany wynik od gracza, ktory go uzyskal
                     //podzielenie ciagu tekstu i przypisanie go do zmiennej results
                     results=answer.split("/");
+                    emptyhighscorelist =false;
                 }
-                else if(answer == "INVALID_COMMAND"){
+                else if(answer.equals("INVALID_COMMAND")){
                     System.out.println("OTRZYMANO WIADOMOSC: " +answer);
+
                 }
             }
         else{
@@ -73,38 +83,37 @@ public class Highscores {
      * Metoda wyswietlajaca listę najlepszych wyników
      */
     public static void ShowHighscores(){
+           System.out.println(emptyhighscorelist);
+        if(emptyhighscorelist==false) {
+               JFrame highscoresview = new JFrame();//utworzenie ramki
+               highscoresview.setSize(HighscoresFrameSize, HighscoresFrameSize);//ustawienie rozmiarow,ramka jest kwadratowa
+               highscoresview.setBackground(Color.WHITE);//ustawienie tla ramki
+               highscoresview.setLayout(new GridLayout(results.length, 3));
+               String name_and_score[];//tablica, ktora bedzie nadpisywana po kazdej iteracji, przechowuje nazwe i wynik
 
-        JFrame highscoresview = new JFrame();//utworzenie ramki
-        highscoresview.setSize(HighscoresFrameSize,HighscoresFrameSize);//ustawienie rozmiarow,ramka jest kwadratowa
-        highscoresview.setBackground(Color.WHITE);//ustawienie tla ramki
-        highscoresview.setLayout(new GridLayout(results.length,3));
+               for (int i = 0; i < results.length; i++) {//iterujemy, poki cos jest w tablicy sparsowanej
+                   //------------>OGARNAC ROZMIARY<---------------
+                   //pobieranie z bufora nazwy gracza i jego wyniki i podzielenie go
+                   name_and_score = results[i].split("_");//dzielimy napis, miec oddzielnie nazwe i wynik
+                   String number_of_row = String.valueOf(i + 1);//numer wiersza, kolejnosc wynikow
 
+                   //label odpowiedzialny za miejsce w tabeli wynikow
+                   JLabel label1 = new JLabel(number_of_row, JLabel.CENTER);
+                   label1.setFont(new Font("Serif", Font.PLAIN, (HighscoresFrameSize / 25)));
+                   highscoresview.add(label1);
 
-        String name_and_score[];//tablica, ktora bedzie nadpisywana po kazdej iteracji, przechowuje nazwe i wynik
-        for(int i=0;i<results.length;i++){//iterujemy, poki cos jest w tablicy sparsowanej
-                //------------>OGARNAC ROZMIARY<---------------
-                //pobieranie z bufora nazwy gracza i jego wyniki i podzielenie go
-                name_and_score = results[i].split("_");//dzielimy napis, miec oddzielnie nazwe i wynik
-                String number_of_row = String.valueOf(i+1);//numer wiersza, kolejnosc wynikow
+                   //label odpowiedzialny za nazwe danego gracza
+                   JLabel label2 = new JLabel(name_and_score[0], JLabel.CENTER);
+                   label2.setFont(new Font("Serif", Font.PLAIN, (HighscoresFrameSize / 25)));
+                   highscoresview.add(label2);
 
-                //label odpowiedzialny za miejsce w tabeli wynikow
-                JLabel label1 = new JLabel(number_of_row, JLabel.CENTER);
-                label1.setFont(new Font("Serif", Font.PLAIN, (HighscoresFrameSize/25)));
-                highscoresview.add(label1);
-
-                //label odpowiedzialny za nazwe danego gracza
-                JLabel label2 = new JLabel(name_and_score[0], JLabel.CENTER);
-                label2.setFont(new Font("Serif", Font.PLAIN, (HighscoresFrameSize/25)));
-                highscoresview.add(label2);
-
-                //label odpowiedzialny za wynik danego gracza
-                JLabel label3 = new JLabel(name_and_score[1], JLabel.CENTER);
-                label3.setFont(new Font("Serif", Font.PLAIN, (HighscoresFrameSize/25)));
-                highscoresview.add(label3);
-
-        }
-        //pokazanie ramki z wynikami
-        highscoresview.setVisible(true);
-
+                   //label odpowiedzialny za wynik danego gracza
+                   JLabel label3 = new JLabel(name_and_score[1], JLabel.CENTER);
+                   label3.setFont(new Font("Serif", Font.PLAIN, (HighscoresFrameSize / 25)));
+                   highscoresview.add(label3);
+               }
+               //pokazanie ramki z wynikami
+               highscoresview.setVisible(true);
+           }
     }
 }

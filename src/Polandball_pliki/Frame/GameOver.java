@@ -15,7 +15,7 @@ import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
 import static Polandball_pliki.Others.GetConstans.*;
 import static Polandball_pliki.Panel.PanelBoard.ChangeInfoStatus;
 import static Polandball_pliki.Panel.PanelInfoOne.PlayerName;
-
+import static Polandball_pliki.Panel.SetConnectionPanel.ServerMode;
 
 /**
  * Klasa odpowiedzialna za wyswietlenie okna konca gry
@@ -39,7 +39,7 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
 
     private JButton Okey;
     /**
-     * Konstruktor okna, zawierający funkcję initGameOver
+     * Konstruktor okna, zawierający metode initGameOver
      */
 
     public GameOver() {
@@ -94,7 +94,9 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
         Object source = event.getSource();
         if(source==Okey){
             try{
-                SendScoreandName(startPanel.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+                if(ServerMode == true) {
+                    SendScoreandName(startPanel.MakeSocket());//wywolanie nizej zdefiniowanej metody, wyslanie wyniku do serwera
+                }
                 this.dispose();//setVisible(false);
                 levelframe.dispose();//zamkniecie okna gry
                 LevelFrame.tm.stop();//zatrzymanie timera
@@ -121,20 +123,42 @@ public class GameOver extends JFrame implements ActionListener, WindowListener{
             System.out.println(error+"Blad zamkniecia gameover - klasa GameOver, metoda windowClosing");
         }
     }
-    //metody wymagane przez interfejs, przydadza sie pozniej
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowActivated(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowClosed(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowDeactivated(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowDeiconified(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowIconified(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowOpened(WindowEvent e) {
     }
-
     /**
      * Metoda wysylajaca koncowy wynik danej rozgrywki wraz z nazwa gracza do serwera
      * @param socket

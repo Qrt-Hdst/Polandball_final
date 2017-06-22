@@ -7,48 +7,47 @@ import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
- * Created by Matball on 2017-05-21.
- */
-
-/**
- * Obiekt Kolizja wykrywajacy likwidacje obiektow typu livingObject przez eksplozje
+ * Klasa okreslajaca, czy nastapila kolizja explozji z obiektem typu LivingObject
  */
 public class CollisionLivingObjectWithExplosion extends Collision{
-
     /**
-     * Max zachodni punkt eksplozji
+     * Maksymalny zachodni punkt eksplozji
      */
     int Explosion_point_west;
     /**
-     * Max wschodni punkt eksplozji
+     * Maksymalny wschodni punkt eksplozji
      */
     int Explosion_point_east;
     /**
-     * Max polnocny punkt eksplozji
+     * Maksymalny polnocny punkt eksplozji
      */
     int Explosion_point_north;
     /**
-     * Max poludniowy punkt eksplozji
+     * Maksymalny poludniowy punkt eksplozji
      */
     int Explosion_point_south;
-
     /**
-     * Max zachodni punkt liingObject
+     * Maksymalny zachodni punkt LivingObject
      */
     int LivingObject_point_west;
     /**
-     * Max wschodni punkt liingObject
+     * Maksymalny wschodni punkt LivingObject
      */
     int LivingObject_point_east;
     /**
-     * Max polnocne punkt liingObject
+     *Maksymalny polnocne punkt LivingObject
      */
     int LivingObject_point_north;
     /**
-     * Max poludniowe punkt liingObject
+     * Maksymalny poludniowe punkt LivingObject
      */
     int LivingObject_point_south;
 
+    /**
+     * Konstruktor sprawdzajacy, czy nie nastapila kolizja eksplozji z LivingObject
+     * @param livingObject - obiekt typu LivingObject
+     * @param explosion - obiekt typu Explosion
+     */
     public  CollisionLivingObjectWithExplosion(LivingObject livingObject, Explosion explosion){
         super();
 
@@ -152,5 +151,4 @@ public class CollisionLivingObjectWithExplosion extends Collision{
             isNotCollision =true;// zwraca ze nie zaszla kolizja
         }
     }
-
 }

@@ -7,7 +7,8 @@ import java.io.IOException;
 
 
 /**
- * główna funkcja programu
+ * Klasa glownej funkcji programu
+ * @author Adrian Szymowiat and Mateusz Kusy
  */
 
 public class Main {
@@ -17,9 +18,9 @@ public class Main {
      */
     public static SetConnection setconnection;
     /**
-     * funkcja główna programu, stworzenie okna menu głównego
-     * @param args
-     * @throws IOException
+     * Funkcja główna programu, stworzenie okna menu głównego
+     * @param args parametr funkcji glownej programy
+     * @throws IOException wyjatek rzucany przez funkcje glown programu
      */
     public static void main(String[]args)throws IOException {
         //utworzenie okna nawiazywania polaczenia w serwerem

@@ -4,49 +4,42 @@ import Polandball_pliki.GameObjects.LivingObject;
 
 import static Polandball_pliki.Others.GetConstans.Amountofcolumns;
 import static Polandball_pliki.Others.GetConstans.Amountoflines;
-import static Polandball_pliki.Others.GetConstans.StatioonaryObjectTab;
 import static Polandball_pliki.Panel.PanelBoard.CellIsFree;
 import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
- * Created by Matball on 2017-05-20.
- */
-
-/**
- * Klasa typu kolizja rostrzygajaca czy obiekt typu living object moze przejsc przez dana komorke
- * (o ile nie ma tam zadnej skrzynki/betonu
+ * Klasa sprawdzajaca, czy LivingObject moze wejsc na dane pole
  */
 public class CollisionLivingObjectWithTerrain extends Collision {
 
     /**
-     * Wiersz w typie double, w ktorym znajduje sie dany livingobject
+     * Wiersz, w ktorym znajduje sie dany livingobject
      */
 
     double double_row_livingobject;
 
     /**
-     * Kolumna w typie double, w ktorej znajduje sie dany livingobject
+     * Kolumna, w ktorej znajduje sie dany livingobject
      */
 
     double double_column_livingobject;
 
     /**
-     * Zmienna zaokraglajaca numer wiersza w dol
+     * Zmienna, bedaca zaokragleniem w dol numeru wiersza
      */
 
     int row_livingobject_north;
 
     /**
-     * Zmienna zaokraglajaca numer kolumny w dol
+     * Zmienna bedaca zaokragleniem w dol numeru kolumny
      */
-
     int column_livingobject_west;
 
-
-
     /**
-     * Metoda stwierdzajaca, czy zachodzi kolizja
+     * Konstruktor sprawdzajacy, czy zachodzi kolizja LivingObject z elementem terenu
+     * @param livingobject - obiekt typu LivingObject
+     * @param kind_of_living_object - rodzaj LivingObject, dla ktorego ma byz rozpatrywana kolizja - wrog czy gracz
      */
     //metoda przyjmuje jak argument gracza lub wroga - jesli sprawdamy kolizje dla gracza to kind_of_living_obejct
     //nalezy ustawic na "player" jak wrog to "enemy"
@@ -95,7 +88,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
     public boolean Collision_East(){
         try {
             //sprawdzanie czy wyszlismy poza prawa scianke
-            if (double_column_livingobject >= (double) (Amountofcolumns - 1)) {
+            if (double_column_livingobject >= (double) (Amountofcolumns - 1 +0.15)) {
                // System.out.println("H");
                 isNotCollision = false;
             }
@@ -134,8 +127,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             return isNotCollision;
         } catch (ArrayIndexOutOfBoundsException e) {
             isNotCollision = true;
-            System.out.println("Blad kolizji -wschod");
-            System.out.println(e);
+            //System.out.println("Blad kolizji -wschod");
+            //System.out.println(e);
         }
 
         return isNotCollision;
@@ -181,8 +174,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             return isNotCollision;
         } catch (ArrayIndexOutOfBoundsException e) {
             isNotCollision = true;
-            System.out.println("Blad kolizji -zachod");
-            System.out.println(e);
+           //System.out.println("Blad kolizji -zachod");
+            //System.out.println(e);
         }
 
         return isNotCollision;
@@ -227,8 +220,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             return isNotCollision;
         } catch (ArrayIndexOutOfBoundsException e) {
             isNotCollision = true;
-            System.out.println("Blad kolizji -polnoc");
-            System.out.println(e);
+          //  System.out.println("Blad kolizji -polnoc");
+          //  System.out.println(e);
         }
 
         return isNotCollision;
@@ -236,7 +229,7 @@ public class CollisionLivingObjectWithTerrain extends Collision {
     //sprawdzanie kolizji w dol V
     public boolean Collision_South(){
         try {
-            if (double_row_livingobject >= (double) (Amountoflines - 1)) {//sprawdzanie czy wyszlismy poza dolna scianke
+            if (double_row_livingobject >= (double) (Amountoflines - 1 +0.15)) {//sprawdzanie czy wyszlismy poza dolna scianke
                 //System.out.println(1);
                 isNotCollision = false;
             }
@@ -274,8 +267,8 @@ public class CollisionLivingObjectWithTerrain extends Collision {
             return isNotCollision;
         } catch (ArrayIndexOutOfBoundsException e) {
             isNotCollision = true;
-            System.out.println("Blad kolizji -poludnie");
-            System.out.println(e);
+           // System.out.println("Blad kolizji -poludnie");
+          //  System.out.println(e);
         }
         return isNotCollision;
     }

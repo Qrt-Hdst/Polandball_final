@@ -1,10 +1,6 @@
 package Polandball_pliki.Collision;
 
 /**
- * Created by Matball on 2017-05-20.
- */
-
-/**
  * Klasa "Protoplasta" wszystkich kolizji
  */
 public class Collision {
@@ -15,15 +11,15 @@ public class Collision {
     boolean isNotCollision;
 
     /**
-     *  Konstruktor Klasy Collizja
+     *  Konstruktor Klasy Collision
      */
     public Collision(){
         isNotCollision=true;
     }
 
     /**
-     * Metoda zwracająca parametr isNotCollision
-     * @return zwraca wartosc logiczna typu booolean z informacja czy zaszła kolizja
+     * Metoda zwracajaca informacje o "niezajsciu" kolizji
+     * @return isNotCollision
      */
     public boolean getIsNotCollision(){return isNotCollision;}
 }

@@ -2,9 +2,6 @@ package Polandball_pliki.Counter;
 
 import Polandball_pliki.GameObjects.Polandball;
 import static Polandball_pliki.Panel.PanelBoard.PlayerExistence;
-/**
- * Created by Matball on 2017-05-22.
- */
 
 /**
  * Klasa odpowiedzialna za odliczanie czasu do respawnu Player-a
@@ -12,14 +9,13 @@ import static Polandball_pliki.Panel.PanelBoard.PlayerExistence;
 public class CounterPlayer extends Counter {
 
     /**
-     * Instnacja klasy Polandball
+     * Instancja klasy Polandball
      */
     private Polandball player_;
 
-
     /**
-     * Konstruktor klasy CounterPlayer
-     * @param player obiekt gracza
+     * Konstruktor klasy CounterPlayer, odliczajacy czas do odrodzenia gracza
+     * @param player - obiekt typu Polandball
      */
 
     public CounterPlayer(Polandball player){
@@ -28,16 +24,15 @@ public class CounterPlayer extends Counter {
         isStillNeed_=true;//ustawienie flagi przydatnosci licznika na true
         player_=player;//przypisanie licznika do konkretnego obiektu eksplozji
     }
-
     /**
-     * funkcja wywolujaca metode checkTimeToRespawn
+     * Metoda wywolujaca metode checkTimeToRespawn
      */
     public void checkTime(){
         checkTimeToRespawn();
     }//sprawdzenia czasu1
 
     /**
-     * Funckcja sprawdzajaca czy nastapil juz czas respawnu gracza po wczesniejszej smierci
+     * Metoda sprawdzajaca, czy nastapil juz czas respawnu gracza po wczesniejszej smierci
      */
     public void checkTimeToRespawn(){
         long current = System.currentTimeMillis();//obecny czas komputera
@@ -46,5 +41,4 @@ public class CounterPlayer extends Counter {
             isStillNeed_=false;//ustawiam flage ze instancja tego licznika nie jest juz potrzebna
         }
     }
-
 }

@@ -21,7 +21,7 @@ public class GameTime implements Runnable{
     }
 
     /**
-     * Metoda watku odliczajaca czas
+     * Metoda watku odliczajaca czas do konca poziomu
      */
     @Override
     public void run() {

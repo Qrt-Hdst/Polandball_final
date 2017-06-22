@@ -16,7 +16,7 @@ import static Polandball_pliki.Frame.MainFrame.startPanel;
 import static Polandball_pliki.Main.setconnection;
 import static Polandball_pliki.Others.GetConstans.*;
 /**
- * Panel okna wyboru trybu rozgrywki
+ * Klasa reprezentujaca panel okna wyboru trybu rozgrywki
  */
 public class SetConnectionPanel extends JPanel implements ActionListener {
 
@@ -33,7 +33,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
     static public GetConstans getConstans_;
 
     /**
-     * ButtonLabel, zawierajacy pytanie o to, czy uzytkownik chce grac w trybie on czy off
+     * Button zawierajacy pytanie o to, czy uzytkownik chce grac w trybie online czy offline
      */
 
     public JButton Question;
@@ -76,7 +76,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
     public static boolean LoadLevel;
 
     /**
-     * Konstruktor klasy SetConnection, zawierajacy metode createFrame()
+     * Konstruktor klasy SetConnectionPanel, wyglad zawartosci panelu
      */
 
     public SetConnectionPanel(Image img){
@@ -112,7 +112,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Funkcja obsługująca naciśniecia przycisków
+     * Metoda obsługująca naciśniecia przycisków
      * @param event
      */
     @Override
@@ -140,7 +140,8 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
         }
         if(source==No) {
             GetConstans getConstans_=new GetConstans();//wczytanie grafik i podstawowych parametrow aplikacji
-            GetConstans.read_on_level(1);//wczytanie parametrow poziomu, narazie 3 level do testow
+            GetConstans.read_on_level(1);//wczytanie parametrow poziomu
+            MakeBoardObstacleTable();//utworzenie tablicy statycznej do wykrywania kolzji
             EventQueue.invokeLater(() -> {//utworzenie okna menu
                 MainFrame mainframe = new MainFrame();
                 mainframe.setVisible(true);
@@ -284,7 +285,7 @@ public class SetConnectionPanel extends JPanel implements ActionListener {
         }
     }
     /**
-     * Metoda odrysowywujaca elementy skladowe okna wyboru tryby rozgrywki
+     * Metoda skalujaca elementy skladowe okna wyboru tryby rozgrywki
      * @param g
      */
     public void paintComponent(Graphics g) {

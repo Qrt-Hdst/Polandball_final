@@ -5,36 +5,28 @@ package Polandball_pliki.Counter;
  */
 public class Counter {
     /**
-     *
+     * Czas systemowy, od ktorego licznik zaczyna odliczac czas
      */
     long born_time_;
     /**
-     * zmienna okreslajaca czy licznik nadal jest potrzebny
+     * Zmienna okreslajaca, czy licznik nadal jest potrzebny
      */
     boolean isStillNeed_;
-
     /**
-     * Konstruktor licznika
+     * Konstruktor klasy licznika
      */
-
     public Counter(){
         born_time_=System.currentTimeMillis();
         isStillNeed_=true;
     }
-
     /**
-     * funkcja wywolujaca u potomkow czy aby nie przekroczyly zdefiniowanego czasu trwania obiektu
+     * Metoda dziedziczona przez klas pochodne, sprawdzajaca, czy czas nie uplynal
      */
     public void checkTime(){
-
     }
-
     /**
-     * zwraca flage czy konstruktor nadal jest potrzebny
-     * @return zwrcaca flage czy konstruktor nadal jest potrzebny
+     * Metoda zwracajaca informacje, czy licznik jest nadal potrzebny
+     * @return isStillNeed_
      */
-
     public boolean getisStillNeed(){return isStillNeed_;}
-
-
 }

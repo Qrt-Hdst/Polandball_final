@@ -16,7 +16,7 @@ import java.awt.event.KeyEvent;
 import static Polandball_pliki.Panel.StartPanel.setnameframe;
 
 /**
- * Panel wyboru nazwy gracza
+ * Klasa reprezentujaca panel wyboru nazwy gracza
  */
 public class SetNameFramePanel extends JPanel implements ActionListener, KeyListener {
 
@@ -51,7 +51,7 @@ public class SetNameFramePanel extends JPanel implements ActionListener, KeyList
     public static LevelFrame levelframe;
 
     /**
-     * Konstruktor okna, zawierający funkcję initSetNameFrame
+     * Konstruktor okna, zawierający metode initSetNameFrame
      */
 
     public SetNameFramePanel() {
@@ -59,7 +59,7 @@ public class SetNameFramePanel extends JPanel implements ActionListener, KeyList
     }
 
     /**
-     * funkcja zawierająca parametry i komponenty okna wyboru nazwy podczas gry
+     * Metoda zawierająca parametry i komponenty okna wyboru nazwy podczas gry
      */
 
     private void initSetNameFrame(){
@@ -167,7 +167,7 @@ public class SetNameFramePanel extends JPanel implements ActionListener, KeyList
 
     }
     /**
-     * Metoda odrysowywujaca elementy skladowe okna wyboru nazwy gracza
+     * Metoda skalujaca elementy skladowe okna wyboru nazwy gracza
      */
     public void paintComponent(Graphics g) {
         g.setColor(Color.WHITE);

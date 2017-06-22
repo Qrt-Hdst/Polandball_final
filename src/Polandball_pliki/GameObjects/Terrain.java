@@ -1,12 +1,12 @@
 package Polandball_pliki.GameObjects;
 
 /**
- * Klasa przodek dla obiektow teronowych ( skrzynki, betony itd )
+ * Klasa rodzic dla elementow terenu - skrzynek, betonow
  */
 public class Terrain extends StationaryObject {
 
     /**
-     * konstruktor obiektu terenu
+     * Konstruktor klasy Terrain
      * @param x obecne polozenie obiektu na osi x
      * @param y obecne polozenie obiektu na osi y
      */
@@ -19,7 +19,7 @@ public class Terrain extends StationaryObject {
     }
 
     /**
-     * konstruktor bezparametrowy
+     * Konstruktor bezparametrowy klasy Terrain
      */
     public Terrain(){
         super();
@@ -28,6 +28,4 @@ public class Terrain extends StationaryObject {
         buffImage_=null;
         name_class_object=null;
     }
-
-
 }

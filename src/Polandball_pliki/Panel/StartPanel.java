@@ -86,7 +86,7 @@ public class StartPanel extends JPanel implements ActionListener {
 
 
         //przycisk, ktory
-        Highscores = new JButton("Najlepsze wyniki");
+        Highscores = new JButton("Najlepsze Wyniki");
         Highscores.setFont(new Font("Serif", Font.PLAIN, 20));
         add(Highscores);
         Highscores.addActionListener(this);
@@ -100,7 +100,7 @@ public class StartPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Metoda odrysowywujaca elementy skladowe okna glownego gry
+     * Metoda skalujaca elementy skladowe okna glownego gry
      * @param g
      */
     public void paintComponent(Graphics g) {
@@ -128,7 +128,7 @@ public class StartPanel extends JPanel implements ActionListener {
                 highscores.GetHighscores(MakeSocket());//pobranie danych z serwera, przypisanie do bufora
                 highscores.ShowHighscores();//wyswietlenie listy najlepszych wynikow
             }else{
-                System.out.println("Nie mozna wyswietlic listy najlepszych wyników");
+                JOptionPane.showMessageDialog(null, "Nie mozna wyswietlic listy najlepszych wyników.");
             }
         }
         else if(source==Ending) //zamknięcie okna głownego, wyjście z gry
@@ -136,12 +136,12 @@ public class StartPanel extends JPanel implements ActionListener {
 
     }
     /**
-     * metoda wczytujaca z pliku nr portu i adres ip serwera, tworzoca gniazdo
+     * Metoda wczytujaca z pliku nr portu i adres ip serwera, tworzoca gniazdo
      * @return gniazdo serwera
      */
     public static Socket MakeSocket() {
         try {//wczytanie pliku ipconfig
-            BufferedReader buildreader = new BufferedReader(new FileReader("src\\Polandball_pliki\\ipconfig.txt"));
+            BufferedReader buildreader = new BufferedReader(new FileReader("ipconfig.txt"));
             IPAddress = buildreader.readLine();//przypisanie adresu ip serwera z pliku
             Port = Integer.parseInt(buildreader.readLine());//przypisanie nr portu serwera z pliku
             serversocket = new Socket(IPAddress, Port);//utworzenie gniazda
@@ -155,7 +155,7 @@ public class StartPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Metoda odpowiadaja za polaczenie z serwerem
+     * Metoda odpowiadajaca za polaczenie z serwerem
      */
     public static void ConnectToServer() {
         try {

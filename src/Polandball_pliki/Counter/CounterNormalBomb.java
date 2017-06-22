@@ -1,26 +1,18 @@
 package Polandball_pliki.Counter;
 
-
 import Polandball_pliki.GameObjects.Normal_Bomb;
 
 /**
- * Created by Matball on 2017-05-19.
- */
-
-/**
- * Klasa typu Counter odliczajaca tykniecia do wybuchu zwyklej bomby
+ * Klasa odliczajaca czas do wybuchu bomby zwyklej
  */
 public class CounterNormalBomb extends Counter {
     /**
      * Instacja klasy Normal_Bomb
      */
-
-    Normal_Bomb normal_bomb_;
-
-
+    private Normal_Bomb normal_bomb_;
     /**
-     * Konstruktor ustawiajacy czas i pocztkowe wartosci Licznika
-     * @param normal_bomb bomba ktorej odlicza czas licznik
+     * Konstruktor ustawiajacy czas i poczatkowe wartosci licznika
+     * @param normal_bomb  - obiekt typu Normal_Bomb
      */
     public CounterNormalBomb(Normal_Bomb normal_bomb){
         super();

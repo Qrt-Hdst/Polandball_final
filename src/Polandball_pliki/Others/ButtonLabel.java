@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Klasa ButtonLabel, odpowiedzialna za informacje wyswietlane podczas gry
+ * Klasa odpowiedzialna za informacje wyswietlane podczas gry
  */
 public class ButtonLabel extends JButton {
 

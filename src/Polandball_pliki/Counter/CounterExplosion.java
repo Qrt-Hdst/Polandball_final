@@ -3,26 +3,18 @@ package Polandball_pliki.Counter;
 import Polandball_pliki.GameObjects.Explosion;
 
 /**
- * Created by Matball on 2017-05-19.
- */
-
-/**
- * Klasa typu Counter odliczajaca czas do konca eksplozji ( i znikniecia jej grafiki na mapie
+ * Klasa odliczajaca czas trwania eskplozji
  */
 public class CounterExplosion extends Counter  {
 
     /**
-     * Instacja klasy Eksplozji
+     * Obiekt typu Explosion, potrzebny do przypisania licznika do konkretnej eksplozji
      */
-
-    Explosion explosion_;
-
-
+    private Explosion explosion_;
     /**
-     * Konstruktor ustawiajacy czas i pocztkowe wartosci Licznika
-     * @param explosion eksplozja ktorej odlicza czas trwania
+     * Konstruktor ustawiajacy czas i poczatkowe wartosci licznika dla danej eksplozji
+     * @param explosion - obiekt typu Explosion
      */
-
     public CounterExplosion(Explosion explosion){
         super();//wywolanie konstruktora rodzica ( Counter )
         born_time_=System.currentTimeMillis();//ustawienie czasu od ktorego liczymy
@@ -31,14 +23,13 @@ public class CounterExplosion extends Counter  {
     }
 
     /**
-     * funkcja wywolujaca metode checkTimeToEndOfExplosion
+     * Metoda wywolujaca metode checkTimeToEndOfExplosion
      */
     public void checkTime(){
         checkTimeToEndOfExplosion();
-    }//sprawdzenia czsu1
-
+    }//sprawdzenia czasu
     /**
-     * Funckcja sprawdzajaca czy nie minal juz czas trwania wybuchu
+     * Metoda sprawdzajaca, czy nie minal juz czas trwania wybuchu
      */
     public void checkTimeToEndOfExplosion(){
         long current = System.currentTimeMillis();//obecny czas komputera
@@ -47,5 +38,4 @@ public class CounterExplosion extends Counter  {
             isStillNeed_=false;//ustawiam flage ze instancja tego licznika nie jest juz potrzebna
         }
     }
-
 }

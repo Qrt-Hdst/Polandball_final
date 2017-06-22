@@ -1,20 +1,21 @@
 package Polandball_pliki.GameObjects;
 
+import Polandball_pliki.Others.GetConstans;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import static Polandball_pliki.Others.GetConstans.BoxOfBombsString;
-import static Polandball_pliki.Others.GetConstans.WingsOfHussarString;
 
 /**
- * Skrzynka z dodatkowymi bombami
+ * Klasa reprezentujaca skrzynke z dodatkowymi bombami
  */
 public class BoxOfBomb extends Item {
 
     /**
-     * konstruktor obiektu klucz
+     * Konstruktor klasy BoxOfBomb
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -23,14 +24,14 @@ public class BoxOfBomb extends Item {
         x_=x;
         y_=y;
         name_class_object=BoxOfBombsString;
-        buffImage_=createBufferedImage();
+        buffImage_= GetConstans.BoxOfBombBuff;
     }
 
     /**
-     * metoda udostepniająca obiektowi grafike
-     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
+     * Metoda udostepniająca obiektowi grafike
+     * @return bufferedImage/null - zwraca stworzone zdjecie lub w wypadku zlapania wyjatku null
      */
-    BufferedImage createBufferedImage(){
+    /*public BufferedImage createBufferedImage(){
         try {
             File file = new File(BoxOfBombsString);
             BufferedImage bufferedImage= ImageIO.read(file);
@@ -43,5 +44,5 @@ public class BoxOfBomb extends Item {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 }

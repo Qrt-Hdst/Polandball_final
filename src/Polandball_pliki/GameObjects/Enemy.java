@@ -1,32 +1,17 @@
 package Polandball_pliki.GameObjects;
 
-import Polandball_pliki.Collision.CollisionLivingObjectWithTerrain;
-
-import static Polandball_pliki.Others.GetConstans.*;
-
 import java.util.Random;
 
+import Polandball_pliki.Collision.CollisionLivingObjectWithTerrain;
+import static Polandball_pliki.Others.GetConstans.*;
+
 /**
- * Klasa przodek dla przeciwnikow
+ * Klasa reprezentujaca wroga
  */
 public class Enemy extends LivingObject implements Runnable {
-    /**
-     * konstruktor obiektu wrog
-     * @param x polozenie na osi x
-     * @param y polozenie na osi y
-     */
-    public Enemy(int x,int y){
-        super();
-        x_=x;
-        y_=y;
-        velX_=0;
-        velY_=0;
-        buffImage_=null;
-        name_class_object=null;
-    }
 
     /**
-     * konstruktor bezparametrowy
+     * Konstruktor bezparametrowy klasy Enemy
      */
     public Enemy(){
         super();
@@ -39,22 +24,9 @@ public class Enemy extends LivingObject implements Runnable {
     }
 
     /**
-     * konstruktor kopiujacy
-     */
-    public Enemy(Enemy enemy_second){
-        super();
-        this.x_=enemy_second.getX();
-        this.y_=enemy_second.getY();
-        this.velX_=enemy_second.get_velX();
-        this.velY_=enemy_second.get_velY();
-        this.buffImage_=enemy_second.getBuffImage();
-    }
-
-    /**
-     * Zmienna określająca, który kierunek bedzie rozpatrywany podczas psrawdzania kolizji
+     * Zmienna określająca, który kierunek bedzie rozpatrywany podczas sprawdzania kolizji
      */
     int enemydirection=0;
-
     /**
      * Metoda zwracajaca kierunek ruchu wroga
      * @return enemydirection - kierunek wroga
@@ -70,7 +42,7 @@ public class Enemy extends LivingObject implements Runnable {
     }
 
     /**
-     * Metoda run() watku wroga, losoujaca kierunek ruchu, wywolujaca metdoy sprawdzajace kolizje i zmieniajaca pozycje
+     * Metoda run() watku wroga, losoujaca kierunek ruchu, wywolujaca metody sprawdzajace kolizje i zmieniajaca pozycje
      * wrogow po sprawdzeniu warunkow kolizji
      */
 

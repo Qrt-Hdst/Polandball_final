@@ -1,7 +1,5 @@
 package Polandball_pliki.Frame;
 
-import Polandball_pliki.Panel.PanelBoard;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,13 +8,10 @@ import java.awt.event.ActionListener;
 import static Polandball_pliki.Panel.SetConnectionPanel.LoadLevel;
 import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
 import static Polandball_pliki.Others.GetConstans.*;
-import static Polandball_pliki.Others.GetConstans.*;
 import static Polandball_pliki.Panel.PanelBoard.ChangeInfoStatus;
-
-
-
+import Polandball_pliki.Panel.PanelBoard;
 /**
- * Klasa odpowiedzialna za wyswietlenie okna o ukonczeniu poziomu
+ * Klasa odpowiedzialna za wyswietlenie okna ukonczenia poziomu
  */
 public class NextLevelInfo extends JFrame implements ActionListener, WindowListener {
 
@@ -44,31 +39,31 @@ public class NextLevelInfo extends JFrame implements ActionListener, WindowListe
     public int Amountofpointscopy;
 
     /**
-     * Kopia liczby bomb zwyklych
+     * Kopia liczby bomb zwyklych z poprzedniego poziomu
      */
 
     public int Amountofordinarybombscopy;
 
     /**
-     * Kopia licbzy bomb zdalnych
+     * Kopia licbzy bomb zdalnych z poprzedniego poziomu
      */
 
     public int Amountofremotebombscopy;
 
     /**
-     * Kopia liczby skrzydel husarskich
+     * Kopia liczby skrzydel husarskich z poprzedniego poziomu
      */
 
     public int Amountofhusarswingscopy;
 
     /**
-     * Kopia liczby laserow
+     * Kopia liczby laserow z poprzedniego poziomu
      */
 
     public int Amountoflaserscopy;
 
     /**
-     * Konstruktor okna, zawierający funkcję initGameOver
+     * Konstruktor okna, zawierający funkcję initNextLevelInfo()
      */
 
     public NextLevelInfo() {
@@ -81,14 +76,13 @@ public class NextLevelInfo extends JFrame implements ActionListener, WindowListe
     private void initNextLevelInfo() {
 
         this.setBackground(Color.WHITE);
-        this.setSize(600, 200);
-        this.setLayout(null);
+        this.setSize(400, 200);
+        this.setLayout(new GridLayout(3,1));
         this.setLocationRelativeTo(null);//ustawienie ramki na srodku
         this.addWindowListener(this);
 
-
         //label, zawierajacy informacje o ukonczeniu poziomu
-        NextLevelInfoLabel = new JLabel("Gratulacje ukonczyłeś "+Integer.toString(WhiChLevel)+" poziom!");
+        NextLevelInfoLabel = new JLabel("Gratulacje ukonczyłeś "+Integer.toString(WhiChLevel)+" poziom!",JLabel.CENTER);
         NextLevelInfoLabel.setBounds(100, 50, 400, 50);
         NextLevelInfoLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         add(NextLevelInfoLabel);
@@ -100,7 +94,6 @@ public class NextLevelInfo extends JFrame implements ActionListener, WindowListe
         Okey.addActionListener(this);
 
     }
-
     /**
      * Metoda obslugujaca wcisniecie przycisku, przejscie do nastepnego poziomu
      * @param event
@@ -123,31 +116,56 @@ public class NextLevelInfo extends JFrame implements ActionListener, WindowListe
                     levelframe = new LevelFrame();
                     levelframe.setVisible(true);
                 }
-
             } catch(Exception e){
                 System.out.println(e+"Blad przycisku OK - klasa NextLevelInfo");
             }
         }
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowClosing(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowActivated(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowClosed(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowDeactivated(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowDeiconified(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowIconified(WindowEvent e) {
     }
+    /**
+     * Metoda wymuszona przez interfejs, nieuzywana
+     * @param e
+     */
     public void windowOpened(WindowEvent e) {
     }
-
     /**
      * Metoda kopiujaca odpowiednie parametry, ktore maja byc zachowane w nastepnym poziomie
      */
-
     private void CopyParameters()
     {
         Amountoflifescopy = Amountoflifes;
@@ -157,11 +175,10 @@ public class NextLevelInfo extends JFrame implements ActionListener, WindowListe
         Amountofhusarswingscopy = Amountofhusarswings;
         Amountoflaserscopy = Amountoflasers;
     }
-
     /**
      * Metoda uwzgledniajaca osiagniecia (parametry) z poprzedniego poziomiu w biezacym poziomie
+     * zapewnia, ze zdobyte przedmioty/punkty beda uwzglednione w nastepnym poziomie
      */
-
     private void IncludeParametersFromThePreviousLevel(){
         Amountoflifes = ChangeInfoStatus(Amountoflifes,Amountoflifescopy);
         Amountofpoints = ChangeInfoStatus(Amountofpoints,Amountofpointscopy);

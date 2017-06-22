@@ -1,15 +1,13 @@
 package Polandball_pliki.Panel;
 
-/**
- * Panel boczny okna gry
- */
-
 import javax.swing.*;
 import java.awt.*;
 
 import Polandball_pliki.Others.ButtonLabel;
 import static Polandball_pliki.Others.GetConstans.*;
-
+/**
+ * Klasa reprezentujaca panel boczny okna gry
+ */
 public class PanelInfoTwo extends JPanel{
 
     /**
@@ -73,7 +71,7 @@ public class PanelInfoTwo extends JPanel{
     public PanelInfoTwo(){ PanelInfoTwo();}
 
     /**
-     * funkcja zawierająca parametry panelu, komponenty z informacjami dodatkowymi o statystykach gracza
+     * Metoda zawierająca parametry panelu, komponenty z informacjami dodatkowymi o statystykach gracza
      */
 
     private void PanelInfoTwo()

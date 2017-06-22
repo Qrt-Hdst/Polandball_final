@@ -1,5 +1,7 @@
 package Polandball_pliki.GameObjects;
 
+import Polandball_pliki.Others.GetConstans;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,27 +9,21 @@ import java.io.File;
 import java.io.IOException;
 
 import static Polandball_pliki.Others.GetConstans.ExplosionString;
-import static Polandball_pliki.Others.GetConstans.NaziBallString;
-import static Polandball_pliki.Others.GetConstans.Normal_BombString;
 
 /**
- * Created by Matball on 2017-05-20.
- */
-
-/**
- * Klasa Eksplozja dziedziczaca po obiekcie GameObject
+ * Klasa reprezentujaca eksplozje bomby
  */
 public class Explosion extends GameObject {
         /**
-         * flaga czy eksplozja sie skonczyla
+         * Flaga informujaca, czy nastapil juz koniec eksplozji
          */
         boolean end_of_explosion_;
         /**
-         * Zmienna, przechowujaca gif
+         * Zmienna, przechowujaca gif eksplozji
          */
-        Image image_;
+        public Image image_;
         /**
-         * konstruktor obiektu typu eksplozja
+         * Konstruktor klasy Explosion
          * @param x obecne polozenie obiektu na osi x
          * @param y obecne polozenie obiektu na osi y
          */
@@ -36,13 +32,12 @@ public class Explosion extends GameObject {
             name_class_object=ExplosionString;
             x_=x;
             y_=y;
-            buffImage_=createBufferedImage();
-            image_=createImageGIF();
+            buffImage_= null;
+            image_=GetConstans.Explosion;
             end_of_explosion_=false;
         }
-
         /**
-         * konstruktor bezparametrowy
+         * Konstruktor bezparametrowy klasy Explosion
          */
         public Explosion(){
             super();
@@ -54,42 +49,6 @@ public class Explosion extends GameObject {
             end_of_explosion_=false;
         }
 
-        /**
-         * metoda udostepniająca obiektowi grafike
-         * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
-         */
-        BufferedImage createBufferedImage(){
-            try {
-                File file = new File(ExplosionString);
-                BufferedImage bufferedImage= ImageIO.read(file);
-
-                return bufferedImage;
-            }
-            catch(IOException e ){
-                e.printStackTrace();
-
-                System.out.println("Blad wczytywania obiektu1");
-            }catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Blad wczytywania obiektu typu eksplozja");
-            }
-            return null;
-        }
-        /**
-         *   metoda zwracajace zdjecie bedace gif-em <3
-         *   ( uwaga w panelboard, by gif byl rysowany, musi byc  parametr observer  w drawImage  musi byc ustawiony jako "this")
-         *   UWAGA - w przyszlosci bedzie chyba lepiej zastapic metody BufferedImage przez createImageGIF, jest bardziej uniwersalna
-         */
-        Image createImageGIF(){
-            try{
-                image_= Toolkit.getDefaultToolkit().createImage(ExplosionString); //ladowanie do pliku
-                return image_;
-            }catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Blad wczytywania obiektu typu eksplozja");
-            }
-            return null;
-        }
 
         /**
          * ZWraca Image bedacy gifem

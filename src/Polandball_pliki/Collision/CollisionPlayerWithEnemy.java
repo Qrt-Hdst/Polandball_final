@@ -3,49 +3,51 @@ package Polandball_pliki.Collision;
 
 import Polandball_pliki.GameObjects.Enemy;
 import Polandball_pliki.GameObjects.Polandball;
-
 import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
 
 /**
- * Created by Matball on 2017-05-24.
+ * Klasa sprawdzajaca, czy nastapla kolizja gracza z wrogiem
  */
 public class CollisionPlayerWithEnemy extends Collision {
-
-    /**
-     * Max zachodni punkt eksplozji
+     /**
+     * Maksymalny zachodni punkt gracza
      */
     int Player_point_west;
     /**
-     * Max wschodni punkt eksplozji
+     * Maksymalny wschodni punkt gracza
      */
     int Player_point_east;
     /**
-     * Max polnocny punkt eksplozji
+     * Maksymalny polnocny punkt gracza
      */
     int Player_point_north;
     /**
-     * Max poludniowy punkt eksplozji
+     * Maksymalny poludniowy punkt gracza
      */
     int Player_point_south;
-
     /**
-     * Max zachodni punkt liingObject
+     * Maksymalny zachodni punkt wroga
      */
     int Enemy_point_west;
     /**
-     * Max wschodni punkt liingObject
+     * Maksymalny wschodni punkt wroga
      */
     int Enemy_point_east;
     /**
-     * Max polnocne punkt liingObject
+     * Maksymalny polnocny punkt wroga
      */
     int Enemy_point_north;
     /**
-     * Max poludniowe punkt liingObject
+     * Maksymalny poludniowy punkt wroga
      */
     int Enemy_point_south;
 
+    /**
+     * Konstruktor sprawdzajacy, czy zachodzi kolizja gracza z wrogiem
+     * @param player - obiekt typu Polandball
+     * @param enemy - obiekt typu Enemy
+     */
     public  CollisionPlayerWithEnemy(Polandball player, Enemy enemy){
         super();
 
@@ -56,7 +58,7 @@ public class CollisionPlayerWithEnemy extends Collision {
         // 2)odejmuje ilosc pikseli odzwierciedlajaca fakt ze kula jest mniejsza niz kwadrat który jest jego obramowka
         // , specyficznie dobrany dla kazdego roza player
         // UWAGA ostatni człon może pójść do wymiany, służy do ograniczenia oefektow dzialania eksplozji na brzegach
-        Player_point_west=player.getX()-(int)Math.floor((double)SizeWidthIcon  * player.getDistance_from_azimuth_walls() );//przydzielam zachodni punkt livingObject
+        Player_point_west=player.getX()+(int)Math.floor((double)SizeWidthIcon  * player.getDistance_from_azimuth_walls() );//przydzielam zachodni punkt livingObject
         //przydzielam wschodni punkt player
         // 1)pobieram polozenie lewego gornego rogu player
         // 2)Dodaje szerokosc jednej komorki
@@ -109,59 +111,39 @@ public class CollisionPlayerWithEnemy extends Collision {
         Enemy_point_south=enemy.getY()+SizeHeightIcon-(int)Math.floor((double)SizeHeightIcon  * enemy.getDistance_from_elevation_walls() );//przydzielam poludniowy punkt livingObject
 
 
-
-        //kolizja  player|enemy
-
-        //sprawdzam czy player nachodzi na enemy na osi x
-        if( Player_point_east > Enemy_point_west && Player_point_east<Enemy_point_east ) {
-
-
-            if( ( Player_point_south > Enemy_point_north )  &&
-                    Player_point_south < Enemy_point_south )
+        //sprawdzam czy obiekt player na chodzi na enemy na osi x
+        if( Player_point_south > Enemy_point_north && Player_point_south<Enemy_point_south ) {
+            //sprawdzam czy obiekt player nie na chodzi na enemy na osi y
+            if(
+                    (Player_point_east > Enemy_point_west && Player_point_east < Enemy_point_east )
+                            ||
+                            ( Player_point_west < Enemy_point_east && Player_point_west > Enemy_point_west )
+                    )
             {
-                isNotCollision = false; // zwraca ze zaszla kolizja z czego wynika że obiekt typu polandball powinien zostac zlikwidowany
-            }
-
-        }
-
-        //kolizja z wschodnia czescia enemy    enemy|player
-
-
-        else if( Enemy_point_east > Player_point_west && Player_point_west>Enemy_point_west ) {
-            //sprawdzam czy obiekt miesci sie w polnoc i poludniowym punkcie eksplozji
-            if( ( Player_point_south > Enemy_point_north )  &&
-                    Player_point_south < Enemy_point_south )
-            {
-                isNotCollision = false;// zwraca ze zaszla kolizja  z czego wynika że obiekt typu polandball powinien zostac zlikwidowany
+                isNotCollision = false;// zwraca ze zaszla kolizja
             }
 
         }
 
 
-
-        //kolizja z polnocna czescia enemy          player
-        //                                               -
-        //                                              item
-
-        else if( Player_point_south > Enemy_point_north && Player_point_south<Enemy_point_south ) {
-
-
-            if(Player_point_east > Enemy_point_west && Player_point_east < Enemy_point_east){
-                isNotCollision = false;// zwraca ze zaszla kolizja z czego wynika że obiekt typu polandball powinien zostac zlikwidowany
-            }
-
-        }
-
-        //kolizja z poludniowa czescia enemy              enemy
+        //kolizja z poludniowa czescia eksplozji          item
         //                                                 -
         //                                                player
+        //sprawdzam czy obiekt player na chodzi na enemy na osi x
         if( Player_point_north < Enemy_point_south && Player_point_south>Enemy_point_north ){
+            //sprawdzam czy obiekt player na chodzi na enemy na osi y
+            if(
+                    (Player_point_east > Enemy_point_west && Player_point_east < Enemy_point_east)
+                            ||
+                            (Player_point_west < Enemy_point_east && Player_point_west > Enemy_point_west)
 
+                    )
 
-            if(Player_point_east > Enemy_point_west && Player_point_east < Enemy_point_east){
-                isNotCollision = false;// zwraca ze zaszla kolizja z czego wynika że obiekt typu polandball powinien zostac zlikwidowany
+            {
+                isNotCollision = false;// zwraca ze zaszla kolizja
             }
         }
+
         else {
             isNotCollision =true;// zwraca ze nie zaszla kolizja
         }

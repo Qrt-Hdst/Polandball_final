@@ -7,7 +7,7 @@ import static Polandball_pliki.Others.GetConstans.Boardheight;
 import static Polandball_pliki.Others.GetConstans.Boardwidth;
 
 /**
- * Created by Matball on 2017-06-13.
+ * Klasa reprezentujaca panel okna gry
  */
 public class MainPanel extends JPanel {
 

@@ -1,23 +1,20 @@
 package Polandball_pliki.GameObjects;
 
+import Polandball_pliki.Others.GetConstans;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import static Polandball_pliki.Others.GetConstans.BetonString;
-import static Polandball_pliki.Others.GetConstans.PolandBallString;
 
 /**
- * Created by Matball on 2017-04-17.
- */
-
-/**
- * klasa przeciwnika typu Beton - niezniszczalnej ściany
+ * Klasa reprezentujaca niezniszczalna przeszkode typu Beton
  */
 public class Beton extends Terrain {
     /**
-     * konstruktor obiektu beton
+     * Konstruktor klasy Beton
      * @param x polozenie na osi x
      * @param y polozenie na osi y
      */
@@ -26,14 +23,13 @@ public class Beton extends Terrain {
         x_=x;
         y_=y;
         name_class_object=BetonString;
-        buffImage_=createBufferedImage();
+        buffImage_= GetConstans.BetonBuff;
     }
-
     /**
-     * metoda udostepniająca obiektowi grafike
-     * @return zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku -null
+     * Metoda udostepniająca obiektowi grafike
+     * @return bufferedImage/null - zwraca stworzone zdjecie, lub w wypadku zlapania wyjatku null
      */
-    BufferedImage createBufferedImage(){
+   /* private BufferedImage createBufferedImage(){
         try {
             File file = new File(BetonString);
             BufferedImage bufferedImage= ImageIO.read(file);
@@ -46,5 +42,5 @@ public class Beton extends Terrain {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 }

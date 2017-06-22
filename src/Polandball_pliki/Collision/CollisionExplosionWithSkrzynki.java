@@ -5,54 +5,46 @@ import Polandball_pliki.GameObjects.Terrain;
 
 import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
 import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
-
 /**
- * Created by Matball on 2017-05-20.
- */
-
-/**
- * Klasa zajmujaca sie sytuacja kiedy eksplozja moze zniszczyc jakes skrzynki
+ * Klasa okreslajaca, czy nastapila kolizja eksplozji z obiektem typu Skrzynka
  */
 public class CollisionExplosionWithSkrzynki extends Collision{
     /**
-     * Max zachodni punkt eksplozji
+     * Maksymalny zachodni punkt eksplozji
      */
     int Explosion_point_west;
     /**
-     * Max wschodni punkt eksplozji
+     * Maksymalny wschodni punkt eksplozji
      */
     int Explosion_point_east;
     /**
-     * Max polnocny punkt eksplozji
+     * Maksymalny polnocny punkt eksplozji
      */
     int Explosion_point_north;
     /**
-     * Max poludniowy punkt eksplozji
+     * Maksymalny poludniowy punkt eksplozji
      */
     int Explosion_point_south;
-
-
     /**
-     * Max zachodni punkt skrzynki
+     * Maksymalny zachodni punkt skrzynki
      */
     int Skrzynka_point_west;
     /**
-     * Max wschodni punkt skrzynki
+     * Maksymalny wschodni punkt skrzynki
      */
     int Skrzynka_point_east;
     /**
-     * Max polnocny punkt skrzynki
+     * Maksymalny polnocny punkt skrzynki
      */
     int Skrzynka_point_north;
     /**
-     * Max poludniowy punkt skrzynki
+     * Maksymalny poludniowy punkt skrzynki
      */
     int Skrzynka_point_south;
-
     /**
-     * Konstrukro  sprawdzajacy czy skrzynka powinna ulec zniszczeniu pod wplywem eksplozji
-     * @param skrzynka
-     * @param explosion
+     * Konstruktor sprawdzajacy, czy skrzynka powinna ulec zniszczeniu pod wplywem eksplozji
+     * @param skrzynka - obiekt typ Skrzynka
+     * @param explosion - obiekt typu Explosion
      */
     public CollisionExplosionWithSkrzynki(Terrain skrzynka, Explosion explosion){
         super();
@@ -140,9 +132,5 @@ public class CollisionExplosionWithSkrzynki extends Collision{
         else {
                 isNotCollision =true;// zwraca ze nie zaszla kolizja
         }
-
-
     }
-
-
 }

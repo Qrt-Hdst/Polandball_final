@@ -1,61 +1,35 @@
 package Polandball_pliki.GameObjects;
 
-/**
- * Created by Matball on 2017-05-09.
- */
-
 import java.awt.*;
-
 /**
- * klasa rodzic dla wszystkich rodzajow bomb
+ * Klasa rodzic dla wszystkich rodzajow bomb
  */
 public class Bomb extends StationaryObject {
-
     /**
-     * Flaga informuja, czy bomba ma wybuchnac
+     * Flaga informujaca, czy bomba ma wybuchnac
      */
     boolean explosionflag_=false;
-
     /**
-     * Metoda zwracajaca obecny stan explosionflag_
-     * @return
+     * Metoda zwracajaca obecny stan eksplozji
+     * @return explosionflag_
      */
-
     public boolean getExplosionflag(){
         return explosionflag_;
     }
-
     /**
-     * Metoda ustawiajaca explosionflag_
+     * Metoda ustawiajaca stan eksplozji
      * @param explosionflag
      */
     public void setExplosionflag(boolean explosionflag){
         explosionflag_=explosionflag;
     }
     /**
-     * Zmienna, przechowujaca gif
+     * Zmienna, przechowujaca gif eksplozji
      */
-
-    Image image_;
+    public Image image_;
 
     /**
-     * konstruktor obiektu bomba
-     *
-     * @param x polozenie na osi x
-     * @param y polozenie na osi y
-     */
-    public Bomb(int x, int y) {
-        super();
-        x_ = x;
-        y_ = y;
-        name_class_object=null;
-        buffImage_ = null;
-        image_ = null;
-        explosionflag_ =false;
-    }
-
-    /**
-     * konstruktor bezparametrowy
+     * Konstruktor bezparametrowy klasy Bomb
      */
     public Bomb() {
         super();
@@ -66,15 +40,11 @@ public class Bomb extends StationaryObject {
         image_ = null;
         explosionflag_=false;
     }
-
     /**
-     * Wraca Image bedacy gifem
-     *
-     * @return
+     * Meotda zwracajaca gif eksplozji
+     * @return image_
      */
     public Image getGIF() {
         return image_;
     }
-
-
 }
