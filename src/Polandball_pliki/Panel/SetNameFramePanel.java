@@ -1,4 +1,4 @@
-package Polandball_pliki.Panel;
+package Panel;
 
 
 
@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import static Polandball_pliki.Panel.StartPanel.setnameframe;
+import static Panel.StartPanel.setnameframe;
 
 /**
  * Klasa reprezentujaca panel wyboru nazwy gracza

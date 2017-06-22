@@ -1,4 +1,4 @@
-package Polandball_pliki.GameObjects;
+package GameObjects;
 
 import Polandball_pliki.Others.GetConstans;
 

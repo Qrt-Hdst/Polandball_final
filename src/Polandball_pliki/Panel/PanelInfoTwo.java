@@ -1,10 +1,10 @@
-package Polandball_pliki.Panel;
+package Panel;
 
 import javax.swing.*;
 import java.awt.*;
 
-import Polandball_pliki.Others.ButtonLabel;
-import static Polandball_pliki.Others.GetConstans.*;
+import Others.ButtonLabel;
+import static Others.GetConstans.*;
 /**
  * Klasa reprezentujaca panel boczny okna gry
  */

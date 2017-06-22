@@ -1,10 +1,10 @@
-package Polandball_pliki.Panel;
+package Panel;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static Polandball_pliki.Others.GetConstans.Boardheight;
-import static Polandball_pliki.Others.GetConstans.Boardwidth;
+import static Others.GetConstans.Boardheight;
+import static Others.GetConstans.Boardwidth;
 
 /**
  * Klasa reprezentujaca panel okna gry

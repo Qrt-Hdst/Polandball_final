@@ -1,6 +1,6 @@
-package Polandball_pliki.Counter;
+package Counter;
 
-import Polandball_pliki.GameObjects.Explosion;
+import GameObjects.Explosion;
 
 /**
  * Klasa odliczajaca czas trwania eskplozji

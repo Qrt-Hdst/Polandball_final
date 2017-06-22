@@ -1,10 +1,10 @@
-package Polandball_pliki.Collision;
+package Collision;
 
-import Polandball_pliki.GameObjects.Explosion;
-import Polandball_pliki.GameObjects.LivingObject;
+import GameObjects.Explosion;
+import GameObjects.LivingObject;
 
-import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
+import static Panel.PanelBoard.SizeHeightIcon;
+import static Panel.PanelBoard.SizeWidthIcon;
 
 /**
  * Klasa okreslajaca, czy nastapila kolizja explozji z obiektem typu LivingObject

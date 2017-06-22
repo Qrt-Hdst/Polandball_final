@@ -1,8 +1,8 @@
-package Polandball_pliki.Panel;
+package Panel;
 
 import Polandball_pliki.Frame.MainFrame;
 import Polandball_pliki.Frame.GameOver;
-import Polandball_pliki.Others.GetConstans;
+import Others.GetConstans;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 import static Polandball_pliki.Frame.MainFrame.startPanel;
 import static Polandball_pliki.Main.setconnection;
-import static Polandball_pliki.Others.GetConstans.*;
+import static Others.GetConstans.*;
 /**
  * Klasa reprezentujaca panel okna wyboru trybu rozgrywki
  */

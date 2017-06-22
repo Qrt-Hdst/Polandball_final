@@ -1,15 +1,15 @@
-package Polandball_pliki.Frame;
+package Frame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
 
-import static Polandball_pliki.Panel.SetConnectionPanel.LoadLevel;
-import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
-import static Polandball_pliki.Others.GetConstans.*;
-import static Polandball_pliki.Panel.PanelBoard.ChangeInfoStatus;
-import Polandball_pliki.Panel.PanelBoard;
+import static Panel.SetConnectionPanel.LoadLevel;
+import static Panel.SetNameFramePanel.levelframe;
+import static Others.GetConstans.*;
+import static Panel.PanelBoard.ChangeInfoStatus;
+import Panel.PanelBoard;
 /**
  * Klasa odpowiedzialna za wyswietlenie okna ukonczenia poziomu
  */

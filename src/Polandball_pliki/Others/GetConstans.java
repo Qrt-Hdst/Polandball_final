@@ -1,7 +1,7 @@
-package Polandball_pliki.Others;
+package Others;
 
 import Polandball_pliki.Frame.GameOver;
-import Polandball_pliki.GameObjects.Polandball;
+import GameObjects.Polandball;
 import org.w3c.dom.Document;
 
 import javax.imageio.ImageIO;

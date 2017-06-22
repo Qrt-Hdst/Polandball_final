@@ -1,9 +1,9 @@
-package Polandball_pliki.Frame;
+package Frame;
 
 import javax.swing.*;
 
-import Polandball_pliki.Panel.StartPanel;
-import static Polandball_pliki.Others.GetConstans.*;
+import Panel.StartPanel;
+import static Others.GetConstans.*;
 
 /**
  * Okno glowne, wyświetlane podczas uruchomienia gry

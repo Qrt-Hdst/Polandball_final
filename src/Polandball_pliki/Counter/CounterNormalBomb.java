@@ -1,6 +1,6 @@
-package Polandball_pliki.Counter;
+package Counter;
 
-import Polandball_pliki.GameObjects.Normal_Bomb;
+import GameObjects.Normal_Bomb;
 
 /**
  * Klasa odliczajaca czas do wybuchu bomby zwyklej

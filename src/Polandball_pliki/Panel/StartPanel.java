@@ -1,8 +1,8 @@
-package Polandball_pliki.Panel;
+package Panel;
 
 
 import Polandball_pliki.Frame.SetNameFrame;
-import Polandball_pliki.Others.Highscores;
+import Others.Highscores;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +12,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.net.Socket;
 
-import static Polandball_pliki.Others.GetConstans.MainFrameheight;
-import static Polandball_pliki.Others.GetConstans.MainFramewidth;
+import static Others.GetConstans.MainFrameheight;
+import static Others.GetConstans.MainFramewidth;
 
 /**
  * Klasa reprezentujaca panel, ktory bedzie zawieral elementy okna glownego

@@ -1,8 +1,8 @@
-package Polandball_pliki.Frame;
+package Frame;
 
-import Polandball_pliki.Panel.SetConnectionPanel;
+import Panel.SetConnectionPanel;
 import javax.swing.*;
-import static Polandball_pliki.Others.GetConstans.*;
+import static Others.GetConstans.*;
 
 /**
  * Klasa tworzaca okno wyboru, czy chcemy grac w trybie onlnie czy offline

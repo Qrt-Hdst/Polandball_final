@@ -1,6 +1,6 @@
-package Polandball_pliki.Frame;
+package Frame;
 
-import Polandball_pliki.Panel.SetNameFramePanel;
+import Panel.SetNameFramePanel;
 
 import javax.swing.*;
 

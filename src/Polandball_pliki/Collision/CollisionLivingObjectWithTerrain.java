@@ -1,12 +1,12 @@
-package Polandball_pliki.Collision;
+package Collision;
 
-import Polandball_pliki.GameObjects.LivingObject;
+import GameObjects.LivingObject;
 
-import static Polandball_pliki.Others.GetConstans.Amountofcolumns;
-import static Polandball_pliki.Others.GetConstans.Amountoflines;
-import static Polandball_pliki.Panel.PanelBoard.CellIsFree;
-import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
+import static Others.GetConstans.Amountofcolumns;
+import static Others.GetConstans.Amountoflines;
+import static Panel.PanelBoard.CellIsFree;
+import static Panel.PanelBoard.SizeHeightIcon;
+import static Panel.PanelBoard.SizeWidthIcon;
 
 /**
  * Klasa sprawdzajaca, czy LivingObject moze wejsc na dane pole

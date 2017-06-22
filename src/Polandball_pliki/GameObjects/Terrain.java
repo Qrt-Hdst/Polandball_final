@@ -1,4 +1,4 @@
-package Polandball_pliki.GameObjects;
+package GameObjects;
 
 /**
  * Klasa rodzic dla elementow terenu - skrzynek, betonow

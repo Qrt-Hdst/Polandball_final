@@ -1,4 +1,4 @@
-package Polandball_pliki.GameObjects;
+package GameObjects;
 
 /**
  * Klasa rodzic dla wszystkich przedmiotow do zebrania/interakcji

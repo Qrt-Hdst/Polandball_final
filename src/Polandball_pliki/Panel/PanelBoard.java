@@ -1,4 +1,4 @@
-package Polandball_pliki.Panel;
+package Panel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +16,11 @@ import Polandball_pliki.Frame.NextLevelInfo;
 import Polandball_pliki.GameObjects.*;
 
 import Polandball_pliki.Frame.GameOver;
-import Polandball_pliki.Others.GameTime;
-import Polandball_pliki.Others.GetConstans;
+import Others.GameTime;
+import Others.GetConstans;
 
 
-import static Polandball_pliki.Others.GetConstans.*;
+import static Others.GetConstans.*;
 import static Polandball_pliki.Frame.MainFrame.startPanel;
 import static Polandball_pliki.Panel.SetConnectionPanel.ServerMode;
 import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;

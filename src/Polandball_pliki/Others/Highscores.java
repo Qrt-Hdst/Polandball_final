@@ -1,4 +1,4 @@
-package Polandball_pliki.Others;
+package Others;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,13 +1,13 @@
-package Polandball_pliki.Collision;
+package Collision;
 
-import Polandball_pliki.GameObjects.GameObject;
-import Polandball_pliki.GameObjects.Terrain;
+import GameObjects.GameObject;
+import GameObjects.Terrain;
 
-import static Polandball_pliki.Others.GetConstans.Amountofcolumns;
-import static Polandball_pliki.Others.GetConstans.Amountoflines;
-import static Polandball_pliki.Panel.PanelBoard.BetonIsNotHere;
-import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
+import static Others.GetConstans.Amountofcolumns;
+import static Others.GetConstans.Amountoflines;
+import static Panel.PanelBoard.BetonIsNotHere;
+import static Panel.PanelBoard.SizeHeightIcon;
+import static Panel.PanelBoard.SizeWidthIcon;
 
 
 /**

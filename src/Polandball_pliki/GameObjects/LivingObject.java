@@ -1,4 +1,4 @@
-package Polandball_pliki.GameObjects;
+package GameObjects;
 
 /**
  * Klasa przodek dla wszystkich poruszającyhc/żyjących obiektow

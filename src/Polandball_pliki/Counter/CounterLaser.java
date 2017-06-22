@@ -1,6 +1,6 @@
-package Polandball_pliki.Counter;
+package Counter;
 
-import static Polandball_pliki.Panel.PanelBoard.LaserExistence;
+import static Panel.PanelBoard.LaserExistence;
 
 /**
  * Klasa odliczajaca czas wyswietlania lasera

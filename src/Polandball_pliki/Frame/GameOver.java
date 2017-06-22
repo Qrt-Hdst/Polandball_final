@@ -1,6 +1,6 @@
-package Polandball_pliki.Frame;
+package Frame;
 
-import Polandball_pliki.Panel.PanelBoard;
+import Panel.PanelBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,11 +11,11 @@ import java.net.Socket;
 
 
 import static Polandball_pliki.Frame.MainFrame.startPanel;
-import static Polandball_pliki.Panel.SetNameFramePanel.levelframe;
-import static Polandball_pliki.Others.GetConstans.*;
-import static Polandball_pliki.Panel.PanelBoard.ChangeInfoStatus;
-import static Polandball_pliki.Panel.PanelInfoOne.PlayerName;
-import static Polandball_pliki.Panel.SetConnectionPanel.ServerMode;
+import static Panel.SetNameFramePanel.levelframe;
+import static Others.GetConstans.*;
+import static Panel.PanelBoard.ChangeInfoStatus;
+import static Panel.PanelInfoOne.PlayerName;
+import static Panel.SetConnectionPanel.ServerMode;
 
 /**
  * Klasa odpowiedzialna za wyswietlenie okna konca gry

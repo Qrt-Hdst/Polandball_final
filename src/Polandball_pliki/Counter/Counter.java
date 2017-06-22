@@ -1,4 +1,4 @@
-package Polandball_pliki.Counter;
+package Counter;
 
 /**
  * Klasa Protoplasta - liczaca czas zycia obiektow

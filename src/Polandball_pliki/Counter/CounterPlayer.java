@@ -1,7 +1,7 @@
-package Polandball_pliki.Counter;
+package Counter;
 
-import Polandball_pliki.GameObjects.Polandball;
-import static Polandball_pliki.Panel.PanelBoard.PlayerExistence;
+import GameObjects.Polandball;
+import static Panel.PanelBoard.PlayerExistence;
 
 /**
  * Klasa odpowiedzialna za odliczanie czasu do respawnu Player-a

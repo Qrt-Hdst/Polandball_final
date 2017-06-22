@@ -1,10 +1,10 @@
-package Polandball_pliki.Collision;
+package Collision;
 
 
-import Polandball_pliki.GameObjects.Enemy;
-import Polandball_pliki.GameObjects.Polandball;
-import static Polandball_pliki.Panel.PanelBoard.SizeHeightIcon;
-import static Polandball_pliki.Panel.PanelBoard.SizeWidthIcon;
+import GameObjects.Enemy;
+import GameObjects.Polandball;
+import static Panel.PanelBoard.SizeHeightIcon;
+import static Panel.PanelBoard.SizeWidthIcon;
 
 /**
  * Klasa sprawdzajaca, czy nastapla kolizja gracza z wrogiem

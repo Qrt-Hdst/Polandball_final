@@ -1,4 +1,4 @@
-package Polandball_pliki.Collision;
+package Collision;
 
 /**
  * Klasa "Protoplasta" wszystkich kolizji

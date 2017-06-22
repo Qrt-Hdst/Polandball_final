@@ -1,7 +1,7 @@
-package Polandball_pliki.Frame;
+package Frame;
 
-import Polandball_pliki.Panel.MainPanel;
-import Polandball_pliki.Panel.PanelBoard;
+import Panel.MainPanel;
+import Panel.PanelBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
-import static Polandball_pliki.Others.GetConstans.*;
+import static Others.GetConstans.*;
 
 /**
  * Okno gry, zawierające plansze konkretnego poziomu, informacje o stanie rozgrywki

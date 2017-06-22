@@ -1,7 +1,7 @@
-package Polandball_pliki.Counter;
+package Counter;
 
-import static Polandball_pliki.Panel.PanelBoard.PlayerExistence;
-import static Polandball_pliki.Panel.PanelBoard.hussars_Power;
+import static Panel.PanelBoard.PlayerExistence;
+import static Panel.PanelBoard.hussars_Power;
 /**
  * Klasa odliczajaca czas dzialania skrzydel husarkisch
  */

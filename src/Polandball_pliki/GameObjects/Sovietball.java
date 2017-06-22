@@ -1,4 +1,4 @@
-package Polandball_pliki.GameObjects;
+package GameObjects;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
